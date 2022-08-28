@@ -13,47 +13,47 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const data= [{
-  productName: 'ACC1',
-  price: 15000,
-  currency: 'VND',
-  status: 'New',
-  image: 'https://picsum.photos/300/200'
-},
-{
-  productName: 'ACC1 test',
-  price: 15000,
-  currency: 'VND',
-  status: 'Sale',
-  image: 'https://picsum.photos/300/200'
-},
-{
-  productName: 'ACC1',
-  price: 1500,
-  currency: 'USD',
-  status: 'Sale',
-  image: 'https://picsum.photos/300/200'
-},
-{
-  productName: 'ACC1',
-  price: 15000,
-  currency: 'VND',
-  status: 'Sale',
-  image: 'https://picsum.photos/300/200'
-},
-{
-  productName: 'ACC1',
-  price: 15000,
-  currency: 'VND',
-  status: 'Sold out',
-  image: 'https://picsum.photos/300/200'
-}]
+
 export default function BasicGrid() {
-  
+  const data= [{
+    productName: 'ACC1',
+    price: 15000,
+    currency: 'VND',
+    status: 'New',
+    image: 'https://picsum.photos/300/200'
+  },
+  {
+    productName: 'ACC1 test',
+    price: 15000,
+    currency: 'VND',
+    status: 'Sale',
+    image: 'https://picsum.photos/300/200'
+  },
+  {
+    productName: 'ACC1',
+    price: 1500,
+    currency: 'USD',
+    status: 'Sale',
+    image: 'https://picsum.photos/300/200'
+  },
+  {
+    productName: 'ACC1',
+    price: 15000,
+    currency: 'VND',
+    status: 'Sale',
+    image: 'https://picsum.photos/300/200'
+  },
+  {
+    productName: 'ACC1',
+    price: 15000,
+    currency: 'VND',
+    status: 'Sold out',
+    image: 'https://picsum.photos/300/200'
+  }]
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-        {data.map((item, index)=>{
+        {data && data.map((item, index)=>{
           return <Grid item xs={12} sm={6} md={3} key={index}>
           <Item><Card item={item}/></Item>
         </Grid>

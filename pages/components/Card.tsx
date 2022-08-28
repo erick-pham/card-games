@@ -45,7 +45,7 @@ export default function RecipeReviewCard({item}: {item:CardItem}) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  if (!item) return <></>
   return (
     <Card  variant="outlined" style={{ padding: 0,border: "none", boxShadow: "none" , backgroundColor:"#1B3447"}}> 
       <CardMedia
