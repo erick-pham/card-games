@@ -32,7 +32,14 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function RecipeReviewCard({item}) {
+type CardItem = {
+  image: string;
+  productName: string;
+  currency: string;
+  price: number;
+};
+
+export default function RecipeReviewCard({item}: {item:CardItem}) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
