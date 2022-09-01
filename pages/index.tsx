@@ -1,15 +1,21 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import "reflect-metadata";
+import { useState, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import NavBar from "./components/NavBar";
 import ListCard from "./components/CardList";
 import Container from "@mui/material/Container";
-import UnitOfWork from "../interfaces/database/unit-of-work";
 import { Product } from "../interfaces/entity/product";
 
-function Home({ products }: { products: Array<Product> }) {
+function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    fetch("/api/product")
+      .then((response) => response.json())
+      .then((x) => setProducts(x));
+  }, []);
+  console.log("products", products);
   return (
     <div className={styles.container}>
       <Head>
@@ -40,18 +46,18 @@ function Home({ products }: { products: Array<Product> }) {
   );
 }
 
-export async function getServerSideProps() {
-  const uow = new UnitOfWork();
-  await uow.initialize();
+// export async function getServerSideProps() {
+//   const uow = new UnitOfWork();
+//   await uow.initialize();
 
-  const products = await uow.ProuductRepository.find({
-    relations: {
-      productItems: true,
-    },
-  });
+//   const products = await uow.ProuductRepository.find({
+//     relations: {
+//       productItems: true,
+//     },
+//   });
 
-  return {
-    props: { products: products.map((p) => p.toJSON()) },
-  };
-}
+//   return {
+//     props: { products: products.map((p) => p.toJSON()) },
+//   };
+// }
 export default Home;

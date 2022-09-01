@@ -2,19 +2,45 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import UnitOfWork from "../../interfaces/database/unit-of-work";
 
-type Data = {
-  name: string;
-};
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const uow = new UnitOfWork();
   await uow.initialize();
-  const data = await uow.ProuductRepository.find({
-    relations: {
-      productItems: true,
-    },
-  });
-  res.status(200).json(data);
+
+  console.log(`${req.method} ${req.url}`);
+  try {
+    if (req.method === "POST") {
+      const data = await uow.ProuductRepository.upsert(req.body, ["id"]);
+      res.status(200).json(data);
+    } else if (req.method === "DELETE") {
+      const productItems = await uow.ProuductItemRepository.findBy({
+        product: {
+          id: req.body.id,
+        },
+      });
+      if (productItems && productItems.length > 0) {
+        return res.status(400).json({
+          error: true,
+          message: "There are product items related to this product",
+        });
+      }
+      const data = await uow.ProuductRepository.delete({
+        id: req.body.id,
+      });
+      return res.status(200).json(data);
+    } else {
+      const data = await uow.ProuductRepository.find({
+        relations: {
+          productItems: true,
+        },
+      });
+      res.status(200).json(data);
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ error: true, message: "Internal Server Error" });
+  }
 }

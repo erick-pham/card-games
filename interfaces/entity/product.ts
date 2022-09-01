@@ -1,7 +1,7 @@
 import {
   Entity,
   Column,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
@@ -9,9 +9,9 @@ import {
 
 import AppBaseEntity from "./base";
 import { ProductItem } from "./product_item";
-@Entity()
+@Entity({ name: "product" })
 export class Product extends AppBaseEntity {
-  @PrimaryColumn("uuid")
+  @PrimaryGeneratedColumn("uuid")
   id!: string;
 
   @Column({ length: 256 })
@@ -21,11 +21,11 @@ export class Product extends AppBaseEntity {
   type!: string;
 
   @OneToMany(() => ProductItem, (productItem) => productItem.product)
-  productItems!: ProductItem[];
+  productItems: ProductItem[] | undefined;
 
   @CreateDateColumn()
-  createdAt!: Date | undefined;
+  createdAt: Date | undefined;
 
   @UpdateDateColumn()
-  updatedAt!: Date | undefined;
+  updatedAt: Date | undefined;
 }
