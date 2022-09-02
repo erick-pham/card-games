@@ -9,11 +9,7 @@ import {
 import AppBaseEntity from "./base";
 
 import { Product } from "./product";
-export const PRODUCT_STATUS = {
-  NEW: "NEW",
-  SELL: "SELL",
-  SOLD: "SOLD",
-};
+import { PRODUCT_ITEM_STATUS } from "../../common/constants";
 
 @Entity()
 export class ProductItem extends AppBaseEntity {
@@ -23,6 +19,9 @@ export class ProductItem extends AppBaseEntity {
   @Column({ length: 256 })
   name!: string;
 
+  @Column({ length: 50, nullable: true })
+  type!: string;
+
   @Column()
   price!: number;
 
@@ -30,7 +29,7 @@ export class ProductItem extends AppBaseEntity {
   currency!: string;
 
   @Column({
-    default: PRODUCT_STATUS.NEW,
+    default: PRODUCT_ITEM_STATUS.NEW,
   })
   status!: string;
 

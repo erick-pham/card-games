@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import Table from "@mui/material/Table";
@@ -19,19 +19,23 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import CardMedia from "@mui/material/CardMedia";
 import Chip from "@mui/material/Chip";
 import { Controller, useForm } from "react-hook-form";
 import { ajvResolver } from "@hookform/resolvers/ajv";
 import { useDispatch } from "react-redux";
-import NavBar from "../../components/NavBar";
-import styles from "../../../styles/Home.module.css";
-import { Product } from "../../../interfaces/entity/product";
-import { setErrorState } from "../../../app/rootSlice";
+import numeral from "numeral";
+import NavBar from "../../../components/NavBar";
+import styles from "../../../../styles/Home.module.css";
+import { Product } from "../../../../interfaces/entity/product";
+import { setErrorState } from "../../../../app/rootSlice";
+import { ProductItem } from "../../../../interfaces/entity/product_item";
 import {
-  ProductStatus,
-  ProductStatusGetText,
+  ProductItemStatus,
+  ProductItemStatusGetText,
+  Currencies,
   StatusColor,
-} from "../../../common/constants";
+} from "../../../../common/constants";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -67,7 +71,7 @@ const style = {
 
 const schema = {
   type: "object",
-  required: ["name", "status"],
+  required: ["name", "currency", "image", "status", "description", "price"],
   properties: {
     name: {
       type: "string",
@@ -75,13 +79,31 @@ const schema = {
       maxLength: 256,
       // errorMessage: { minLength: "Name field is required" },
     },
+    // price: {
+    //   type: "number",
+    //   multipleOf: 1000,
+    // },
+    currency: {
+      type: "string",
+      minLength: 3,
+      maxLength: 3,
+    },
+    description: {
+      type: "string",
+      minLength: 3,
+      maxLength: 256,
+    },
+    image: {
+      type: "string",
+      // pattern: "^(https?|wss?|ftp)://",
+    },
     status: {
       type: "string",
-      enum: ProductStatus.map((i) => i.value),
-      // errorMessage: { enum: "Must be equal to one of the allowed values" },
+      enum: ProductItemStatus.map((i) => i.value),
+      // pattern: "^(https?|wss?|ftp)://",
     },
   },
-  additionalProperties: false,
+  additionalProperties: true,
 };
 
 type EditProductModalType = {
@@ -89,17 +111,17 @@ type EditProductModalType = {
   open: boolean;
   handleClose: () => void;
   handleDelete: (productId: string) => void;
-  product: Product;
+  productItems: ProductItem;
 };
 
 function CustomizedTables({
-  products,
+  productItems,
   handleOpen,
-}: // handleDelete,
-{
-  products: Array<Product>;
+  handleDelete,
+}: {
+  productItems: Array<ProductItem> | [];
   handleOpen: EditProductModalType["handleOpen"];
-  // handleDelete: EditProductModalType["handleDelete"];
+  handleDelete: EditProductModalType["handleDelete"];
 }) {
   return (
     <TableContainer component={Paper}>
@@ -107,50 +129,58 @@ function CustomizedTables({
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell align="right">Price</StyledTableCell>
             <StyledTableCell align="right">Status</StyledTableCell>
-            <StyledTableCell align="right">Last Update</StyledTableCell>
+            <StyledTableCell align="right">Description</StyledTableCell>
+            <StyledTableCell align="right">Thumbnail</StyledTableCell>
             <StyledTableCell align="right">Action</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {products &&
-            products.map((product) => (
-              <StyledTableRow key={product.id}>
+          {productItems &&
+            productItems.map((productItem) => (
+              <StyledTableRow key={productItem.id}>
                 <StyledTableCell component="th" scope="row">
-                  {product.name}
+                  {productItem.name}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {numeral(productItem.price).format("0,0") +
+                    " " +
+                    productItem.currency}
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   <Chip
-                    label={ProductStatusGetText(product.status)}
-                    color={StatusColor(product.status)}
+                    label={ProductItemStatusGetText(productItem.status)}
+                    color={StatusColor(productItem.status)}
                   />
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {new Date(product?.createdAt || new Date()).toLocaleString()}
+                  {productItem.description}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {/* <Stack direction="row" spacing={2}> */}
-                  <Link href={`/admin/product/${product.id}/product-item`}>
-                    <Button variant="contained" color="info">
-                      View Item
-                    </Button>
-                  </Link>
+                  <CardMedia
+                    component="img"
+                    height="150"
+                    image={productItem.image}
+                    alt="alt"
+                  />
+                </StyledTableCell>
+                <StyledTableCell align="right">
                   <Button
                     variant="contained"
                     color="secondary"
                     style={{ margin: 4 }}
-                    onClick={() => handleOpen(product.id)}
+                    onClick={() => handleOpen(productItem.id)}
                   >
                     Edit
                   </Button>
                   {/* <Button
                     variant="contained"
                     color="error"
-                    onClick={() => handleDelete(product.id)}
+                    onClick={() => handleDelete(productItem.id)}
                   >
                     Delete
                   </Button> */}
-                  {/* </Stack> */}
                 </StyledTableCell>
               </StyledTableRow>
             ))}
@@ -160,67 +190,82 @@ function CustomizedTables({
   );
 }
 
-function AdminProduct() {
+function AdminProductItem() {
+  const { control, handleSubmit, reset, register } = useForm({
+    resolver: ajvResolver(schema),
+  });
+
+  const router = useRouter();
+  const productId = router.query["productId"];
+  console.log("productId", productId);
   const dispatch = useDispatch();
   const [reloadPage, setReloadPage] = useState(false);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [productEdit, setProductEdit] = useState<Product | undefined | null>();
+  const [currentProduct, setCurrentProduct] = useState<Product>();
+  const [productEdit, setProductEdit] = useState<
+    ProductItem | undefined | null
+  >();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    fetch("/api/product")
+    fetch(`/api/product?productId=${productId}`)
       .then((response) => response.json())
-      .then((x) => setProducts(x));
-  }, [reloadPage]);
+      .then((x) => {
+        if (x && x[0]) {
+          setCurrentProduct(x[0]);
+        }
+      });
+  }, [reloadPage, productId]);
 
   const handleOpen = (productId: string) => {
     setProductEdit(null);
     let editItem;
     if (productId) {
-      editItem = products.find((i) => i.id === productId);
+      editItem = currentProduct?.productItems?.find((i) => i.id === productId);
       setProductEdit(editItem);
     }
-    reset({
-      name: editItem ? editItem.name : "",
-      status: editItem ? editItem.status : "",
-    });
+    reset();
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
 
-  // const handleDelete = (productId: string) => {
-  //   fetch("/api/product", {
-  //     method: "DELETE",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ id: productId }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       if (data.error === true) {
-  //         dispatch(
-  //           setErrorState({
-  //             message: data.message,
-  //             values: "",
-  //             severity: "error",
-  //           })
-  //         );
-  //       } else {
-  //         setReloadPage(!reloadPage);
-  //       }
-  //     });
-  // };
+  const handleDelete = (productId: string) => {
+    fetch("/api/product-item", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: productId }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error === true) {
+          dispatch(
+            setErrorState({
+              message: data.message,
+              values: "",
+              severity: "error",
+            })
+          );
+        } else {
+          setReloadPage(!reloadPage);
+        }
+      });
+  };
 
   const onSubmit = (data: object) => {
-    fetch("/api/product", {
+    console.log("data", data);
+    fetch("/api/product-item", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...data, id: productEdit?.id }),
+      body: JSON.stringify({
+        ...data,
+        id: productEdit?.id,
+        productId: productId,
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -239,10 +284,6 @@ function AdminProduct() {
         }
       });
   };
-
-  const { control, handleSubmit, reset, register } = useForm({
-    resolver: ajvResolver(schema),
-  });
 
   return (
     <div>
@@ -266,10 +307,30 @@ function AdminProduct() {
                 </FormControl>
               )}
             />
+
             <Controller
-              name="status"
+              name="price"
               control={control}
-              defaultValue={productEdit?.type}
+              defaultValue={productEdit?.price}
+              render={({ field, fieldState: { error } }) => (
+                <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                  <TextField
+                    {...field}
+                    id="outlined-multiline-flexible"
+                    label="Price"
+                    type="number"
+                    error={error ? true : false}
+                    helperText={error?.message}
+                    inputProps={{ min: 1000 }}
+                  />
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              name="currency"
+              control={control}
+              defaultValue={productEdit?.currency}
               render={({
                 field: { onChange, value },
                 fieldState: { error },
@@ -277,14 +338,75 @@ function AdminProduct() {
                 <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                   <TextField
                     id="outlined-multiline-flexible"
-                    label="Product Status"
+                    label="Currency"
                     select
                     onChange={onChange}
                     value={value}
                     error={error ? true : false}
                     helperText={error?.message}
                   >
-                    {ProductStatus.map((option) => (
+                    {Currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              name="description"
+              control={control}
+              defaultValue={productEdit?.description}
+              render={({ field, fieldState: { error } }) => (
+                <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                  <TextField
+                    {...field}
+                    id="outlined-multiline-flexible"
+                    label="Description"
+                    error={error ? true : false}
+                    helperText={error?.message}
+                  />
+                </FormControl>
+              )}
+            />
+            <Controller
+              name="image"
+              control={control}
+              defaultValue={productEdit?.image}
+              render={({ field, fieldState: { error } }) => (
+                <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                  <TextField
+                    {...field}
+                    id="outlined-multiline-flexible"
+                    label="Image"
+                    error={error ? true : false}
+                    helperText={error?.message}
+                  />
+                </FormControl>
+              )}
+            />
+
+            <Controller
+              name="status"
+              control={control}
+              defaultValue={productEdit?.status}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                  <TextField
+                    id="outlined-multiline-flexible"
+                    label="Status"
+                    select
+                    onChange={onChange}
+                    value={value}
+                    error={error ? true : false}
+                    helperText={error?.message}
+                  >
+                    {ProductItemStatus.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
@@ -305,7 +427,6 @@ function AdminProduct() {
           </form>
         </Modal.Content>
       </Modal>
-
       <div className={styles.container}>
         <Head>
           <title>Admin - Product Management</title>
@@ -321,7 +442,8 @@ function AdminProduct() {
         </Container>
         <Container maxWidth={false} style={{ marginTop: 10 }}>
           <Box style={{ backgroundColor: "#fff", padding: 8 }}>
-            <Typography variant="h5">Product Management</Typography>
+            <Typography variant="h5">Product Item Management</Typography>
+            <Typography variant="h5">{currentProduct?.name}</Typography>
             <Button
               variant="contained"
               color="success"
@@ -331,12 +453,11 @@ function AdminProduct() {
             </Button>
           </Box>
           <CustomizedTables
-            products={products}
+            productItems={currentProduct?.productItems || []}
             handleOpen={handleOpen}
-            // handleDelete={handleDelete}
+            handleDelete={handleDelete}
           ></CustomizedTables>
         </Container>
-
         <footer className={styles.footer}>
           <a
             href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -359,4 +480,4 @@ function AdminProduct() {
   );
 }
 
-export default AdminProduct;
+export default AdminProductItem;

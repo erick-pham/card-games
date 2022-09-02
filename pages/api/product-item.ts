@@ -1,6 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
+import { plainToInstance } from "class-transformer";
 import UnitOfWork from "../../interfaces/database/unit-of-work";
+import { ProductItem } from "../../interfaces/entity/product_item";
+import { Product } from "../../interfaces/entity/product";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,24 +15,20 @@ export default async function handler(
   console.log(`${req.method} ${req.url}`);
   try {
     if (req.method === "POST") {
-      const data = await uow.ProuductRepository.upsert(req.body, ["id"]);
+      const productItemEntity = plainToInstance(ProductItem, req.body);
+      const productEntity = plainToInstance(Product, {
+        id: req.body.productId,
+      });
+      productItemEntity.product = productEntity;
+      const data = await uow.ProuductItemRepository.upsert(productItemEntity, [
+        "id",
+      ]);
       res.status(200).json(data);
-    } else if (req.method === "DELETE") {
-      const productItems = await uow.ProuductItemRepository.findBy({
-        product: {
-          id: req.body.id,
-        },
-      });
-      if (productItems && productItems.length > 0) {
-        return res.status(400).json({
-          error: true,
-          message: "There are product items related to this product",
-        });
-      }
-      const data = await uow.ProuductRepository.delete({
-        id: req.body.id,
-      });
-      return res.status(200).json(data);
+      // } else if (req.method === "DELETE") {
+      //   const data = await uow.ProuductItemRepository.delete({
+      //     id: req.body.id,
+      //   });
+      //   return res.status(200).json(data);
     } else if (req.method === "GET") {
       let where = {};
       if (req.query["productId"]) {
@@ -37,11 +36,8 @@ export default async function handler(
           id: req.query["productId"] as string,
         };
       }
-      const data = await uow.ProuductRepository.find({
+      const data = await uow.ProuductItemRepository.find({
         where: where,
-        relations: {
-          productItems: true,
-        },
       });
       res.status(200).json(data);
     } else {

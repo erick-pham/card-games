@@ -9,6 +9,7 @@ import {
 
 import AppBaseEntity from "./base";
 import { ProductItem } from "./product_item";
+import { PRODUCT_STATUS } from "../../common/constants";
 @Entity({ name: "product" })
 export class Product extends AppBaseEntity {
   @PrimaryGeneratedColumn("uuid")
@@ -17,8 +18,13 @@ export class Product extends AppBaseEntity {
   @Column({ length: 256 })
   name!: string;
 
-  @Column({ length: 256 })
+  @Column({ length: 256, nullable: true })
   type!: string;
+
+  @Column({
+    default: PRODUCT_STATUS.NEW,
+  })
+  status!: string;
 
   @OneToMany(() => ProductItem, (productItem) => productItem.product)
   productItems: ProductItem[] | undefined;
