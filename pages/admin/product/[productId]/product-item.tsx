@@ -117,13 +117,25 @@ function CustomizedTables({
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="right">Type</StyledTableCell>
-            <StyledTableCell align="right">Price</StyledTableCell>
-            <StyledTableCell align="right">Status</StyledTableCell>
-            <StyledTableCell align="right">Description</StyledTableCell>
-            <StyledTableCell align="right">Thumbnail</StyledTableCell>
-            <StyledTableCell align="right">Action</StyledTableCell>
+            <StyledTableCell width={"10%"}>Name</StyledTableCell>
+            <StyledTableCell width={"10%"} align="right">
+              Type
+            </StyledTableCell>
+            <StyledTableCell width={"10%"} align="right">
+              Price
+            </StyledTableCell>
+            <StyledTableCell width={"5%"} align="right">
+              Status
+            </StyledTableCell>
+            <StyledTableCell width={"30%"} align="right">
+              Description
+            </StyledTableCell>
+            <StyledTableCell width={"30%"} align="right">
+              Thumbnail
+            </StyledTableCell>
+            <StyledTableCell width={"5%"} align="right">
+              Action
+            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -133,7 +145,7 @@ function CustomizedTables({
                 <StyledTableCell component="th" scope="row">
                   {productItem.name}
                 </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell align="right">
                   {GetLabelText(ProductItemTypes, productItem.type)}
                 </StyledTableCell>
                 <StyledTableCell align="right">
@@ -233,7 +245,7 @@ function AdminProductItem() {
           );
         });
     }
-  }, [reloadPage]);
+  }, [dispatch, reloadPage]);
 
   const handleOpen = (productId: string) => {
     setProductEdit(null);

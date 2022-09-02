@@ -1,11 +1,4 @@
-/**
- *
- * LoadingDialog
- *
- */
-
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Dialog, CircularProgress, Typography } from "@mui/material";
 
@@ -28,7 +21,7 @@ const StyledDialog = styled((props) => (
   }
 `;
 
-function LoadingDialog(props) {
+function LoadingDialog(props: { isLoading: boolean; message: string | null }) {
   return (
     <StyledDialog open={props.isLoading}>
       <CircularProgress color="primary" />
@@ -49,10 +42,5 @@ function LoadingDialog(props) {
     </StyledDialog>
   );
 }
-
-LoadingDialog.propTypes = {
-  isLoading: PropTypes.bool,
-  message: PropTypes.node,
-};
 
 export default LoadingDialog;

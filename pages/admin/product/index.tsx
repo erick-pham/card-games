@@ -227,6 +227,12 @@ function AdminProduct() {
   // };
 
   const onSubmit = (data: object) => {
+    dispatch(
+      setLoadingState({
+        loading: true,
+        loadingMessage: message.appAPILoading,
+      })
+    );
     fetch("/api/product", {
       method: "POST",
       headers: {
@@ -248,6 +254,14 @@ function AdminProduct() {
           handleClose();
           setReloadPage(!reloadPage);
         }
+      })
+      .finally(() => {
+        dispatch(
+          setLoadingState({
+            loading: false,
+            loadingMessage: null,
+          })
+        );
       });
   };
 
@@ -348,7 +362,7 @@ function AdminProduct() {
           ></CustomizedTables>
         </Container>
 
-        <footer className={styles.footer}>
+        {/* <footer className={styles.footer}>
           <a
             href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
             target="_blank"
@@ -364,7 +378,7 @@ function AdminProduct() {
               />
             </span>
           </a>
-        </footer>
+        </footer> */}
       </div>
     </div>
   );

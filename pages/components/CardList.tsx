@@ -34,7 +34,7 @@ export default function BasicGrid({ products }: { products: Array<Product> }) {
           products[0].productItems &&
           products[0].productItems.map((item, index) => {
             return (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Grid item xs={12} sm={6} md={3} lg={2} xl={2} key={index}>
                 <Item style={{ padding: 0 }}>
                   <Card product={item} />
                 </Item>
