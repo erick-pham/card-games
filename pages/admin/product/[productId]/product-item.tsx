@@ -32,7 +32,8 @@ import { setErrorState } from "../../../../app/rootSlice";
 import { ProductItem } from "../../../../interfaces/entity/product_item";
 import {
   ProductItemStatus,
-  ProductItemStatusGetText,
+  GetLabelText,
+  ProductItemTypes,
   Currencies,
   StatusColor,
 } from "../../../../common/constants";
@@ -129,6 +130,7 @@ function CustomizedTables({
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell align="right">Type</StyledTableCell>
             <StyledTableCell align="right">Price</StyledTableCell>
             <StyledTableCell align="right">Status</StyledTableCell>
             <StyledTableCell align="right">Description</StyledTableCell>
@@ -143,6 +145,9 @@ function CustomizedTables({
                 <StyledTableCell component="th" scope="row">
                   {productItem.name}
                 </StyledTableCell>
+                <StyledTableCell component="th" scope="row">
+                  {GetLabelText(ProductItemTypes, productItem.type)}
+                </StyledTableCell>
                 <StyledTableCell align="right">
                   {numeral(productItem.price).format("0,0") +
                     " " +
@@ -150,7 +155,7 @@ function CustomizedTables({
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   <Chip
-                    label={ProductItemStatusGetText(productItem.status)}
+                    label={GetLabelText(ProductItemStatus, productItem.status)}
                     color={StatusColor(productItem.status)}
                   />
                 </StyledTableCell>
@@ -197,7 +202,7 @@ function AdminProductItem() {
 
   const router = useRouter();
   const productId = router.query["productId"];
-  console.log("productId", productId);
+
   const dispatch = useDispatch();
   const [reloadPage, setReloadPage] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Product>();
@@ -207,13 +212,15 @@ function AdminProductItem() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/product?productId=${productId}`)
-      .then((response) => response.json())
-      .then((x) => {
-        if (x && x[0]) {
-          setCurrentProduct(x[0]);
-        }
-      });
+    if (productId) {
+      fetch(`/api/product?productId=${productId}`)
+        .then((response) => response.json())
+        .then((x) => {
+          if (x && x[0]) {
+            setCurrentProduct(x[0]);
+          }
+        });
+    }
   }, [reloadPage, productId]);
 
   const handleOpen = (productId: string) => {
@@ -255,7 +262,6 @@ function AdminProductItem() {
   };
 
   const onSubmit = (data: object) => {
-    console.log("data", data);
     fetch("/api/product-item", {
       method: "POST",
       headers: {
@@ -270,7 +276,6 @@ function AdminProductItem() {
       .then((response) => response.json())
       .then((data) => {
         if (data.error === true) {
-          console.log("datadata", data);
           dispatch(
             setErrorState({
               message: data.message,
@@ -416,6 +421,33 @@ function AdminProductItem() {
               )}
             />
 
+            <Controller
+              name="type"
+              control={control}
+              defaultValue={productEdit?.type}
+              render={({
+                field: { onChange, value },
+                fieldState: { error },
+              }) => (
+                <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                  <TextField
+                    id="outlined-multiline-flexible"
+                    label="Type"
+                    select
+                    onChange={onChange}
+                    value={value}
+                    error={error ? true : false}
+                    helperText={error?.message}
+                  >
+                    {ProductItemTypes.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </FormControl>
+              )}
+            />
             <Button
               variant="contained"
               color="primary"

@@ -129,10 +129,9 @@ function CustomizedTables({
                   {new Date(product?.createdAt || new Date()).toLocaleString()}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  {/* <Stack direction="row" spacing={2}> */}
                   <Link href={`/admin/product/${product.id}/product-item`}>
                     <Button variant="contained" color="info">
-                      View Item
+                      View Item ({product.productItems?.length})
                     </Button>
                   </Link>
                   <Button
@@ -150,7 +149,6 @@ function CustomizedTables({
                   >
                     Delete
                   </Button> */}
-                  {/* </Stack> */}
                 </StyledTableCell>
               </StyledTableRow>
             ))}
@@ -225,7 +223,6 @@ function AdminProduct() {
       .then((response) => response.json())
       .then((data) => {
         if (data.error === true) {
-          console.log("datadata", data);
           dispatch(
             setErrorState({
               message: data.message,

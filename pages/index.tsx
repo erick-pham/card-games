@@ -15,7 +15,6 @@ function Home() {
       .then((response) => response.json())
       .then((x) => setProducts(x));
   }, []);
-  console.log("products", products);
   return (
     <div className={styles.container}>
       <Head>

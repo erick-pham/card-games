@@ -61,8 +61,8 @@ export const ProductItemStatus = [
   },
 ];
 
-export const ProductItemStatusGetText = (type: string) => {
-  let item = find(ProductItemStatus, (i) => i.value === type);
+export const GetLabelText = (lables: Array<any>, type: string) => {
+  let item = find(lables, (i) => i.value === type);
   if (item) {
     return item.label;
   }
@@ -80,7 +80,7 @@ export const Currencies = [
   },
 ];
 
-export const ProductTypes = [
+export const ProductItemTypes = [
   {
     value: "ACCOUNT",
     label: "Account",

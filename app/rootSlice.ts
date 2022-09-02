@@ -6,7 +6,10 @@ import { AlertColor } from "@mui/material/Alert";
 export interface RootState {
   authState: boolean;
   loading: boolean;
-  loadingMessage: object;
+  loadingMessage: {
+    id: boolean | null;
+    defaultMessage: string | null;
+  };
   error: {
     message: string;
     values: string;
@@ -18,7 +21,10 @@ export interface RootState {
 const initialState: RootState = {
   authState: false,
   loading: false,
-  loadingMessage: {},
+  loadingMessage: {
+    id: null,
+    defaultMessage: null,
+  },
   error: {
     message: "",
     values: "",
@@ -35,7 +41,10 @@ export const rootSlice = createSlice({
     setErrorState(state, action) {
       state.error = action.payload;
     },
-
+    setLoadingState(state, action) {
+      state.loading = action.payload.loading || false;
+      state.loadingMessage = action.payload.loadingMessage || {};
+    },
     // Special reducer for hydrating the state. Special case for next-redux-wrapper
     // extraReducers: {
     //   [HYDRATE]: (state, action) => {
@@ -48,8 +57,11 @@ export const rootSlice = createSlice({
   },
 });
 
-export const { setErrorState } = rootSlice.actions;
+export const { setErrorState, setLoadingState } = rootSlice.actions;
 
 export const selectErrorState = (state: AppState) => state.root.error;
+export const selectLoadingState = (state: AppState) => state.root.loading;
+export const selectLoadingMessageState = (state: AppState) =>
+  state.root.loadingMessage;
 
 export default rootSlice.reducer;
