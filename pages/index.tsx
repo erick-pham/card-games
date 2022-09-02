@@ -2,19 +2,49 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styles from "../styles/Home.module.css";
 import NavBar from "./components/NavBar";
 import ListCard from "./components/CardList";
 import Container from "@mui/material/Container";
 import { Product } from "../interfaces/entity/product";
 
+import { setErrorState, setLoadingState } from "../app/rootSlice";
+import message from "../common/messages";
 function Home() {
+  const dispatch = useDispatch();
   const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
+    dispatch(
+      setLoadingState({
+        loading: true,
+        loadingMessage: message.appAPILoading,
+      })
+    );
     fetch("/api/product")
       .then((response) => response.json())
-      .then((x) => setProducts(x));
-  }, []);
+      .then((data) => {
+        if (data.error === true) {
+          dispatch(
+            setErrorState({
+              message: data.message,
+              values: "",
+              severity: "error",
+            })
+          );
+        } else {
+          setProducts(data);
+        }
+      })
+      .finally(() => {
+        dispatch(
+          setLoadingState({
+            loading: false,
+            loadingMessage: null,
+          })
+        );
+      });
+  }, [dispatch]);
   return (
     <div className={styles.container}>
       <Head>

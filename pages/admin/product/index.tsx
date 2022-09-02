@@ -26,13 +26,13 @@ import { useDispatch } from "react-redux";
 import NavBar from "../../components/NavBar";
 import styles from "../../../styles/Home.module.css";
 import { Product } from "../../../interfaces/entity/product";
-import { setErrorState } from "../../../app/rootSlice";
+import { setErrorState, setLoadingState } from "../../../app/rootSlice";
 import {
   ProductStatus,
   ProductStatusGetText,
   StatusColor,
 } from "../../../common/constants";
-
+import message from "../../../common/messages";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -52,18 +52,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 800,
-  bgcolor: "background.paper",
-  // border: "2px solid #000",
-  // boxShadow: 24,
-  p: 4,
-};
 
 const schema = {
   type: "object",
@@ -166,10 +154,36 @@ function AdminProduct() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    dispatch(
+      setLoadingState({
+        loading: true,
+        loadingMessage: message.appAPILoading,
+      })
+    );
     fetch("/api/product")
       .then((response) => response.json())
-      .then((x) => setProducts(x));
-  }, [reloadPage]);
+      .then((data) => {
+        if (data.error === true) {
+          dispatch(
+            setErrorState({
+              message: data.message,
+              values: "",
+              severity: "error",
+            })
+          );
+        } else {
+          setProducts(data);
+        }
+      })
+      .finally(() => {
+        dispatch(
+          setLoadingState({
+            loading: false,
+            loadingMessage: null,
+          })
+        );
+      });
+  }, [dispatch, reloadPage]);
 
   const handleOpen = (productId: string) => {
     setProductEdit(null);

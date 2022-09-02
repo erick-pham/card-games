@@ -28,7 +28,7 @@ import numeral from "numeral";
 import NavBar from "../../../components/NavBar";
 import styles from "../../../../styles/Home.module.css";
 import { Product } from "../../../../interfaces/entity/product";
-import { setErrorState } from "../../../../app/rootSlice";
+import { setErrorState, setLoadingState } from "../../../../app/rootSlice";
 import { ProductItem } from "../../../../interfaces/entity/product_item";
 import {
   ProductItemStatus,
@@ -37,7 +37,7 @@ import {
   Currencies,
   StatusColor,
 } from "../../../../common/constants";
-
+import message from "../../../../common/messages";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -57,18 +57,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 800,
-  bgcolor: "background.paper",
-  // border: "2px solid #000",
-  // boxShadow: 24,
-  p: 4,
-};
 
 const schema = {
   type: "object",
@@ -213,15 +201,39 @@ function AdminProductItem() {
 
   useEffect(() => {
     if (productId) {
+      dispatch(
+        setLoadingState({
+          loading: true,
+          loadingMessage: message.appAPILoading,
+        })
+      );
       fetch(`/api/product?productId=${productId}`)
         .then((response) => response.json())
-        .then((x) => {
-          if (x && x[0]) {
-            setCurrentProduct(x[0]);
+        .then((data) => {
+          if (data.error === true) {
+            dispatch(
+              setErrorState({
+                message: data.message,
+                values: "",
+                severity: "error",
+              })
+            );
+          } else {
+            if (data && data[0]) {
+              setCurrentProduct(data[0]);
+            }
           }
+        })
+        .finally(() => {
+          dispatch(
+            setLoadingState({
+              loading: false,
+              loadingMessage: null,
+            })
+          );
         });
     }
-  }, [reloadPage, productId]);
+  }, [reloadPage]);
 
   const handleOpen = (productId: string) => {
     setProductEdit(null);
@@ -262,6 +274,12 @@ function AdminProductItem() {
   };
 
   const onSubmit = (data: object) => {
+    dispatch(
+      setLoadingState({
+        loading: true,
+        loadingMessage: message.appAPILoading,
+      })
+    );
     fetch("/api/product-item", {
       method: "POST",
       headers: {
@@ -287,6 +305,14 @@ function AdminProductItem() {
           handleClose();
           setReloadPage(!reloadPage);
         }
+      })
+      .finally(() => {
+        dispatch(
+          setLoadingState({
+            loading: false,
+            loadingMessage: null,
+          })
+        );
       });
   };
 
