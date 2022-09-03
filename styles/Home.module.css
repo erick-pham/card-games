@@ -1,11 +1,11 @@
 .container {
-  /* background-image: url('../asssets/backgound.jpg');
+  min-height: 1024px;
+  background-image: url('../asssets/backgound.jpg');
   background-repeat: no-repeat;
   background-size: auto;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: center; */
-  /* padding: 0 2rem; */
+  background-position: center;
 }
 
 .main {

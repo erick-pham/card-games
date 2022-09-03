@@ -26,6 +26,9 @@ export class Product extends AppBaseEntity {
   })
   status!: string;
 
+  @Column({ length: 1000, nullable: true })
+  thumbnail!: string;
+
   @OneToMany(() => ProductItem, (productItem) => productItem.product)
   productItems: ProductItem[] | undefined;
 

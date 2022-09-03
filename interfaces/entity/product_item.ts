@@ -36,8 +36,11 @@ export class ProductItem extends AppBaseEntity {
   @Column({ length: 256 })
   description!: string;
 
-  @Column()
-  image!: string;
+  @Column({ length: 1000, nullable: true })
+  images!: string;
+
+  @Column({ length: 1000, nullable: true })
+  thumbnail!: string;
 
   @ManyToOne(() => Product, (product) => product.productItems)
   product!: Product;

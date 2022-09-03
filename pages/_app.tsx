@@ -2,6 +2,7 @@ import "reflect-metadata";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Alert, Snackbar } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
 import { isEmpty } from "lodash";
 import {
@@ -13,7 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { wrapper } from "../app/store";
 import LoadingDialog from "./components/LoadingDialog";
-
+import { theme } from "../theme";
 function MyApp({ Component, pageProps }: AppProps) {
   const dispatch = useDispatch();
   const error = useSelector(selectErrorState);
@@ -30,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     dispatch(setErrorState({ message: "", values: "", severity: "error" }));
     setOpen(!open);
   };
-
+  const getLayout = Component.getLayout ?? ((page) => page);
   return (
     <div>
       <LoadingDialog
@@ -51,7 +52,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           {error.message}
         </Alert>
       </Snackbar>
-      <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        {getLayout(<Component {...pageProps} />)}
+      </ThemeProvider>
     </div>
   );
 }
