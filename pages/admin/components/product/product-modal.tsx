@@ -34,6 +34,7 @@ export const ProductModal = ({
   useEffect(() => {
     reset({
       name: productEdit?.name || "",
+      thumbnail: productEdit?.thumbnail || "",
       status: productEdit?.status || "",
     });
   }, [productEdit, reset]);
