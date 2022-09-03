@@ -11,36 +11,38 @@ export default async function handler(
   res: NextApiResponse
 ) {
   let PRODUCT_ITEMS: ProductItem[] = [];
-  const uow = new UnitOfWork();
-  await uow.initialize();
+  // const uow = new UnitOfWork();
+  // await uow.initialize();
 
-  const product = {
-    id: faker.datatype.uuid(),
-    name: faker.name.firstName(),
-    type: "ACCOUNT",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  // const product = {
+  //   id: faker.datatype.uuid(),
+  //   name: faker.name.firstName(),
+  //   type: "ACCOUNT",
+  //   thumbnail: faker.image.abstract(500, 300, true),
+  //   createdAt: new Date(),
+  //   updatedAt: new Date(),
+  // };
 
-  await uow.ProuductRepository.save(product);
+  // await uow.ProuductRepository.save(product);
 
-  Array.from({ length: 10 }).forEach(() => {
-    let productItem = {
-      id: faker.datatype.uuid(),
-      name: faker.name.firstName(),
-      price: faker.datatype.number({ min: 150000, max: 500000 }),
-      currency: faker.finance.currencyCode(),
-      status: faker.helpers.arrayElement(["NEW"]),
-      image: faker.image.abstract(500, 300, true),
-      description: faker.lorem.sentence(),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      product: product,
-    };
-    PRODUCT_ITEMS.push(productItem as ProductItem);
-  });
+  // Array.from({ length: 10 }).forEach(() => {
+  //   let productItem = {
+  //     id: faker.datatype.uuid(),
+  //     name: faker.name.firstName(),
+  //     price: faker.datatype.number({ min: 150000, max: 500000 }),
+  //     currency: faker.finance.currencyCode(),
+  //     status: faker.helpers.arrayElement(["NEW"]),
+  //     thumbnail: faker.image.abstract(500, 300, true),
+  //     image: faker.image.abstract(500, 300, true),
+  //     description: faker.lorem.sentence(),
+  //     createdAt: new Date(),
+  //     updatedAt: new Date(),
+  //     product: product,
+  //   };
+  //   PRODUCT_ITEMS.push(productItem as ProductItem);
+  // });
 
-  const rs = await uow.ProuductItemRepository.save(PRODUCT_ITEMS);
+  // const rs = await uow.ProuductItemRepository.save(PRODUCT_ITEMS);
 
-  res.status(200).json(rs);
+  // res.status(200).json(rs);
 }

@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { wrapper } from "../app/store";
 import LoadingDialog from "./components/LoadingDialog";
 import { theme } from "../theme";
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: { Component: any; pageProps: any }) {
   const dispatch = useDispatch();
   const error = useSelector(selectErrorState);
   const loading = useSelector(selectLoadingState);
@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     dispatch(setErrorState({ message: "", values: "", severity: "error" }));
     setOpen(!open);
   };
-  const getLayout = Component.getLayout ?? ((page) => page);
+  const getLayout = Component?.getLayout ?? ((page: any) => page);
   return (
     <div>
       <LoadingDialog

@@ -54,6 +54,6 @@ const Dashboard = () => (
   </>
 );
 
-Dashboard.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Dashboard.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default Dashboard;
