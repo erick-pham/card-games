@@ -70,7 +70,9 @@ const ProductItems = () => {
             })
           );
         } else {
-          setSelectedProductId(data[0]?.id || "");
+          if (!selectedProductId) {
+            setSelectedProductId(data[0]?.id || "");
+          }
           setSelectedProduct(data && data[0] ? data[0] : null);
           setProducts(data);
         }
