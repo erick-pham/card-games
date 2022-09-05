@@ -2,8 +2,17 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import EmailProvider from "next-auth/providers/email";
-import { TypeORMLegacyAdapter } from "@next-auth/typeorm-legacy-adapter";
+import { DataSourceOptions } from "typeorm";
+import {
+  TypeORMLegacyAdapter,
+  Entities,
+} from "@next-auth/typeorm-legacy-adapter";
 import * as entities from "../../../interfaces/entity/entities";
+
+import {
+  pgConfigs,
+  sqliteConfigs,
+} from "../../../interfaces/database/unit-of-work";
 
 import { createTransport } from "nodemailer";
 
@@ -17,19 +26,19 @@ import { theme } from "../../../theme";
  *
  * @note We don't add the email address to avoid needing to escape it, if you do, remember to sanitize it!
  */
-function html(params: { url: string; host: string; theme: Theme }) {
+function html(params: { url: string; host: string; theme: any }) {
   const { url, host, theme } = params;
 
   const escapedHost = host.replace(/\./g, "&#8203;.");
 
-  const brandColor = theme.brandColor || "#346df1";
+  const brandColor = theme?.brandColor || "#346df1";
   const color = {
     background: "#f9f9f9",
     text: "#444",
     mainBackground: "#fff",
     buttonBackground: brandColor,
     buttonBorder: brandColor,
-    buttonText: theme.buttonText || "#fff",
+    buttonText: theme?.buttonText || "#fff",
   };
 
   return `
@@ -74,23 +83,13 @@ function text({ url, host }: { url: string; host: string }) {
 // https://next-auth.js.org/configuration/options
 export const authOptions: NextAuthOptions = {
   // https://next-auth.js.org/configuration/providers/oauth
-  adapter: TypeORMLegacyAdapter(
-    {
-      type: "sqlite",
-      database: "db.sqlite",
-      // type: "mysql",
-      // host: "localhost",
-      // port: 3306,
-      // username: "test",
-      // password: "test",
-      // database: "test",
-    },
-    { entities }
-  ),
+  adapter: TypeORMLegacyAdapter(pgConfigs as DataSourceOptions, {
+    entities: entities as Entities,
+  }),
   providers: [
     EmailProvider({
-      server: "smtp://bossdiemmaimai:sractbpfqeitijhm@smtp.gmail.com:587",
-      from: "bossdiemmaimai@gmail.com",
+      server: process.env.EMAIL_SERVER as string,
+      from: process.env.EMAIL_FROM as string,
       async sendVerificationRequest({
         identifier: email,
         url,
@@ -142,7 +141,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/auth/signin",
-    // signOut: "/auth/signout",
+    signOut: "/",
   },
   callbacks: {
     async jwt({ token, account, user }) {

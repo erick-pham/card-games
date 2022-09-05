@@ -18,15 +18,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 
-// import {
-//   UserIcon,
-//   UsersIcon,
-//   ChartBarIcon,
-//   LockIcon,
-//   CogIcon,
-//   ShoppingBagIcon,
-//   SelectorIcon,
-// } from "../icons";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 
@@ -58,7 +49,6 @@ const items = [
   },
   {
     href: "/",
-    onclick: () => signOut(),
     icon: <LogoutIcon fontSize="small" />,
     title: "SignOut",
   },

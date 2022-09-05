@@ -12,12 +12,12 @@ import {
 
 export const AccountProfileDetails = (props: any) => {
   const [values, setValues] = useState({
-    firstName: "Katarina",
-    lastName: "Smith",
-    email: "demo@devias.io",
+    firstName: props?.currentUser?.user?.name || "",
+    lastName: props?.currentUser?.user?.name,
+    email: props?.currentUser?.user?.email,
     phone: "",
-    state: "Alabama",
-    country: "USA",
+    // state: "Alabama",
+    // country: "USA",
   });
 
   const handleChange = (event: any) => {
@@ -37,6 +37,7 @@ export const AccountProfileDetails = (props: any) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
+                disabled={true}
                 helperText="Please specify the first name"
                 label="First name"
                 name="firstName"
@@ -49,6 +50,7 @@ export const AccountProfileDetails = (props: any) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
+                disabled={true}
                 label="Last name"
                 name="lastName"
                 onChange={handleChange}
@@ -72,6 +74,7 @@ export const AccountProfileDetails = (props: any) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
+                disabled={true}
                 label="Phone Number"
                 name="phone"
                 onChange={handleChange}

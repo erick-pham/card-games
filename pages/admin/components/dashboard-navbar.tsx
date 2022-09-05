@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import { useSession } from "next-auth/react";
 import { BellIcon, UserCircleIcon, UsersIcon } from "../icons";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }: { theme: any }) => ({
@@ -18,6 +19,7 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }: { theme: any }) => ({
 }));
 
 export const DashboardNavbar = (props: any) => {
+  const { data: currentUser } = useSession();
   const { onSidebarOpen, ...other } = props;
 
   return (
@@ -76,9 +78,9 @@ export const DashboardNavbar = (props: any) => {
               width: 40,
               ml: 1,
             }}
-            src="/static/images/avatars/avatar_1.png"
+            src={currentUser?.user?.image || ""}
           >
-            <UserCircleIcon fontSize="small" />
+            U
           </Avatar>
         </Toolbar>
       </DashboardNavbarRoot>

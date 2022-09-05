@@ -16,7 +16,7 @@ export default function SignIn({
   csrfToken,
 }: {
   providers: any;
-  csrfToken: string | null;
+  csrfToken: string | "";
 }) {
   const { data: session } = useSession();
   const router = useRouter();
@@ -122,6 +122,6 @@ export async function getServerSideProps(context: any) {
   const providers = await getProviders();
   const csrfToken = await getCsrfToken(context);
   return {
-    props: { providers, csrfToken: csrfToken || null },
+    props: { providers, csrfToken: csrfToken || "" },
   };
 }

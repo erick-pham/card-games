@@ -11,15 +11,15 @@ export const sqliteConfigs = {
   logging: true,
 };
 
-const pgConfigs = {
+export const pgConfigs = {
   type: "postgres",
   database: process.env.POSTGRES_DB as string,
   port: process.env.POSTGRES_PORT as string,
   username: process.env.POSTGRES_USER as string,
   password: process.env.POSTGRES_PASSWORD as string,
   host: process.env.POSTGRES_HOST as string,
-  entities: [Product, ProductItem],
-  synchronize: true,
+  entities: [Product, ProductItem, entities],
+  // synchronize: true,
   ssl: true,
   extra: {
     ssl: {
@@ -28,6 +28,7 @@ const pgConfigs = {
   },
   logging: false,
 };
+
 export const dbConfigs = () => {
   if (process.env.NODE_ENV === "development") {
     return sqliteConfigs as DataSourceOptions;

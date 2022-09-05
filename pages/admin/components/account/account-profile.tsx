@@ -29,7 +29,7 @@ export const AccountProfile = (props: any) => (
         }}
       >
         <Avatar
-          src={user.avatar}
+          src={props?.currentUser?.user?.image || ""}
           sx={{
             height: 64,
             mb: 2,
@@ -37,7 +37,7 @@ export const AccountProfile = (props: any) => (
           }}
         />
         <Typography color="textPrimary" gutterBottom variant="h5">
-          {user.name}
+          {props?.currentUser?.user?.name || ""}
         </Typography>
         <Typography color="textSecondary" variant="body2">
           {`${user.city} ${user.country}`}
