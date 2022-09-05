@@ -82,6 +82,7 @@ function text({ url, host }: { url: string; host: string }) {
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET as string,
   // https://next-auth.js.org/configuration/providers/oauth
   adapter: TypeORMLegacyAdapter(pgConfigs as DataSourceOptions, {
     entities: entities as Entities,
