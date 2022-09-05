@@ -2,6 +2,13 @@ import { useEffect } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
+import { signOut } from "next-auth/react";
+import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
+import GroupIcon from "@mui/icons-material/Group";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import StackedBarChartIcon from "@mui/icons-material/StackedBarChart";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import {
   Box,
   Button,
@@ -11,32 +18,32 @@ import {
   useMediaQuery,
 } from "@mui/material";
 
-import {
-  UserIcon,
-  UsersIcon,
-  ChartBarIcon,
-  LockIcon,
-  CogIcon,
-  ShoppingBagIcon,
-  SelectorIcon,
-} from "../icons";
+// import {
+//   UserIcon,
+//   UsersIcon,
+//   ChartBarIcon,
+//   LockIcon,
+//   CogIcon,
+//   ShoppingBagIcon,
+//   SelectorIcon,
+// } from "../icons";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 
 const items = [
   {
     href: "/admin",
-    icon: <ChartBarIcon fontSize="small" />,
+    icon: <StackedBarChartIcon fontSize="small" />,
     title: "Dashboard",
   },
   {
     href: "/admin/customers",
-    icon: <UsersIcon fontSize="small" />,
+    icon: <GroupIcon fontSize="small" />,
     title: "Customers",
   },
   {
     href: "/admin/products",
-    icon: <ShoppingBagIcon fontSize="small" />,
+    icon: <ShoppingBasketIcon fontSize="small" />,
     title: "Products",
   },
   {
@@ -46,8 +53,14 @@ const items = [
   },
   {
     href: "/admin/account",
-    icon: <UserIcon fontSize="small" />,
+    icon: <PersonIcon fontSize="small" />,
     title: "Account",
+  },
+  {
+    href: "/",
+    onclick: () => signOut(),
+    icon: <LogoutIcon fontSize="small" />,
+    title: "SignOut",
   },
   // {
   //   href: '/settings',
@@ -115,7 +128,7 @@ export const DashboardSidebar = (props: any) => {
               </a>
             </NextLink>
           </Box>
-          <Box sx={{ px: 2 }}>
+          {/* <Box sx={{ px: 2 }}>
             <Box
               sx={{
                 alignItems: "center",
@@ -144,7 +157,7 @@ export const DashboardSidebar = (props: any) => {
                 }}
               />
             </Box>
-          </Box>
+          </Box> */}
         </div>
         <Divider
           sx={{

@@ -1,11 +1,12 @@
 import { DataSource, DataSourceOptions } from "typeorm";
 import { ProductItem } from "../entity/product_item";
 import { Product } from "../entity/product";
+import * as entities from "../entity/entities";
 
 export const sqliteConfigs = {
   type: "sqlite",
   database: "db.sqlite",
-  entities: [Product, ProductItem],
+  entities: [Product, ProductItem, entities],
   synchronize: true,
   logging: true,
 };
@@ -18,7 +19,7 @@ const pgConfigs = {
   password: process.env.POSTGRES_PASSWORD as string,
   host: process.env.POSTGRES_HOST as string,
   entities: [Product, ProductItem],
-  synchronize: false,
+  synchronize: true,
   ssl: true,
   extra: {
     ssl: {
@@ -43,6 +44,7 @@ export default class UnitOfWork {
     } else {
       this.dbConfigs = pgConfigs as DataSourceOptions;
     }
+    this.dbConfigs = pgConfigs as DataSourceOptions;
     this.AppDataSource = new DataSource(this.dbConfigs);
   }
 

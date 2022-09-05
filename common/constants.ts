@@ -10,6 +10,10 @@ export const ProductStatus = [
     label: "New",
   },
   {
+    value: "ACTIVE",
+    label: "Active",
+  },
+  {
     value: "DELETED",
     label: "Deleted",
   },
@@ -25,6 +29,8 @@ export const ProductStatusGetText = (type: string) => {
 export const StatusColor = (status: string) => {
   switch (status) {
     case "NEW":
+      return "info";
+    case "ACTIVE":
       return "success";
     case "DELETED":
       return "error";

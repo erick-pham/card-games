@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "../styles/globals.css";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { Alert, Snackbar } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -15,7 +16,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { wrapper } from "../app/store";
 import LoadingDialog from "./components/LoadingDialog";
 import { theme } from "../theme";
-function MyApp({ Component, pageProps }: { Component: any; pageProps: any }) {
+function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: {
+  Component: any;
+  pageProps: any;
+}) {
   const dispatch = useDispatch();
   const error = useSelector(selectErrorState);
   const loading = useSelector(selectLoadingState);
@@ -53,7 +60,9 @@ function MyApp({ Component, pageProps }: { Component: any; pageProps: any }) {
         </Alert>
       </Snackbar>
       <ThemeProvider theme={theme}>
-        {getLayout(<Component {...pageProps} />)}
+        <SessionProvider session={session}>
+          {getLayout(<Component {...pageProps} />)}
+        </SessionProvider>
       </ThemeProvider>
     </div>
   );
