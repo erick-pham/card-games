@@ -2,6 +2,10 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { Box, Container, Grid, Pagination } from "@mui/material";
 import { useDispatch } from "react-redux";
+import { unstable_getServerSession } from "next-auth/next";
+import { IncomingMessage, ServerResponse } from "http";
+import { NextApiRequest, NextApiResponse } from "next";
+import { authOptions } from "../api/auth/[...nextauth]";
 import { ProductListToolbar } from "./components/product/product-list-toolbar";
 import { ProductCard } from "./components/product/product-card";
 import { DashboardLayout } from "./components/dashboard-layout";
@@ -129,5 +133,31 @@ const Products = () => {
 };
 
 Products.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
+
+export async function getServerSideProps(context: {
+  req:
+    | (IncomingMessage & { cookies: Partial<{ [key: string]: string }> })
+    | NextApiRequest;
+  res: ServerResponse | NextApiResponse<any>;
+}) {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+
+  if (session && session.userRole === "Admin") {
+    return {
+      props: {},
+    };
+  }
+
+  return {
+    redirect: {
+      permanent: false,
+      destination: "/auth/signin",
+    },
+  };
+}
 
 export default Products;

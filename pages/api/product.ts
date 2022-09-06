@@ -1,11 +1,22 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { unstable_getServerSession } from "next-auth/next";
+
 import UnitOfWork from "../../interfaces/database/unit-of-work";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const session = await unstable_getServerSession(req, res, authOptions);
+
+  console.log("session", session);
+  if (!session) {
+    res.status(401).json({ message: "You must be logged in." });
+    return;
+  }
+
   const uow = new UnitOfWork();
   await uow.initialize();
 

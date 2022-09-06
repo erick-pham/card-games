@@ -24,6 +24,10 @@ import Chip from "@mui/material/Chip";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import numeral from "numeral";
+import { unstable_getServerSession } from "next-auth/next";
+import { IncomingMessage, ServerResponse } from "http";
+import { NextApiRequest, NextApiResponse } from "next";
+import { authOptions } from "../api/auth/[...nextauth]";
 import { ProductListToolbar } from "./components/product/product-list-toolbar";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { ProductDetailsModal } from "./components/product-details/product-details-modal";
@@ -278,5 +282,31 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 ProductItems.getLayout = (page: any) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
+
+export async function getServerSideProps(context: {
+  req:
+    | (IncomingMessage & { cookies: Partial<{ [key: string]: string }> })
+    | NextApiRequest;
+  res: ServerResponse | NextApiResponse<any>;
+}) {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+
+  if (session && session.userRole === "Admin") {
+    return {
+      props: {},
+    };
+  }
+
+  return {
+    redirect: {
+      permanent: false,
+      destination: "/auth/signin",
+    },
+  };
+}
 
 export default ProductItems;

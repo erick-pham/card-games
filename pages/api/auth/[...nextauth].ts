@@ -1,18 +1,15 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
+import "reflect-metadata";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import EmailProvider from "next-auth/providers/email";
-import { DataSourceOptions } from "typeorm";
 import {
   TypeORMLegacyAdapter,
   Entities,
 } from "@next-auth/typeorm-legacy-adapter";
 import * as entities from "../../../interfaces/entity/entities";
 
-import {
-  pgConfigs,
-  sqliteConfigs,
-} from "../../../interfaces/database/unit-of-work";
+import { dbConfigs } from "../../../interfaces/database/unit-of-work";
 
 import { createTransport } from "nodemailer";
 
@@ -82,9 +79,12 @@ function text({ url, host }: { url: string; host: string }) {
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
   secret: process.env.NEXTAUTH_SECRET as string,
   // https://next-auth.js.org/configuration/providers/oauth
-  adapter: TypeORMLegacyAdapter(pgConfigs as DataSourceOptions, {
+  adapter: TypeORMLegacyAdapter(dbConfigs(), {
     entities: entities as Entities,
   }),
   providers: [
@@ -142,7 +142,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/auth/signin",
-    signOut: "/",
+    signOut: "/auth/signin",
   },
   callbacks: {
     async jwt({ token, account, user }) {
@@ -160,9 +160,7 @@ export const authOptions: NextAuthOptions = {
       // Send properties to the client, like an access_token from a provider.
       if (token) {
         session.accessToken = token.accessToken;
-      }
-      if (user) {
-        session.userRole = user.role;
+        session.userRole = token.userRole;
       }
       return session;
     },

@@ -4,6 +4,10 @@ import { AccountProfile } from "./components/account/account-profile";
 import { AccountProfileDetails } from "./components/account/account-profile-details";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { useSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth/next";
+import { IncomingMessage, ServerResponse } from "http";
+import { NextApiRequest, NextApiResponse } from "next";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 const Account = () => {
   const { data: currentUser } = useSession();
@@ -38,5 +42,31 @@ const Account = () => {
 };
 
 Account.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
+
+export async function getServerSideProps(context: {
+  req:
+    | (IncomingMessage & { cookies: Partial<{ [key: string]: string }> })
+    | NextApiRequest;
+  res: ServerResponse | NextApiResponse<any>;
+}) {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+
+  if (session && session.userRole === "Admin") {
+    return {
+      props: {},
+    };
+  }
+
+  return {
+    redirect: {
+      permanent: false,
+      destination: "/auth/signin",
+    },
+  };
+}
 
 export default Account;
