@@ -304,7 +304,7 @@ export async function getServerSideProps(context: {
   return {
     redirect: {
       permanent: false,
-      destination: "/auth/signin",
+      destination: "/404",
     },
   };
 }
