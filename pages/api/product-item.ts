@@ -12,7 +12,6 @@ export default async function handler(
   const uow = new UnitOfWork();
   await uow.initialize();
 
-  console.log(`${req.method} ${req.url}`);
   try {
     if (req.method === "POST") {
       const productItemEntity = plainToInstance(ProductItem, req.body);

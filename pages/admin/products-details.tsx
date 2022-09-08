@@ -122,7 +122,7 @@ const ProductItems = () => {
   return (
     <>
       <Head>
-        <title>Admin - Product Details Management</title>
+        <title>Admin - Product Details</title>
         <meta
           name="description"
           content="Admin - Product Management by Erick.Pham"

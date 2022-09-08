@@ -79,7 +79,7 @@ const Products = () => {
   return (
     <>
       <Head>
-        <title>Admin - Product Management</title>
+        <title>Admin - Products</title>
         <meta
           name="description"
           content="Admin - Product Management by Erick.Pham"

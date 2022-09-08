@@ -14,7 +14,7 @@ const Account = () => {
   return (
     <>
       <Head>
-        <title>Account</title>
+        <title>Admin - Account</title>
       </Head>
       <Box
         component="main"

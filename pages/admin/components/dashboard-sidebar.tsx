@@ -9,6 +9,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import StackedBarChartIcon from "@mui/icons-material/StackedBarChart";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import {
   Box,
   Button,
@@ -26,6 +27,11 @@ const items = [
     href: "/admin",
     icon: <StackedBarChartIcon fontSize="small" />,
     title: "Dashboard",
+  },
+  {
+    href: "/admin/orders",
+    icon: <LibraryBooksIcon fontSize="small" />,
+    title: "Orders",
   },
   {
     href: "/admin/customers",
@@ -47,6 +53,7 @@ const items = [
     icon: <PersonIcon fontSize="small" />,
     title: "Account",
   },
+
   {
     href: "/",
     icon: <LogoutIcon fontSize="small" />,

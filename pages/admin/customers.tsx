@@ -12,7 +12,7 @@ import { customers } from "../../__mocks__/customers";
 const Customers = () => (
   <>
     <Head>
-      <title>Customers</title>
+      <title>Admin - Customers</title>
     </Head>
     <Box
       component="main"

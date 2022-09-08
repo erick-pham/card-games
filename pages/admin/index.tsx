@@ -29,7 +29,7 @@ const Dashboard = () => {
   return (
     <>
       <Head>
-        <title>Dashboard</title>
+        <title>Admin - Dashboard</title>
       </Head>
       <Box
         component="main"

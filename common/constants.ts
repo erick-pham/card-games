@@ -31,10 +31,13 @@ export const StatusColor = (status: string) => {
     case "NEW":
       return "info";
     case "ACTIVE":
+    case "delivered":
       return "success";
     case "DELETED":
+    case "refunded":
       return "error";
     case "SELLING":
+    case "pending":
       return "warning";
     default:
       return "default";
