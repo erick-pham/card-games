@@ -14,8 +14,8 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
-const pages = ["Trang chủ", "Nạp tiền", "Nạp game", "Admin"];
-const pageHrefs = ["/", "/nap-tien", "/nap-game", "/admin"];
+const pages = ["Trang chủ", "Mua tài khoản game", "Nạp game", "Admin"];
+const pageHrefs = ["/", "/account-game", "/nap-game", "/admin"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const ResponsiveAppBar = () => {
