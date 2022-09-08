@@ -89,7 +89,7 @@ const ProductItems = () => {
           })
         );
       });
-  }, [dispatch, reloadPage]);
+  }, [dispatch, reloadPage, selectedProductId]);
 
   const handleReloadPage = () => {
     setReloadPage(!reloadPage);
