@@ -1,12 +1,18 @@
-import { useState, useEffect } from "react";
-import { Modal } from "semantic-ui-react";
-import "semantic-ui-css/semantic.min.css";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Controller, useForm } from "react-hook-form";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  FormControl,
+  TextField,
+  MenuItem,
+  Button,
+} from "@mui/material";
+
 import { ProductItem } from "../../../../interfaces/entity/product_item";
 import { setErrorState, setLoadingState } from "../../../../app/rootSlice";
 import {
@@ -92,14 +98,14 @@ export const ProductDetailsModal = ({
   };
 
   return (
-    <Modal
-      dimmer={true}
-      open={openModal}
-      onOpen={handleOpen}
-      onClose={handleClose}
-    >
-      <Modal.Header> {productEdit ? "Edit" : "Add"}</Modal.Header>
-      <Modal.Content>
+    <Dialog open={openModal} onClose={handleClose}>
+      <DialogTitle>
+        {productEdit ? "Edit Product Details" : "Add Product Details"}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          To add/edit a product item, please enter all fields here.
+        </DialogContentText>
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <Controller
             name="type"
@@ -253,8 +259,11 @@ export const ProductDetailsModal = ({
             Save
           </Button>
         </form>
-      </Modal.Content>
-    </Modal>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
