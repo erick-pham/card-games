@@ -1,116 +1,133 @@
 import Head from "next/head";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Box, Container } from "@mui/material";
 import { unstable_getServerSession } from "next-auth/next";
 import { IncomingMessage, ServerResponse } from "http";
 import { NextApiRequest, NextApiResponse } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { CustomerListResults } from "./components/orders/orders-list-results";
-import { CustomerListToolbar } from "./components/orders/orders-list-toolbar";
+import { OrderListResults } from "./components/orders/orders-list-results";
+import { OrderListToolbar } from "./components/orders/orders-list-toolbar";
 import { DashboardLayout } from "./components/dashboard-layout";
-import { customers } from "../../__mocks__/customers";
-import { v4 as uuid } from "uuid";
-const orders = [
-  {
-    id: uuid(),
-    ref: "CDD1049",
-    amount: 30.5,
-    customer: {
-      name: "Ekaterina Tankova",
-    },
-    product: {
-      name: "Test1",
-    },
-    createdAt: 1555016400000,
-    status: "pending",
-  },
-  {
-    id: uuid(),
-    ref: "CDD1048",
-    amount: 25.1,
-    customer: {
-      name: "Cao Yu",
-    },
-    product: {
-      name: "Test2",
-    },
-    createdAt: 1555016400000,
-    status: "delivered",
-  },
-  {
-    id: uuid(),
-    ref: "CDD1047",
-    amount: 10.99,
-    customer: {
-      name: "Alexa Richardson",
-    },
-    product: {
-      name: "Test3",
-    },
-    createdAt: 1554930000000,
-    status: "refunded",
-  },
-  {
-    id: uuid(),
-    ref: "CDD1046",
-    amount: 96.43,
-    customer: {
-      name: "Anje Keizer",
-    },
-    product: {
-      name: "Test4",
-    },
-    createdAt: 1554757200000,
-    status: "pending",
-  },
-  {
-    id: uuid(),
-    ref: "CDD1045",
-    amount: 32.54,
-    customer: {
-      name: "Clarke Gillebert",
-    },
-    product: {
-      name: "Test5",
-    },
-    createdAt: 1554670800000,
-    status: "delivered",
-  },
-  {
-    id: uuid(),
-    ref: "CDD1044",
-    amount: 16.76,
-    customer: {
-      name: "Adam Denisov",
-    },
-    product: {
-      name: "Test6",
-    },
-    createdAt: 1554670800000,
-    status: "delivered",
-  },
-];
+import { setErrorState, setLoadingState } from "../../app/rootSlice";
+import message from "../../common/messages";
+import { OrderEntity } from "../../interfaces/entity/order";
 
-const Orders = () => (
-  <>
-    <Head>
-      <title>Admin - Orders</title>
-    </Head>
-    <Box
-      component="main"
-      sx={{
-        flexGrow: 1,
-        py: 8,
-      }}
-    >
-      <Container maxWidth={false}>
-        <CustomerListToolbar />
-        <Box sx={{ mt: 3 }}>
-          <CustomerListResults orders={orders} />
-        </Box>
-      </Container>
-    </Box>
-  </>
-);
+export type OrderAPIReponse = {
+  data: OrderEntity[];
+  count: number;
+  limit: number;
+  currentPage: number;
+  nextPage: number;
+  prevPage: number;
+  lastPage: number;
+};
+
+const Orders = () => {
+  const dispatch = useDispatch();
+  const [queryString, setQueryString] = useState({
+    limit: 5,
+    page: 1,
+    keyword: "",
+  });
+
+  const [orders, setOrders] = useState<OrderAPIReponse | undefined>();
+  useEffect(() => {
+    const qs =
+      "?" +
+      new URLSearchParams({
+        limit: queryString.limit + "",
+        page: queryString.page + "",
+        keyword: queryString.keyword,
+      }).toString();
+    dispatch(
+      setLoadingState({
+        loading: true,
+        loadingMessage: message.appAPILoading,
+      })
+    );
+    fetch("/api/orders" + qs)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error === true) {
+          dispatch(
+            setErrorState({
+              message: data.message,
+              values: "",
+              severity: "error",
+            })
+          );
+        } else {
+          setOrders(data);
+        }
+      })
+      .finally(() => {
+        dispatch(
+          setLoadingState({
+            loading: false,
+            loadingMessage: null,
+          })
+        );
+      });
+  }, [dispatch, queryString]);
+
+  const handleLimitChange = (event: any) => {
+    setQueryString({
+      ...queryString,
+      limit: event.target.value,
+      page: 1,
+    });
+  };
+
+  const handlePageChange = (event: any, newPage: any) => {
+    let page = orders?.currentPage || 1;
+    if (newPage === page) {
+      page += 1;
+    } else if (newPage < page) {
+      page = orders?.prevPage || 1;
+    }
+
+    setQueryString({
+      ...queryString,
+      page,
+    });
+  };
+
+  const handleSearch = (e: any) => {
+    if (e.key === "Enter") {
+      setQueryString({
+        ...queryString,
+        keyword: e.target.value || "",
+      });
+    }
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Admin - Orders</title>
+      </Head>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: 8,
+        }}
+      >
+        <Container maxWidth={false}>
+          <OrderListToolbar handleSearch={handleSearch} />
+          <Box sx={{ mt: 3 }}>
+            <OrderListResults
+              orders={orders}
+              handleLimitChange={handleLimitChange}
+              handlePageChange={handlePageChange}
+            />
+          </Box>
+        </Container>
+      </Box>
+    </>
+  );
+};
 Orders.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
 
 export async function getServerSideProps(context: {

@@ -18,6 +18,9 @@ export class OrderEntity extends AppBaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
+  @Column({ length: 10 })
+  referenceNumber!: string;
+
   @Column()
   amount!: number;
 
@@ -49,8 +52,8 @@ export class OrderEntity extends AppBaseEntity {
   productItem!: ProductItem;
 
   @CreateDateColumn()
-  createdAt: Date | undefined;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date | undefined;
+  updatedAt!: Date;
 }

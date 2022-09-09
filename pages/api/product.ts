@@ -10,8 +10,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
-
-  console.log("session", session);
   if (!session) {
     res.status(401).json({ message: "You must be logged in." });
     return;

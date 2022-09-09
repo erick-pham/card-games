@@ -161,6 +161,7 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.accessToken = token.accessToken;
         session.userRole = token.userRole;
+        session.userId = token.sub;
       }
       return session;
     },

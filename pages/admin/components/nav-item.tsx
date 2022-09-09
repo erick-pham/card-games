@@ -51,7 +51,7 @@ export const NavItem = (props: any) => {
           component="a"
           startIcon={icon}
           disableRipple
-          active={active}
+          active={active === true ? "true" : undefined}
           onClick={title === "SignOut" ? () => signOut() : null}
         >
           <Box sx={{ flexGrow: 1 }}>{title}</Box>

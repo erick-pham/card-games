@@ -1,11 +1,9 @@
-import { useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { format } from "date-fns";
 import {
-  Avatar,
   Box,
   Card,
-  Checkbox,
+  Chip,
   Table,
   TableBody,
   TableCell,
@@ -14,26 +12,23 @@ import {
   TableRow,
   TableSortLabel,
   Tooltip,
-  Typography,
 } from "@mui/material";
-import { SeverityPill } from "../../severity-pill";
-import { StatusColor } from "../../../../common/constants";
-
 import numeral from "numeral";
-export const CustomerListResults = ({ orders, ...rest }: { orders: any }) => {
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(0);
 
-  const handleLimitChange = (event: any) => {
-    setLimit(event.target.value);
-  };
+import { StatusColor } from "../../../../common/constants";
+import { OrderAPIReponse } from "../../orders";
 
-  const handlePageChange = (event: any, newPage: any) => {
-    setPage(newPage);
-  };
-
+export const OrderListResults = ({
+  orders,
+  handleLimitChange,
+  handlePageChange,
+}: {
+  orders: OrderAPIReponse | undefined;
+  handleLimitChange: any;
+  handlePageChange: any;
+}) => {
   return (
-    <Card {...rest}>
+    <Card>
       <PerfectScrollbar>
         <Box sx={{ minWidth: 1050 }}>
           <Table>
@@ -50,21 +45,34 @@ export const CustomerListResults = ({ orders, ...rest }: { orders: any }) => {
                     </TableSortLabel>
                   </Tooltip>
                 </TableCell>
+                <TableCell sortDirection="desc">
+                  <Tooltip enterDelay={300} title="Sort">
+                    <TableSortLabel active direction="desc">
+                      Last Update
+                    </TableSortLabel>
+                  </Tooltip>
+                </TableCell>
                 <TableCell>Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => (
+              {orders?.data.map((order) => (
                 <TableRow hover key={order.id}>
-                  <TableCell>{order.ref}</TableCell>
-                  <TableCell>{order.product.name}</TableCell>
+                  <TableCell>{order.referenceNumber}</TableCell>
+                  <TableCell>{order.productItem.name}</TableCell>
                   <TableCell>{numeral(order.amount).format("0,0")}</TableCell>
-                  <TableCell>{order.customer.name}</TableCell>
-                  <TableCell>{format(order.createdAt, "dd/MM/yyyy")}</TableCell>
+                  <TableCell>{order.user.name}</TableCell>
                   <TableCell>
-                    <SeverityPill color={StatusColor(order.status)}>
-                      {order.status}
-                    </SeverityPill>
+                    {format(new Date(order.createdAt), "dd-MMM-yyyy")}
+                  </TableCell>
+                  <TableCell>
+                    {format(new Date(order.updatedAt), "dd-MMM-yyyy")}
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={order?.status}
+                      color={StatusColor(order?.status)}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -74,15 +82,15 @@ export const CustomerListResults = ({ orders, ...rest }: { orders: any }) => {
       </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={orders?.length || 0}
+        count={orders?.count || 0}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleLimitChange}
-        page={page}
-        rowsPerPage={limit}
+        page={(orders?.currentPage || 1) - 1}
+        rowsPerPage={orders?.limit || 0}
         rowsPerPageOptions={[5, 10, 25]}
       />
     </Card>
   );
 };
 
-export default CustomerListResults;
+export default OrderListResults;

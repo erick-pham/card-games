@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   CardContent,
   TextField,
@@ -8,10 +7,15 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { SearchIcon, UploadIcon, DownloadIcon } from "../../icons";
+import { SearchIcon } from "../../icons";
 
-export const CustomerListToolbar = (props: any) => (
-  <Box {...props}>
+export const OrderListToolbar = ({
+  handleSearch,
+  ...rest
+}: {
+  handleSearch: any;
+}) => (
+  <Box {...rest}>
     <Box
       sx={{
         alignItems: "center",
@@ -42,6 +46,7 @@ export const CustomerListToolbar = (props: any) => (
               }}
               placeholder="Search Order Ref. Number"
               variant="outlined"
+              onKeyPress={handleSearch}
             />
           </Box>
         </CardContent>
@@ -50,4 +55,4 @@ export const CustomerListToolbar = (props: any) => (
   </Box>
 );
 
-export default CustomerListToolbar;
+export default OrderListToolbar;
