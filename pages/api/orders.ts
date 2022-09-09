@@ -18,40 +18,17 @@ export default async function handler(
   const uow = new UnitOfWork();
   await uow.initialize();
 
-  console.log(`${req.method} ${req.url}`);
   try {
-    if (req.method === "POST") {
-      const data = await uow.ProuductRepository.upsert(req.body, ["id"]);
-      res.status(200).json(data);
-    } else if (req.method === "DELETE") {
-      const productItems = await uow.ProuductItemRepository.findBy({
-        product: {
-          id: req.body.id,
-        },
-      });
-      if (productItems && productItems.length > 0) {
-        return res.status(400).json({
-          error: true,
-          message: "There are product items related to this product",
-        });
-      }
-      const data = await uow.ProuductRepository.delete({
-        id: req.body.id,
-      });
-      return res.status(200).json(data);
-    } else if (req.method === "GET") {
-      let where = {};
-      if (req.query["productId"]) {
-        where = {
-          id: req.query["productId"] as string,
-        };
-      }
-      const data = await uow.ProuductRepository.find({
-        where: where,
+    if (req.method === "GET") {
+      const data = await uow.OrderRepository.find({
         relations: {
-          productItems: true,
+          user: true,
+          productItem: true,
         },
       });
+      res.status(200).json(data);
+    } else if (req.method === "POST") {
+      const data = await uow.OrderRepository.upsert(req.body, ["id"]);
       res.status(200).json(data);
     } else {
       return res.status(405).json({

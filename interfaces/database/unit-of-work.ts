@@ -1,13 +1,28 @@
 import { DataSource, DataSourceOptions } from "typeorm";
+import "reflect-metadata";
+import {
+  UserEntity,
+  AccountEntity,
+  SessionEntity,
+  VerificationTokenEntity,
+} from "../entity/entities";
 import { ProductItem } from "../entity/product_item";
 import { Product } from "../entity/product";
-import * as entities from "../entity/entities";
+import { OrderEntity } from "../entity/order";
 
 export const sqliteConfigs = {
   type: "sqlite",
   database: "db.sqlite",
-  entities: [Product, ProductItem, entities],
-  synchronize: false,
+  entities: [
+    UserEntity,
+    AccountEntity,
+    SessionEntity,
+    VerificationTokenEntity,
+    ProductItem,
+    Product,
+    OrderEntity,
+  ],
+  synchronize: true,
   logging: false,
 };
 
@@ -18,7 +33,15 @@ export const pgConfigs = {
   username: process.env.POSTGRES_USER as string,
   password: process.env.POSTGRES_PASSWORD as string,
   host: process.env.POSTGRES_HOST as string,
-  entities: [Product, ProductItem, entities],
+  entities: [
+    UserEntity,
+    AccountEntity,
+    SessionEntity,
+    VerificationTokenEntity,
+    ProductItem,
+    Product,
+    OrderEntity,
+  ],
   ssl: true,
   extra: {
     ssl: {
@@ -54,5 +77,9 @@ export default class UnitOfWork {
 
   get ProuductItemRepository() {
     return this.AppDataSource.getRepository(ProductItem);
+  }
+
+  get OrderRepository() {
+    return this.AppDataSource.getRepository(OrderEntity);
   }
 }

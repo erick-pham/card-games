@@ -18,6 +18,28 @@ export const ProductStatus = [
     label: "Deleted",
   },
 ];
+
+export const ORDER_STATUS = {
+  PENDING: "PENDING",
+  SUCCESS: "SUCCESS",
+  CANNCEL: "CANNCEL",
+};
+
+export const OrderStatus = [
+  {
+    value: "PENDING",
+    label: "Pending",
+  },
+  {
+    value: "CANNCEL",
+    label: "Cannceled",
+  },
+  {
+    value: "SUCCESS",
+    label: "Success",
+  },
+];
+
 export const ProductStatusGetText = (type: string) => {
   let item = find(ProductStatus, (i) => i.value === type);
   if (item) {

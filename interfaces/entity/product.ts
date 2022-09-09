@@ -10,7 +10,7 @@ import {
 import AppBaseEntity from "./base";
 import { ProductItem } from "./product_item";
 import { PRODUCT_STATUS } from "../../common/constants";
-@Entity({ name: "product" })
+@Entity({ name: "products" })
 export class Product extends AppBaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;

@@ -20,7 +20,11 @@ import {
   CardHeader,
   Button,
   Grid,
+  Typography,
 } from "@mui/material";
+import LockIcon from "@mui/icons-material/Lock";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import numeral from "numeral";
 import SellIcon from "@mui/icons-material/Sell";
 import product from "./api/product";
@@ -96,25 +100,6 @@ function Home() {
               }}
               subheaderTypographyProps={{ color: "#B6B6B6" }}
             />
-            <CardActions
-              disableSpacing
-              style={{
-                justifyContent: "center",
-              }}
-            >
-              <Button
-                variant="contained"
-                style={{
-                  // width: "100%",
-                  color: "black",
-                  backgroundColor: "#FFC107",
-                  fontWeight: "bold",
-                }}
-                startIcon={<SellIcon />}
-              >
-                Mua ngay
-              </Button>
-            </CardActions>
           </Card>
         </Box>
       </Container>
@@ -231,6 +216,65 @@ function Home() {
             </Card>
           </Grid>
         </Grid>
+      </Container>
+      <Container style={{ marginTop: 4, marginBottom: 4 }}>
+        {/* <Box
+          style={{
+            marginTop: 20,
+            backgroundColor: "red",
+          }}
+        > */}
+        <Container
+          style={{
+            backgroundColor: "#5CE1E6",
+          }}
+        >
+          <Box sx={{ marginTop: 8 }}>
+            <Grid container spacing={5}>
+              <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                <LockIcon sx={{ fontSize: 100 }} />
+                <Typography variant="h5" textAlign={"center"}>
+                  Secure Transactions
+                </Typography>
+                <Typography>
+                  Feel confident each time you transact with us. GamerProtect
+                  comes with SSL protection and wide range of payment processors
+                  under a safe and secured platform.
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                <SupportAgentIcon sx={{ fontSize: 100 }} />
+                <Typography variant="h5" textAlign={"center"}>
+                  Customer Support
+                </Typography>
+                <Typography>
+                  Our dedicated Customer Service team are available to help with
+                  any queries about your orders and provide exceptional
+                  after-sales support.
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+                <MonetizationOnIcon
+                  sx={{
+                    fontSize: 100,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                />
+                <Typography variant="h5" textAlign={"center"}>
+                  Best Offers
+                </Typography>
+                <Typography>
+                  G2G provides competitive pricing to the buyers driven by a
+                  free market economy while striving to keep the cost low for
+                  our sellers.
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+        </Container>
+
+        {/* </Box> */}
       </Container>
       {/* <Container maxWidth={false} style={{ marginTop: 10 }}>
         <ListCard products={products}></ListCard>
