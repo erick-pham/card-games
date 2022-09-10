@@ -85,9 +85,9 @@ function Home() {
           >
             <CardMedia
               component="img"
-              height="auto"
+              height="450"
               width="auto"
-              image="/static/images/banner.jpg"
+              image="/static/images/banner1.1.jpg"
               alt=""
             />
 
@@ -133,9 +133,9 @@ function Home() {
               />
               <CardMedia
                 component="img"
-                height="auto"
+                height="250"
                 width="auto"
-                image="/static/images/banner.jpg"
+                image="/static/images/card-img1.1.jpg"
                 alt=""
               />
 
@@ -189,9 +189,9 @@ function Home() {
               />
               <CardMedia
                 component="img"
-                height="auto"
+                height="250"
                 width="auto"
-                image="/static/images/banner.jpg"
+                image="/static/images/card-img1.2.jpg"
                 alt=""
               />
 
@@ -232,39 +232,52 @@ function Home() {
           <Box sx={{ marginTop: 8 }}>
             <Grid container spacing={5}>
               <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                <LockIcon sx={{ fontSize: 100 }} />
-                <Typography variant="h5" textAlign={"center"}>
-                  Secure Transactions
+                <Typography
+                  variant="h5"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <LockIcon sx={{ fontSize: 40 }} /> Secure Transactions
                 </Typography>
-                <Typography>
+                <Typography align="justify">
                   Feel confident each time you transact with us. GamerProtect
                   comes with SSL protection and wide range of payment processors
                   under a safe and secured platform.
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                <SupportAgentIcon sx={{ fontSize: 100 }} />
-                <Typography variant="h5" textAlign={"center"}>
-                  Customer Support
+                <Typography
+                  variant="h5"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <SupportAgentIcon sx={{ fontSize: 40 }} /> Customer Support
                 </Typography>
-                <Typography>
+                <Typography align="justify">
                   Our dedicated Customer Service team are available to help with
                   any queries about your orders and provide exceptional
                   after-sales support.
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
-                <MonetizationOnIcon
-                  sx={{
-                    fontSize: 100,
+                <Typography
+                  variant="h5"
+                  style={{
+                    display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
+                    flexWrap: "wrap",
                   }}
-                />
-                <Typography variant="h5" textAlign={"center"}>
+                >
+                  <MonetizationOnIcon sx={{ fontSize: 36 }} />
                   Best Offers
                 </Typography>
-                <Typography>
+                <Typography align="justify">
                   G2G provides competitive pricing to the buyers driven by a
                   free market economy while striving to keep the cost low for
                   our sellers.

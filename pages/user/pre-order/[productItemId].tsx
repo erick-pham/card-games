@@ -25,6 +25,13 @@ import message from "../../../common/messages";
 import { useRouter } from "next/router";
 import { ProductItem } from "../../../interfaces/entity/product_item";
 
+interface UserData extends Record<string, unknown> {
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+  phoneNumber?: string | null | undefined;
+}
+
 function UserPreOrder() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -33,8 +40,11 @@ function UserPreOrder() {
   const [submittedOrder, setSubmittedOrder] = useState<any>();
   const [productItem, setProductItem] = useState<ProductItem>();
   const { productItemId } = router.query;
-  console.log("productItemId", productItemId);
-  const user = session?.user;
+
+  let user: UserData = {
+    ...session?.user,
+    phoneNumber: session?.userPhoneNumber as string,
+  };
 
   useEffect(() => {
     dispatch(
@@ -49,7 +59,7 @@ function UserPreOrder() {
         if (!data || data.error === true) {
           dispatch(
             setErrorState({
-              message: data.message,
+              message: data?.message,
               values: "",
               severity: "error",
             })
@@ -230,7 +240,7 @@ function UserPreOrder() {
                   <Controller
                     name="phoneNumber"
                     control={control}
-                    defaultValue={""}
+                    defaultValue={user?.phoneNumber}
                     render={({
                       field: { onChange, value },
                       fieldState: { error },
@@ -299,5 +309,7 @@ function UserPreOrder() {
   );
 }
 
-UserPreOrder.auth = true;
+UserPreOrder.auth = {
+  required: true,
+};
 export default UserPreOrder;

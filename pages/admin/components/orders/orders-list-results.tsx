@@ -61,7 +61,7 @@ export const OrderListResults = ({
                   <TableCell>{order.referenceNumber}</TableCell>
                   <TableCell>{order.productItem.name}</TableCell>
                   <TableCell>{numeral(order.amount).format("0,0")}</TableCell>
-                  <TableCell>{order.user.name}</TableCell>
+                  <TableCell>{order?.user?.name}</TableCell>
                   <TableCell>
                     {format(new Date(order.createdAt), "dd-MMM-yyyy")}
                   </TableCell>

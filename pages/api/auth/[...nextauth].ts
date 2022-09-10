@@ -152,6 +152,7 @@ export const authOptions: NextAuthOptions = {
       }
       if (user) {
         token.userRole = user.role;
+        token.userPhoneNumber = user.phoneNumber;
       }
       return token;
     },
@@ -162,6 +163,7 @@ export const authOptions: NextAuthOptions = {
         session.accessToken = token.accessToken;
         session.userRole = token.userRole;
         session.userId = token.sub;
+        session.userPhoneNumber = token.userPhoneNumber;
       }
       return session;
     },
