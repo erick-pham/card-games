@@ -13,11 +13,21 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-const pages = ["Trang chủ", "Mua tài khoản game", "Nạp game"];
-const pageHrefs = ["/", "/account-game", "/nap-game"];
+
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-const ResponsiveAppBar = () => {
+interface ResponsiveAppBarProps {
+  session?: any;
+}
+
+const ResponsiveAppBar = ({ session }: ResponsiveAppBarProps) => {
+  let pages = ["Trang chủ", "Mua tài khoản game", "Nạp game"];
+  let pageHrefs = ["/", "/account-game", "/nap-game"];
+  if (session?.userRole === "Admin") {
+    pages.push("Admin");
+    pageHrefs.push("/admin");
+  }
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -168,4 +178,5 @@ const ResponsiveAppBar = () => {
     </AppBar>
   );
 };
+
 export default ResponsiveAppBar;

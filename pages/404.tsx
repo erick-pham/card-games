@@ -7,7 +7,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 const NotFound = () => (
   <>
     <Head>
-      <title>404</title>
+      <title>404 - Page not found</title>
     </Head>
     <Box
       component="main"

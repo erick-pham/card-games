@@ -1,7 +1,9 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import {
+  Button,
   Box,
+  CardMedia,
   Container,
   FormControl,
   Grid,
@@ -10,24 +12,20 @@ import {
   // Pagination,
   Select,
   // TextField,
+  Table,
+  TableBody,
+  TableHead,
+  TableCell,
+  TableRow,
+  TableContainer,
+  Paper,
+  Chip,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableHead from "@mui/material/TableHead";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
-import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
-import Chip from "@mui/material/Chip";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
+
+import { tableCellClasses } from "@mui/material/TableCell";
 import numeral from "numeral";
-import { unstable_getServerSession } from "next-auth/next";
-import { IncomingMessage, ServerResponse } from "http";
-import { NextApiRequest, NextApiResponse } from "next";
-import { authOptions } from "../api/auth/[...nextauth]";
 import { ProductListToolbar } from "./components/product/product-list-toolbar";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { ProductDetailsModal } from "./components/product-details/product-details-modal";
@@ -103,7 +101,6 @@ const ProductItems = () => {
 
   // Modal Add/Edit Product
   const handleClickAddProduct = () => {
-    console.log("handleClickAddProduct");
     setProductEdit(null);
     setOpenModal(true);
   };
@@ -165,6 +162,7 @@ const ProductItems = () => {
               // input={<BootstrapInput />}
             >
               {products &&
+                products.length > 0 &&
                 products.map((item, index) => (
                   <MenuItem key={index} value={item.id}>
                     {item.name}
@@ -279,34 +277,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+ProductItems.auth = {
+  required: true,
+  role: "Admin",
+  // loading: <div>Loading...</div>,
+  // unauthorized: "/auth/signin", // redirect to this url
+};
 ProductItems.getLayout = (page: any) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
-
-export async function getServerSideProps(context: {
-  req:
-    | (IncomingMessage & { cookies: Partial<{ [key: string]: string }> })
-    | NextApiRequest;
-  res: ServerResponse | NextApiResponse<any>;
-}) {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-
-  if (session && session.userRole === "Admin") {
-    return {
-      props: {},
-    };
-  }
-
-  return {
-    redirect: {
-      permanent: false,
-      destination: "/404",
-    },
-  };
-}
 
 export default ProductItems;

@@ -1,10 +1,5 @@
 import Head from "next/head";
-// import { useSession, signIn, signOut } from "next-auth/react";
 import { Box, Container, Grid } from "@mui/material";
-import { unstable_getServerSession } from "next-auth/next";
-import { IncomingMessage, ServerResponse } from "http";
-import { NextApiRequest, NextApiResponse } from "next";
-import { authOptions } from "../api/auth/[...nextauth]";
 // import { Budget } from "./components/dashboard/budget";
 // import { LatestOrders } from "./components/dashboard/latest-orders";
 // import { LatestProducts } from "./components/dashboard/latest-products";
@@ -16,16 +11,6 @@ import { authOptions } from "../api/auth/[...nextauth]";
 import { DashboardLayout } from "./components/dashboard-layout";
 
 const Dashboard = () => {
-  // const { data: session, status } = useSession();
-
-  // if (status === "loading") {
-  //   return <p>Loading...</p>;
-  // }
-
-  // if (status === "unauthenticated") {
-  //   return <p>Access Denied</p>;
-  // }
-
   return (
     <>
       <Head>
@@ -71,32 +56,12 @@ const Dashboard = () => {
   );
 };
 
+Dashboard.auth = {
+  required: true,
+  role: "Admin",
+  // loading: <div>Loading...</div>,
+  // unauthorized: "/auth/signin", // redirect to this url
+};
 Dashboard.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
-
-export async function getServerSideProps(context: {
-  req:
-    | (IncomingMessage & { cookies: Partial<{ [key: string]: string }> })
-    | NextApiRequest;
-  res: ServerResponse | NextApiResponse<any>;
-}) {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-
-  if (session && session.userRole === "Admin") {
-    return {
-      props: {},
-    };
-  }
-
-  return {
-    redirect: {
-      permanent: false,
-      destination: "/404",
-    },
-  };
-}
 
 export default Dashboard;

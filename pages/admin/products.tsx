@@ -57,13 +57,11 @@ const Products = () => {
 
   // Modal Add/Edit Product
   const handleClickAddProduct = () => {
-    console.log("handleClickAddProduct");
     setProductEdit(null);
     setOpenModal(true);
   };
 
   const handleClickEditProduct = (selectedProductId: string) => {
-    console.log("selectedProductId", selectedProductId);
     const editItem = products.find((i) => i.id === selectedProductId);
     setProductEdit(editItem);
     setOpenModal(true);
@@ -107,17 +105,19 @@ const Products = () => {
           />
           <Box sx={{ pt: 3 }}>
             <Grid container spacing={3}>
-              {products.map((product) => (
-                <Grid item key={product.id} lg={4} md={6} xs={12}>
-                  <ProductCard
-                    handleClickEditProduct={handleClickEditProduct}
-                    product={product}
-                  />
-                </Grid>
-              ))}
+              {products &&
+                products.length > 0 &&
+                products.map((product) => (
+                  <Grid item key={product.id} lg={4} md={6} xs={12}>
+                    <ProductCard
+                      handleClickEditProduct={handleClickEditProduct}
+                      product={product}
+                    />
+                  </Grid>
+                ))}
             </Grid>
           </Box>
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               justifyContent: "center",
@@ -125,39 +125,19 @@ const Products = () => {
             }}
           >
             <Pagination color="primary" count={3} size="small" />
-          </Box>
+          </Box> */}
         </Container>
       </Box>
     </>
   );
 };
 
+Products.auth = {
+  required: true,
+  role: "Admin",
+  // loading: <div>Loading...</div>,
+  // unauthorized: "/auth/signin", // redirect to this url
+};
 Products.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
-
-export async function getServerSideProps(context: {
-  req:
-    | (IncomingMessage & { cookies: Partial<{ [key: string]: string }> })
-    | NextApiRequest;
-  res: ServerResponse | NextApiResponse<any>;
-}) {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-
-  if (session && session.userRole === "Admin") {
-    return {
-      props: {},
-    };
-  }
-
-  return {
-    redirect: {
-      permanent: false,
-      destination: "/404",
-    },
-  };
-}
 
 export default Products;

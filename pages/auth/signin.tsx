@@ -22,6 +22,9 @@ export default function SignIn({
   const router = useRouter();
 
   if (session) {
+    if (router.query["callbackUrl"]) {
+      router.push(router.query["callbackUrl"] + "");
+    }
     router.push("/");
   }
 

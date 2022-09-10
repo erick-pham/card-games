@@ -25,10 +25,10 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import numeral from "numeral";
-import SellIcon from "@mui/icons-material/Sell";
-import product from "./api/product";
+import { useSession } from "next-auth/react";
+
 function Home() {
+  const { data: session } = useSession();
   const dispatch = useDispatch();
   const [products, setProducts] = useState<Product[]>([]);
   // useEffect(() => {
@@ -70,7 +70,7 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <Container maxWidth={false}> */}
-      <NavBar></NavBar>
+      <NavBar session={session}></NavBar>
       {/* </Container> */}
       <Container>
         <Box sx={{ flexGrow: 1, marginTop: 8 }}>
@@ -295,18 +295,5 @@ function Home() {
   );
 }
 
-// export async function getServerSideProps() {
-//   const uow = new UnitOfWork();
-//   await uow.initialize();
-
-//   const products = await uow.ProuductRepository.find({
-//     relations: {
-//       productItems: true,
-//     },
-//   });
-
-//   return {
-//     props: { products: products.map((p) => p.toJSON()) },
-//   };
-// }
+Home.auth = true;
 export default Home;

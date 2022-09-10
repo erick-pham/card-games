@@ -9,12 +9,14 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 export const AccountProfileDetails = (props: any) => {
+  const { data: session } = useSession();
   const [values, setValues] = useState({
-    firstName: props?.currentUser?.user?.name || "",
-    lastName: props?.currentUser?.user?.name,
-    email: props?.currentUser?.user?.email,
+    firstName: session?.user?.name,
+    lastName: session?.user?.name,
+    email: session?.user?.email,
     phone: "",
     // state: "Alabama",
     // country: "USA",
@@ -43,7 +45,7 @@ export const AccountProfileDetails = (props: any) => {
                 name="firstName"
                 onChange={handleChange}
                 required
-                value={values.firstName}
+                value={values?.firstName}
                 variant="outlined"
               />
             </Grid>
@@ -55,7 +57,7 @@ export const AccountProfileDetails = (props: any) => {
                 name="lastName"
                 onChange={handleChange}
                 required
-                value={values.lastName}
+                value={values?.lastName}
                 variant="outlined"
               />
             </Grid>
@@ -67,7 +69,7 @@ export const AccountProfileDetails = (props: any) => {
                 name="email"
                 onChange={handleChange}
                 required
-                value={values.email}
+                value={values?.email}
                 variant="outlined"
               />
             </Grid>
@@ -79,7 +81,7 @@ export const AccountProfileDetails = (props: any) => {
                 name="phone"
                 onChange={handleChange}
                 type="number"
-                value={values.phone}
+                value={values?.phone}
                 variant="outlined"
               />
             </Grid>

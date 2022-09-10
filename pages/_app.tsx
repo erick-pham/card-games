@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import "../styles/globals.css";
-import { SessionProvider } from "next-auth/react";
-import type { AppProps } from "next/app";
+import { useRouter } from "next/router";
+import { SessionProvider, useSession } from "next-auth/react";
 import { Alert, Snackbar } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { useState, useEffect } from "react";
@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { wrapper } from "../app/store";
 import LoadingDialog from "./components/LoadingDialog";
 import { theme } from "../theme";
+
 function MyApp({
   Component,
   pageProps: { session, ...pageProps },
@@ -61,11 +62,40 @@ function MyApp({
       </Snackbar>
       <ThemeProvider theme={theme}>
         <SessionProvider session={session}>
-          {getLayout(<Component {...pageProps} />)}
+          {Component.auth ? (
+            <Auth auth={Component.auth}>
+              {getLayout(<Component {...pageProps} />)}
+            </Auth>
+          ) : (
+            getLayout(<Component {...pageProps} />)
+          )}
         </SessionProvider>
       </ThemeProvider>
     </div>
   );
 }
 // export default MyApp;
+function Auth({ children, auth }: { children: any; auth: any }) {
+  const router = useRouter();
+  // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
+  const { data: session, status } = useSession({
+    required: auth.required || false,
+    // onUnauthenticated() {
+    //   return unauthorized
+    // },
+  });
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "authenticated") {
+    if (auth.role && auth.role !== session.userRole) {
+      router.push("/access-denied");
+    }
+  }
+
+  return children;
+}
+
 export default wrapper.withRedux(MyApp);
