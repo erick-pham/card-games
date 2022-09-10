@@ -2,9 +2,11 @@ import { find } from "lodash";
 
 export const PRODUCT_STATUS = {
   NEW: "NEW",
+  ACTIVE: "ACTIVE",
   DELETED: "DELETED",
 };
-export const ProductStatus = [
+
+export const PRODUCT_STATUS_LABEL = [
   {
     value: "NEW",
     label: "New",
@@ -25,7 +27,7 @@ export const ORDER_STATUS = {
   CANNCEL: "CANNCEL",
 };
 
-export const OrderStatus = [
+export const ORDER_STATUS_LABEL = [
   {
     value: "PENDING",
     label: "Pending",
@@ -40,13 +42,58 @@ export const OrderStatus = [
   },
 ];
 
-export const ProductStatusGetText = (type: string) => {
-  let item = find(ProductStatus, (i) => i.value === type);
-  if (item) {
-    return item.label;
-  }
-  return "";
+export const PRODUCT_ITEM_STATUS = {
+  NEW: "NEW",
+  SELLING: "SELLING",
+  SOLD: "SOLD",
+  DELETED: "DELETED",
 };
+
+export const PRODUCT_ITEM_STATUS_LABEL = [
+  {
+    value: "NEW",
+    label: "New",
+  },
+  {
+    value: "SELLING",
+    label: "Selling",
+  },
+  {
+    value: "SOLD",
+    label: "Sold",
+  },
+  {
+    value: "DELETED",
+    label: "Deleted",
+  },
+];
+
+export const Currencies = [
+  {
+    value: "VND",
+    label: "VND",
+  },
+  // {
+  //   value: "USD",
+  //   label: "USD",
+  // },
+];
+
+export const PRODUCT_ITEM_TYPES = {
+  ACCOUNT: "ACCOUNT",
+  CARD_GAME: "CARD_GAME",
+};
+
+export const PRODUCT_ITEM_TYPES_LABEL = [
+  {
+    value: "ACCOUNT",
+    label: "Account",
+  },
+  {
+    value: "CARD_GAME",
+    label: "Card game",
+  },
+];
 
 export const StatusColor = (status: string) => {
   switch (status) {
@@ -66,32 +113,6 @@ export const StatusColor = (status: string) => {
   }
 };
 
-export const PRODUCT_ITEM_STATUS = {
-  NEW: "NEW",
-  SELLING: "SELLING",
-  SOLD: "SOLD",
-  DELETED: "DELETED",
-};
-
-export const ProductItemStatus = [
-  {
-    value: "NEW",
-    label: "New",
-  },
-  {
-    value: "SELLING",
-    label: "Selling",
-  },
-  {
-    value: "SOLD",
-    label: "Sold",
-  },
-  {
-    value: "DELETED",
-    label: "Deleted",
-  },
-];
-
 export const GetLabelText = (lables: Array<any>, type: string) => {
   let item = find(lables, (i) => i.value === type);
   if (item) {
@@ -99,25 +120,3 @@ export const GetLabelText = (lables: Array<any>, type: string) => {
   }
   return "";
 };
-
-export const Currencies = [
-  {
-    value: "VND",
-    label: "VND",
-  },
-  {
-    value: "USD",
-    label: "USD",
-  },
-];
-
-export const ProductItemTypes = [
-  {
-    value: "ACCOUNT",
-    label: "Account",
-  },
-  {
-    value: "CARD_GAME",
-    label: "Card game",
-  },
-];

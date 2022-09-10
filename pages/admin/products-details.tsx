@@ -34,9 +34,9 @@ import message from "../../common/messages";
 import { Product } from "../../interfaces/entity/product";
 import { ProductItem } from "../../interfaces/entity/product_item";
 import {
-  ProductItemStatus,
+  PRODUCT_ITEM_STATUS_LABEL,
   GetLabelText,
-  ProductItemTypes,
+  PRODUCT_ITEM_TYPES_LABEL,
   StatusColor,
 } from "../../common/constants";
 
@@ -207,7 +207,10 @@ const ProductItems = () => {
                             {productItem.name}
                           </StyledTableCell>
                           <StyledTableCell align="right">
-                            {GetLabelText(ProductItemTypes, productItem.type)}
+                            {GetLabelText(
+                              PRODUCT_ITEM_TYPES_LABEL,
+                              productItem.type
+                            )}
                           </StyledTableCell>
                           <StyledTableCell align="right">
                             {numeral(productItem.price).format("0,0") +
@@ -217,7 +220,7 @@ const ProductItems = () => {
                           <StyledTableCell align="right">
                             <Chip
                               label={GetLabelText(
-                                ProductItemStatus,
+                                PRODUCT_ITEM_STATUS_LABEL,
                                 productItem.status
                               )}
                               color={StatusColor(productItem.status)}

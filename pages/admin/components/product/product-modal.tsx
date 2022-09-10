@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { Product } from "../../../../interfaces/entity/product";
 import { setErrorState, setLoadingState } from "../../../../app/rootSlice";
-import { ProductStatus } from "../../../../common/constants";
+import { PRODUCT_STATUS_LABEL } from "../../../../common/constants";
 import message from "../../../../common/messages";
 
 export const ProductModal = ({
@@ -139,7 +139,7 @@ export const ProductModal = ({
                   error={error ? true : false}
                   helperText={error?.message}
                 >
-                  {ProductStatus.map((option) => (
+                  {PRODUCT_STATUS_LABEL.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>

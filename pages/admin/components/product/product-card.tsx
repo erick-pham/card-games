@@ -13,7 +13,8 @@ import Chip from "@mui/material/Chip";
 import CardMedia from "@mui/material/CardMedia";
 import { Product } from "../../../../interfaces/entity/product";
 import {
-  ProductStatusGetText,
+  GetLabelText,
+  PRODUCT_STATUS_LABEL,
   StatusColor,
 } from "../../../../common/constants";
 export const ProductCard = ({
@@ -85,7 +86,7 @@ export const ProductCard = ({
           }}
         >
           <Chip
-            label={ProductStatusGetText(product?.status)}
+            label={GetLabelText(PRODUCT_STATUS_LABEL, product?.status)}
             color={StatusColor(product?.status)}
           />
         </Grid>

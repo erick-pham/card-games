@@ -10,6 +10,10 @@ import { paginateRequest, paginateResponse } from "../../utils/paginate";
 import { OrderEntity } from "../../interfaces/entity/order";
 import { generateCode } from "../../utils/generate-code";
 import { plainToInstance } from "class-transformer";
+import {
+  PRODUCT_ITEM_TYPES,
+  PRODUCT_ITEM_STATUS,
+} from "../../common/constants";
 
 interface OrderRequestBody {
   productItemId: string;
@@ -79,12 +83,11 @@ export default async function handler(
         });
       }
 
-      const orderEntity = plainToInstance(OrderEntity, {
-        ...input,
-        userId: session.userId,
-        amount: item.price,
-        referenceNumber: generateCode(10),
-      });
+      if (item.type === PRODUCT_ITEM_TYPES.ACCOUNT) {
+        await uow.ProuductItemRepository.update(input.productItemId, {
+          status: PRODUCT_ITEM_STATUS.SELLING,
+        });
+      }
 
       if (input.phoneNumber || input.name) {
         await uow.UserRepository.update(session.userId as string, {
@@ -92,6 +95,14 @@ export default async function handler(
           name: input.name ? input.name : undefined,
         });
       }
+
+      const orderEntity = plainToInstance(OrderEntity, {
+        ...input,
+        userId: session.userId,
+        amount: item.price,
+        referenceNumber: generateCode(10),
+      });
+
       const data = await uow.OrderRepository.save(orderEntity);
       res.status(200).json(data);
     } else {

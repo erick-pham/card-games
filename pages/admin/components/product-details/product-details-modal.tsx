@@ -16,8 +16,8 @@ import {
 import { ProductItem } from "../../../../interfaces/entity/product_item";
 import { setErrorState, setLoadingState } from "../../../../app/rootSlice";
 import {
-  ProductItemStatus,
-  ProductItemTypes,
+  PRODUCT_ITEM_STATUS_LABEL,
+  PRODUCT_ITEM_TYPES_LABEL,
   Currencies,
 } from "../../../../common/constants";
 import message from "../../../../common/messages";
@@ -122,7 +122,7 @@ export const ProductDetailsModal = ({
                   error={error ? true : false}
                   helperText={error?.message}
                 >
-                  {ProductItemTypes.map((option) => (
+                  {PRODUCT_ITEM_TYPES_LABEL.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
@@ -240,7 +240,7 @@ export const ProductDetailsModal = ({
                   error={error ? true : false}
                   helperText={error?.message}
                 >
-                  {ProductItemStatus.map((option) => (
+                  {PRODUCT_ITEM_STATUS_LABEL.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
