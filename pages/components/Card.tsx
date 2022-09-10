@@ -1,4 +1,5 @@
 import * as React from "react";
+import Link from "next/link";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -60,18 +61,20 @@ export default function RecipeReviewCard({
         </Typography>
       </CardContent> */}
       <CardActions disableSpacing>
-        <Button
-          variant="contained"
-          style={{
-            width: "100%",
-            color: "black",
-            backgroundColor: "#FFC107",
-            fontWeight: "bold",
-          }}
-          startIcon={<SellIcon />}
-        >
-          Mua ngay
-        </Button>
+        <Link href={`/user/pre-order/${product.id}`}>
+          <Button
+            variant="contained"
+            style={{
+              width: "100%",
+              color: "black",
+              backgroundColor: "#FFC107",
+              fontWeight: "bold",
+            }}
+            startIcon={<SellIcon />}
+          >
+            Mua ngay
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );

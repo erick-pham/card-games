@@ -1,9 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { plainToInstance } from "class-transformer";
-import UnitOfWork from "../../interfaces/database/unit-of-work";
-import { ProductItem } from "../../interfaces/entity/product_item";
-import { Product } from "../../interfaces/entity/product";
+import UnitOfWork from "../../../interfaces/database/unit-of-work";
+import { ProductItem } from "../../../interfaces/entity/product_item";
+import { Product } from "../../../interfaces/entity/product";
 
 export default async function handler(
   req: NextApiRequest,

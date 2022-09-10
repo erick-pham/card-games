@@ -38,6 +38,9 @@ export class UserEntity {
   @Column({ type: "varchar", nullable: true })
   role!: string | null;
 
+  @Column({ type: "varchar", length: 15, nullable: true })
+  phoneNumber!: string | null;
+
   @OneToMany(() => SessionEntity, (session) => session.userId)
   sessions!: SessionEntity[];
 

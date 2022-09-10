@@ -9,7 +9,15 @@ import { checkIsAdmin } from "../../utils/check-role";
 import { paginateRequest, paginateResponse } from "../../utils/paginate";
 import { OrderEntity } from "../../interfaces/entity/order";
 import { generateCode } from "../../utils/generate-code";
+import { plainToInstance } from "class-transformer";
 
+interface OrderRequestBody {
+  productItemId: string;
+  email: string;
+  name: string;
+  description: string;
+  phoneNumber: string;
+}
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -26,9 +34,10 @@ export default async function handler(
   try {
     if (req.method === "GET") {
       const { take, page, skip, keyword } = paginateRequest(req);
+      console.log("isAdmmin", isAdmmin);
       let where = {
         referenceNumber: Like(`%${keyword}%`),
-        userId: isAdmmin ? (session.userId as string) : undefined,
+        userId: !isAdmmin ? (session.userId as string) : undefined,
       };
 
       const data = await uow.OrderRepository.findAndCount({
@@ -57,9 +66,33 @@ export default async function handler(
       const result = paginateResponse(data, page, take);
       res.status(200).json(result);
     } else if (req.method === "POST") {
-      req.body["userId"] = session.userId;
-      req.body["referenceNumber"] = generateCode(10);
-      const data = await uow.OrderRepository.save(req.body);
+      const input: OrderRequestBody = req.body;
+
+      const item = await uow.ProuductItemRepository.findOneBy({
+        id: input.productItemId,
+      });
+
+      if (!item) {
+        return res.status(400).json({
+          error: true,
+          message: "Product not found.",
+        });
+      }
+
+      const orderEntity = plainToInstance(OrderEntity, {
+        ...input,
+        userId: session.userId,
+        amount: item.price,
+        referenceNumber: generateCode(10),
+      });
+
+      if (input.phoneNumber || input.name) {
+        await uow.UserRepository.update(session.userId as string, {
+          phoneNumber: input.phoneNumber ? input.phoneNumber : undefined,
+          name: input.name ? input.name : undefined,
+        });
+      }
+      const data = await uow.OrderRepository.save(orderEntity);
       res.status(200).json(data);
     } else {
       return res.status(405).json({

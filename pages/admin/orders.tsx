@@ -2,10 +2,6 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Box, Container } from "@mui/material";
-import { unstable_getServerSession } from "next-auth/next";
-import { IncomingMessage, ServerResponse } from "http";
-import { NextApiRequest, NextApiResponse } from "next";
-import { authOptions } from "../api/auth/[...nextauth]";
 import { OrderListResults } from "./components/orders/orders-list-results";
 import { OrderListToolbar } from "./components/orders/orders-list-toolbar";
 import { DashboardLayout } from "./components/dashboard-layout";
@@ -128,32 +124,13 @@ const Orders = () => {
     </>
   );
 };
+
+Orders.auth = {
+  required: true,
+  role: "Admin",
+  // loading: <div>Loading...</div>,
+  // unauthorized: "/auth/signin", // redirect to this url
+};
 Orders.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
-
-export async function getServerSideProps(context: {
-  req:
-    | (IncomingMessage & { cookies: Partial<{ [key: string]: string }> })
-    | NextApiRequest;
-  res: ServerResponse | NextApiResponse<any>;
-}) {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-
-  if (session && session.userRole === "Admin") {
-    return {
-      props: {},
-    };
-  }
-
-  return {
-    redirect: {
-      permanent: false,
-      destination: "/404",
-    },
-  };
-}
 
 export default Orders;

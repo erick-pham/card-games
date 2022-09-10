@@ -56,7 +56,7 @@ export const OrderListResults = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders?.data.map((order) => (
+              {orders?.data?.map((order) => (
                 <TableRow hover key={order.id}>
                   <TableCell>{order.referenceNumber}</TableCell>
                   <TableCell>{order.productItem.name}</TableCell>
