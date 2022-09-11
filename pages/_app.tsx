@@ -16,6 +16,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { wrapper } from "../app/store";
 import LoadingDialog from "./components/LoadingDialog";
 import { theme } from "../theme";
+import Script from "next/script";
+
+const FACEBOOK_PAGE_ID = process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID;
+const ATTRIBUTION = process.env.NEXT_PUBLIC_FACEBOOK_ATTRIBUTION;
 
 function MyApp({
   Component,
@@ -42,6 +46,33 @@ function MyApp({
   const getLayout = Component?.getLayout ?? ((page: any) => page);
   return (
     <div>
+      <div id="fb-root"></div>
+      <div id="fb-customer-chat" className="fb-customerchat"></div>
+      <Script
+        id="fb-chat"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+          var chatbox = document.getElementById('fb-customer-chat');
+          chatbox.setAttribute("page_id", "${FACEBOOK_PAGE_ID}");
+          chatbox.setAttribute("attribution", "${ATTRIBUTION}");
+          window.fbAsyncInit = function() {
+            FB.init({
+              xfbml            : true,
+              version          : 'v14.0'
+            });
+          };
+      
+          (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+          `,
+        }}
+      />
       <LoadingDialog
         isLoading={loading}
         message={loadingMessage.id ? loadingMessage.defaultMessage : null}
