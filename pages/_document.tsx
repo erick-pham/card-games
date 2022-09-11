@@ -5,16 +5,13 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <Script id="show-banner" strategy="beforeInteractive">
+        <Script id="show-banner" strategy="lazyOnload">
           {`
-              <script>
               var chatbox = document.getElementById('fb-customer-chat');
               chatbox.setAttribute("page_id", "1528767773852708");
               chatbox.setAttribute("attribution", "biz_inbox");
-            </script>
-        
-            <!-- Your SDK code -->
-            <script>
+   
+      
               window.fbAsyncInit = function() {
                 FB.init({
                   xfbml            : true,
@@ -30,7 +27,7 @@ export default function Document() {
                 js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
                 fjs.parentNode.insertBefore(js, fjs);
               }(document, 'script', 'facebook-jssdk'));
-            </script>
+        
           `}
         </Script>
       </Head>
