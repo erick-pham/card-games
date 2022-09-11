@@ -44,12 +44,23 @@ export default function RecipeReviewCard({
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <Box height={150}>
             <Typography
+              variant="h6"
+              color="#B6B6B6"
+              alignContent="left"
+              align="left"
+              style={{
+                padding: 4,
+              }}
+            >
+              {product.name}
+            </Typography>
+            <Typography
               variant="body2"
               color="#B6B6B6"
               alignContent="left"
               align="left"
               style={{
-                padding: 8,
+                padding: 4,
               }}
             >
               {product.description}
