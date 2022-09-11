@@ -25,10 +25,8 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
-import { useSession } from "next-auth/react";
 
 function Home() {
-  const { data: session } = useSession();
   const dispatch = useDispatch();
   const [products, setProducts] = useState<Product[]>([]);
   // useEffect(() => {
@@ -70,7 +68,7 @@ function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <Container maxWidth={false}> */}
-      <NavBar session={session}></NavBar>
+      <NavBar></NavBar>
       {/* </Container> */}
       <Container>
         <Box sx={{ flexGrow: 1, marginTop: 8 }}>

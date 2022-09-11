@@ -1,5 +1,5 @@
 import * as React from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,17 +13,22 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { signOut, useSession } from "next-auth/react";
+import { getSessionUserInfo } from "../../utils/get-session-user";
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+// const settings = ["Profile", "Orders", "Logout"];
+// const settingsHrefs = ["/user/profile", "user/orders", "/"];
+const settings = ["Logout"];
+const settingsHrefs = ["/"];
 
-interface ResponsiveAppBarProps {
-  session?: any;
-}
+const ResponsiveAppBar = () => {
+  const { data: session } = useSession();
+  const userInfo = getSessionUserInfo(session);
 
-const ResponsiveAppBar = ({ session }: ResponsiveAppBarProps) => {
   let pages = ["Trang chủ", "Mua tài khoản game", "Nạp game"];
   let pageHrefs = ["/", "/account-game", "/nap-game"];
-  if (session?.userRole === "Admin") {
+
+  if (userInfo?.isAdmin) {
     pages.push("Admin");
     pageHrefs.push("/admin");
   }
@@ -104,9 +109,9 @@ const ResponsiveAppBar = ({ session }: ResponsiveAppBarProps) => {
             >
               {pages.map((page, index) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Link href={pageHrefs[index]} key={page}>
+                  <NextLink href={pageHrefs[index]} key={page}>
                     <Typography textAlign="center">{page}</Typography>
-                  </Link>
+                  </NextLink>
                 </MenuItem>
               ))}
             </Menu>
@@ -132,7 +137,7 @@ const ResponsiveAppBar = ({ session }: ResponsiveAppBarProps) => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (
-              <Link href={pageHrefs[index]} key={page}>
+              <NextLink href={pageHrefs[index]} key={page}>
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}
@@ -140,39 +145,54 @@ const ResponsiveAppBar = ({ session }: ResponsiveAppBarProps) => {
                 >
                   {page}
                 </Button>
-              </Link>
+              </NextLink>
             ))}
           </Box>
 
-          {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
+          {userInfo ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="alt" src={userInfo?.image || ""} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting, index) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <NextLink href={settingsHrefs[index]} passHref>
+                      <Button
+                        component="a"
+                        onClick={
+                          setting === "Logout" ? () => signOut() : undefined
+                        }
+                      >
+                        {setting}
+                      </Button>
+                    </NextLink>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          ) : (
+            <Box sx={{ flexGrow: 0 }}>
+              <NextLink href={"/auth/signin"}>Đăng nhập</NextLink>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

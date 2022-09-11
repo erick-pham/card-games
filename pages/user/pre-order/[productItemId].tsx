@@ -24,27 +24,16 @@ import { setErrorState, setLoadingState } from "../../../app/rootSlice";
 import message from "../../../common/messages";
 import { useRouter } from "next/router";
 import { ProductItem } from "../../../interfaces/entity/product_item";
-
-interface UserData extends Record<string, unknown> {
-  name?: string | null | undefined;
-  email?: string | null | undefined;
-  image?: string | null | undefined;
-  phoneNumber?: string | null | undefined;
-}
+import { getSessionUserInfo } from "../../../utils/get-session-user";
 
 function UserPreOrder() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { data: session } = useSession();
-
+  let user = getSessionUserInfo(session);
   const [submittedOrder, setSubmittedOrder] = useState<any>();
   const [productItem, setProductItem] = useState<ProductItem>();
   const { productItemId } = router.query;
-
-  let user: UserData = {
-    ...session?.user,
-    phoneNumber: session?.userPhoneNumber as string,
-  };
 
   useEffect(() => {
     dispatch(

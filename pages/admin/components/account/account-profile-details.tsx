@@ -10,17 +10,11 @@ import {
   TextField,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
+import { getSessionUserInfo } from "../../../../utils/get-session-user";
 
 export const AccountProfileDetails = (props: any) => {
   const { data: session } = useSession();
-  const [values, setValues] = useState({
-    firstName: session?.user?.name,
-    lastName: session?.user?.name,
-    email: session?.user?.email,
-    phone: "",
-    // state: "Alabama",
-    // country: "USA",
-  });
+  const [values, setValues] = useState(getSessionUserInfo(session));
 
   const handleChange = (event: any) => {
     setValues({
@@ -81,7 +75,7 @@ export const AccountProfileDetails = (props: any) => {
                 name="phone"
                 onChange={handleChange}
                 type="number"
-                value={values?.phone}
+                value={values?.phoneNumber}
                 variant="outlined"
               />
             </Grid>
