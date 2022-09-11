@@ -82,4 +82,8 @@ export default class UnitOfWork {
   get OrderRepository() {
     return this.AppDataSource.getRepository(OrderEntity);
   }
+
+  get UserRepository() {
+    return this.AppDataSource.getRepository(UserEntity);
+  }
 }

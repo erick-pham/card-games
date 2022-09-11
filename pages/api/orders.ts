@@ -38,7 +38,6 @@ export default async function handler(
   try {
     if (req.method === "GET") {
       const { take, page, skip, keyword } = paginateRequest(req);
-      console.log("isAdmmin", isAdmmin);
       let where = {
         referenceNumber: Like(`%${keyword}%`),
         userId: !isAdmmin ? (session.userId as string) : undefined,
