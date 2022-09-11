@@ -13,7 +13,13 @@ export default function Document() {
         
           `}
         </Script>
-        <Script id="fb-tag-script" strategy="lazyOnload">
+        <Script
+          id="fb-tag-script"
+          strategy="lazyOnload"
+          crossOrigin="anonymous"
+          defer
+          async
+        >
           {`
               window.fbAsyncInit = function() {
                 FB.init({
