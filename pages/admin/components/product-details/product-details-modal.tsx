@@ -202,6 +202,7 @@ export const ProductDetailsModal = ({
                   {...field}
                   id="outlined-multiline-flexible"
                   label="Description"
+                  multiline
                   error={error ? true : false}
                   helperText={error?.message}
                 />

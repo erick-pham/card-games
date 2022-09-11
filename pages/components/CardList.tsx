@@ -17,16 +17,20 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function BasicGrid({ products }: { products: Array<Product> }) {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, padding: 1, backgroundColor: "#fff" }}>
       <Typography
         variant="h3"
         color={"#FFAD35"}
-        // backgroundColor={"#1B3447"}
-        mb={2}
         alignContent="center"
         align="center"
+        style={{
+          backgroundColor: "#1B3447",
+        }}
       >
-        {products && products[0] ? products[0].name : ""}
+        {products && products[0]
+          ? products[0].name +
+            ` (${products[0].productItems?.length} accounts in stock)`
+          : ""}
       </Typography>
       <Grid container spacing={2}>
         {products &&
@@ -34,7 +38,7 @@ export default function BasicGrid({ products }: { products: Array<Product> }) {
           products[0].productItems &&
           products[0].productItems.map((item, index) => {
             return (
-              <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={index}>
+              <Grid item xs={12} sm={6} md={6} lg={6} xl={6} key={index}>
                 <Item style={{ padding: 0 }}>
                   <Card product={item} />
                 </Item>
