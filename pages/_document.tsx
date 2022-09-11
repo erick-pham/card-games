@@ -5,14 +5,6 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <Script id="fb-div">
-          {`
-              var chatbox = document.getElementById('fb-customer-chat');
-              chatbox.setAttribute("page_id", "1528767773852708");
-              chatbox.setAttribute("attribution", "biz_inbox");
-        
-          `}
-        </Script>
         <Script
           id="fb-tag-script"
           strategy="lazyOnload"
@@ -21,6 +13,10 @@ export default function Document() {
           async
         >
           {`
+              var chatbox = document.getElementById('fb-customer-chat');
+              chatbox.setAttribute("page_id", "1528767773852708");
+              chatbox.setAttribute("attribution", "biz_inbox");
+
               window.fbAsyncInit = function() {
                 FB.init({
                   xfbml            : true,
