@@ -5,7 +5,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <Script id="show-banner" strategy="beforeInteractive">
+        <Script id="show-banner" strategy="afterInteractive">
           {`
               var chatbox = document.getElementById('fb-customer-chat');
               chatbox.setAttribute("page_id", "1528767773852708");
