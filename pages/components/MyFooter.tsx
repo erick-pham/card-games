@@ -77,7 +77,7 @@ export const MyFooter = () => {
               textTransform: "uppercase",
             }}
           >
-            GI7.COM
+            gameshop247.com
           </Typography>
         </Grid>
         <Grid>

@@ -1,5 +1,6 @@
 import * as React from "react";
 import NextLink from "next/link";
+import NextImage from "next/image";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,7 +13,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { signOut, useSession } from "next-auth/react";
 import { getSessionUserInfo } from "../../utils/get-session-user";
 
@@ -59,7 +59,6 @@ const ResponsiveAppBar = () => {
     <AppBar position="static">
       <Container maxWidth={false} style={{ backgroundColor: "#1B3447" }}>
         <Toolbar disableGutters style={{ backgroundColor: "#1B3447" }}>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -75,7 +74,11 @@ const ResponsiveAppBar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            <NextImage
+              src="/static/images/logo.png"
+              height={40}
+              width={80}
+            ></NextImage>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -116,7 +119,6 @@ const ResponsiveAppBar = () => {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -133,7 +135,11 @@ const ResponsiveAppBar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            <NextImage
+              src="/static/images/logo.png"
+              height={40}
+              width={80}
+            ></NextImage>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (
