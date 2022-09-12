@@ -15,6 +15,10 @@ export interface RootState {
     values: string;
     severity: AlertColor;
   };
+  dialogImage: {
+    open: boolean;
+    url: string | null | undefined;
+  };
 }
 
 // Initial state
@@ -29,6 +33,10 @@ const initialState: RootState = {
     message: "",
     values: "",
     severity: "error",
+  },
+  dialogImage: {
+    open: false,
+    url: "",
   },
 };
 
@@ -45,6 +53,9 @@ export const rootSlice = createSlice({
       state.loading = action.payload.loading || false;
       state.loadingMessage = action.payload.loadingMessage || {};
     },
+    setDialogImageState(state, action) {
+      state.dialogImage = action.payload;
+    },
     // Special reducer for hydrating the state. Special case for next-redux-wrapper
     // extraReducers: {
     //   [HYDRATE]: (state, action) => {
@@ -57,9 +68,12 @@ export const rootSlice = createSlice({
   },
 });
 
-export const { setErrorState, setLoadingState } = rootSlice.actions;
+export const { setErrorState, setLoadingState, setDialogImageState } =
+  rootSlice.actions;
 
 export const selectErrorState = (state: AppState) => state.root.error;
+export const selectDialogImageState = (state: AppState) =>
+  state.root.dialogImage;
 export const selectLoadingState = (state: AppState) => state.root.loading;
 export const selectLoadingMessageState = (state: AppState) =>
   state.root.loadingMessage;
