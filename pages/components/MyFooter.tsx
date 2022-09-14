@@ -20,12 +20,11 @@ export const MyFooter = () => {
                 color: "white",
               }}
             >
-              <LockIcon sx={{ fontSize: 40 }} /> Secure Transactions
+              <LockIcon sx={{ fontSize: 40 }} />
+              Bảo mật
             </Typography>
             <Typography color={"white"}>
-              Feel confident each time you transact with us. GamerProtect comes
-              with SSL protection and wide range of payment processors under a
-              safe and secured platform.
+              Cảm thấy tự tin mỗi khi bạn giao dịch với chúng tôi
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
@@ -38,12 +37,13 @@ export const MyFooter = () => {
                 color: "white",
               }}
             >
-              <SupportAgentIcon sx={{ fontSize: 40 }} /> Customer Support
+              <SupportAgentIcon sx={{ fontSize: 40 }} />
+              Hỗ trợ khách hàng
             </Typography>
             <Typography color={"white"}>
-              Our dedicated Customer Service team are available to help with any
-              queries about your orders and provide exceptional after-sales
-              support.
+              Đội ngũ hỗ trợ Khách hàng tận tâm của chúng tôi luôn sẵn sàng trợ
+              giúp mọi thắc mắc về đơn đặt hàng của bạn và cung cấp hỗ trợ sau
+              bán hàng
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
@@ -57,12 +57,10 @@ export const MyFooter = () => {
               }}
             >
               <MonetizationOnIcon sx={{ fontSize: 36 }} />
-              Best Offers
+              Giá tốt nhất
             </Typography>
             <Typography color={"white"}>
-              G2G provides competitive pricing to the buyers driven by a free
-              market economy while striving to keep the cost low for our
-              sellers.
+              Gameshop247 cung cấp giá cả tốt nhất cho người mua,
             </Typography>
           </Grid>
         </Grid>

@@ -5,6 +5,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
+import HomeIcon from "@mui/icons-material/Home";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -13,11 +14,18 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import { styled } from "@mui/material/styles";
 import { signOut, useSession } from "next-auth/react";
 import { getSessionUserInfo } from "../../utils/get-session-user";
 
 // const settings = ["Profile", "Orders", "Logout"];
 // const settingsHrefs = ["/user/profile", "user/orders", "/"];
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  "text-shadow": "0 0 10px #e8ff80, 0 0 20px #e8ff80, 0 0 40px #e8ff80",
+  color: "#fff",
+}));
+
 const settings = ["Logout"];
 const settingsHrefs = ["/"];
 
@@ -25,8 +33,8 @@ const ResponsiveAppBar = () => {
   const { data: session } = useSession();
   const userInfo = getSessionUserInfo(session);
 
-  let pages = ["Trang chủ", "Mua tài khoản game", "Nạp game"];
-  let pageHrefs = ["/", "/account-game", "/nap-game"];
+  let pages = ["Mua tài khoản game", "Nạp game"];
+  let pageHrefs = ["/account-game", "/nap-game"];
 
   if (userInfo?.isAdmin) {
     pages.push("Admin");
@@ -56,9 +64,15 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth={false} style={{ backgroundColor: "#1B3447" }}>
-        <Toolbar disableGutters style={{ backgroundColor: "#1B3447" }}>
+    <AppBar
+      position="sticky"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.40)" }}
+    >
+      <Container
+      // maxWidth={false}
+      // style={{ backgroundColor: "rgba(255, 146, 136, 0.08)" }}
+      >
+        <Toolbar disableGutters>
           <Typography
             variant="h6"
             noWrap
@@ -110,6 +124,11 @@ const ResponsiveAppBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
+              <MenuItem onClick={handleCloseNavMenu}>
+                <NextLink href={"/"}>
+                  <HomeIcon></HomeIcon>
+                </NextLink>
+              </MenuItem>
               {pages.map((page, index) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <NextLink href={pageHrefs[index]} key={page}>
@@ -142,15 +161,24 @@ const ResponsiveAppBar = () => {
             ></NextImage>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            <MenuItem onClick={handleCloseNavMenu}>
+              <NextLink href={"/"}>
+                <HomeIcon fontSize="medium"></HomeIcon>
+              </NextLink>
+            </MenuItem>
             {pages.map((page, index) => (
               <NextLink href={pageHrefs[index]} key={page}>
-                <Button
-                  key={page}
+                <StyledButton
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{
+                    my: 2,
+                    color: "white",
+                    display: "block",
+                    fontSize: 16,
+                  }}
                 >
                   {page}
-                </Button>
+                </StyledButton>
               </NextLink>
             ))}
           </Box>

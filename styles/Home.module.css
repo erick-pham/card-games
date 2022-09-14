@@ -1,11 +1,12 @@
 .container {
   min-height: 1024px;
-  background-image: url('../asssets/backgound.jpg');
+  background-image: url('../asssets/backgound1.1.jpg');
   background-repeat: no-repeat;
   background-size: auto;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
+  background-size: cover;
 }
 
 .main {
@@ -23,7 +24,7 @@
   flex: 1;
   padding: 2rem 0;
   /* border-top: 1px solid #eaeaea; */
-  background-color: #111;
+  background-color: rgba(0, 0, 0, 0.40);
   justify-content: center;
   align-items: center;
 }
