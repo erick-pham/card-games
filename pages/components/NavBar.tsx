@@ -34,7 +34,7 @@ const ResponsiveAppBar = () => {
   const userInfo = getSessionUserInfo(session);
 
   let pages = ["Mua tài khoản game", "Nạp game"];
-  let pageHrefs = ["/account-game", "/nap-game"];
+  let pageHrefs = ["/account-game", "/card-game"];
 
   if (userInfo?.isAdmin) {
     pages.push("Admin");
@@ -224,7 +224,9 @@ const ResponsiveAppBar = () => {
             </Box>
           ) : (
             <Box sx={{ flexGrow: 0 }}>
-              <NextLink href={"/auth/signin"}>Đăng nhập</NextLink>
+              <NextLink href={"/auth/signin"}>
+                <StyledButton>Đăng nhập</StyledButton>
+              </NextLink>
             </Box>
           )}
         </Toolbar>
