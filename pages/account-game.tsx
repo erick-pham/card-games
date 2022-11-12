@@ -20,7 +20,7 @@ function Home() {
         loadingMessage: message.appAPILoading,
       })
     );
-    fetch("/api/public/product")
+    fetch("/api/public/products")
       .then((response) => response.json())
       .then((data) => {
         if (data.error === true) {

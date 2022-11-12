@@ -55,7 +55,7 @@ function Home() {
         loadingMessage: message.appAPILoading,
       })
     );
-    fetch("/api/public/card-game")
+    fetch("/api/public/card-games")
       .then((response) => response.json())
       .then((data) => {
         if (data.error === true) {
