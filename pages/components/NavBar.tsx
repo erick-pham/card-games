@@ -22,7 +22,7 @@ import { getSessionUserInfo } from "../../utils/get-session-user";
 // const settingsHrefs = ["/user/profile", "user/orders", "/"];
 
 const StyledButton = styled(Button)(({ theme }) => ({
-  "text-shadow": "0 0 10px #e8ff80, 0 0 20px #e8ff80, 0 0 40px #e8ff80",
+  textShadow: "0 0 10px #e8ff80, 0 0 20px #e8ff80, 0 0 40px #e8ff80",
   color: "#fff",
 }));
 
