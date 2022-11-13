@@ -11,13 +11,15 @@
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
-    "@hookform/resolvers": "^2.9.7",
+    "@hookform/resolvers": "^2.9.10",
     "@mui/icons-material": "^5.10.2",
     "@mui/material": "^5.10.2",
     "@next-auth/typeorm-legacy-adapter": "^2.0.0",
     "@reduxjs/toolkit": "^1.8.5",
     "@types/lodash": "^4.14.184",
     "@types/styled-components": "^5.1.26",
+    "ajv-errors": "^3.0.0",
+    "ajv-formats": "^2.1.1",
     "chart.js": "^3.9.1",
     "class-transformer": "^0.5.1",
     "install": "^0.13.0",
@@ -36,7 +38,7 @@
     "react-redux": "^8.0.2",
     "reflect-metadata": "^0.1.13",
     "styled-components": "^5.3.5",
-    "typeorm": "^0.3.9"
+    "typeorm": "^0.3.10"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",

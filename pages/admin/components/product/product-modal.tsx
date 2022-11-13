@@ -1,5 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+
+import { ajvResolver } from "../../../../validator/ajvResolver";
+import * as AdminProductValidation from "../../../../validator/validationSchema/admin-product";
+
 import { Controller, useForm } from "react-hook-form";
 import {
   Dialog,
@@ -17,6 +21,12 @@ import { setErrorState, setLoadingState } from "../../../../app/rootSlice";
 import { PRODUCT_STATUS_LABEL } from "../../../../common/constants";
 import message from "../../../../common/messages";
 
+const FormHelperTextProps = {
+  sx: {
+    "&:first-letter": { textTransform: "capitalize" },
+  },
+};
+
 export const ProductModal = ({
   openModal,
   handleReloadPage,
@@ -32,7 +42,7 @@ export const ProductModal = ({
 }) => {
   const dispatch = useDispatch();
   const { control, handleSubmit, reset, register } = useForm({
-    // resolver: ajvResolver(schema),
+    resolver: ajvResolver(AdminProductValidation.ProductValidation),
   });
 
   useEffect(() => {
@@ -104,6 +114,7 @@ export const ProductModal = ({
                   label="Name"
                   error={error ? true : false}
                   helperText={error?.message}
+                  FormHelperTextProps={FormHelperTextProps}
                 />
               </FormControl>
             )}
@@ -120,6 +131,7 @@ export const ProductModal = ({
                   label="Thumbnail"
                   error={error ? true : false}
                   helperText={error?.message}
+                  FormHelperTextProps={FormHelperTextProps}
                 />
               </FormControl>
             )}
@@ -138,6 +150,7 @@ export const ProductModal = ({
                   value={value}
                   error={error ? true : false}
                   helperText={error?.message}
+                  FormHelperTextProps={FormHelperTextProps}
                 >
                   {PRODUCT_STATUS_LABEL.map((option) => (
                     <MenuItem key={option.value} value={option.value}>

@@ -15,6 +15,28 @@ import { createTransport } from "nodemailer";
 
 import { theme } from "../../../theme";
 
+declare module "next-auth" {
+  interface Session {
+    // what ever properties added, add type here
+    userRole: unknown | string | null | undefined;
+    userId: string | null | undefined;
+    accessToken: unknown;
+    userPhoneNumber: unknown | string | null | undefined;
+    expires: string;
+    user: {
+      email: string | null | undefined;
+      id: number;
+      name: string | null | undefined;
+      role: string | null | undefined;
+      image: string | null | undefined;
+    };
+  }
+  interface User {
+    role: string | null | undefined;
+    phoneNumber: string | null | undefined;
+  }
+}
+
 /**
  * Email HTML body
  * Insert invisible space into domains from being turned into a hyperlink by email
