@@ -92,6 +92,7 @@ const ResponsiveAppBar = () => {
               src="/static/images/logo.png"
               height={40}
               width={80}
+              alt="alt"
             ></NextImage>
           </Typography>
 
@@ -158,6 +159,7 @@ const ResponsiveAppBar = () => {
               src="/static/images/logo.png"
               height={40}
               width={80}
+              alt="alt"
             ></NextImage>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>

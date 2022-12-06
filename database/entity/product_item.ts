@@ -9,7 +9,7 @@ import {
 import AppBaseEntity from "./base";
 
 import { Product } from "./product";
-import { PRODUCT_ITEM_STATUS } from "../../common/constants";
+import { PRODUCT_ITEM_STATUS } from "common/constants";
 
 @Entity({ name: "product_items" })
 export class ProductItem extends AppBaseEntity {
@@ -44,6 +44,9 @@ export class ProductItem extends AppBaseEntity {
 
   @ManyToOne(() => Product, (product) => product.productItems)
   product!: Product;
+
+  @Column({ length: 1000, nullable: true })
+  productId!: string;
 
   @CreateDateColumn()
   createdAt!: Date | undefined;

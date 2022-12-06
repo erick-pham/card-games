@@ -28,9 +28,9 @@ import {
   setLoadingState,
   setDialogImageState,
 } from "../../../app/rootSlice";
-import message from "../../../common/messages";
+import message from "common/messages";
 import { useRouter } from "next/router";
-import { ProductItem } from "../../../interfaces/entity/product_item";
+import { ProductItem } from "database/entity/product_item";
 import { getSessionUserInfo } from "../../../utils/get-session-user";
 
 function UserPreOrder() {

@@ -13,14 +13,14 @@ import {
   Button,
 } from "@mui/material";
 
-import { ProductItem } from "../../../../interfaces/entity/product_item";
+import { ProductItem } from "database/entity/product_item";
 import { setErrorState, setLoadingState } from "../../../../app/rootSlice";
 import {
   PRODUCT_ITEM_STATUS_LABEL,
   PRODUCT_ITEM_TYPES_LABEL,
   Currencies,
-} from "../../../../common/constants";
-import message from "../../../../common/messages";
+} from "common/constants";
+import message from "common/messages";
 
 export const ProductDetailsModal = ({
   openModal,

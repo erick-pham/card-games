@@ -1,5 +1,5 @@
 import * as Ajv from "ajv";
-import { PRODUCT_STATUS } from "../../common/constants";
+import { PRODUCT_STATUS } from "common/constants";
 
 // must use `minLength: 1` to implement required field
 export const ProductValidation: Ajv.JSONSchemaType<{}> = {

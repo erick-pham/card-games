@@ -11,12 +11,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import Chip from "@mui/material/Chip";
 import CardMedia from "@mui/material/CardMedia";
-import { Product } from "../../../../interfaces/entity/product";
+import { Product } from "database/entity/product";
 import {
   GetLabelText,
   PRODUCT_STATUS_LABEL,
   StatusColor,
-} from "../../../../common/constants";
+} from "common/constants";
 export const ProductCard = ({
   product,
   handleClickEditProduct,

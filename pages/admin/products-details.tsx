@@ -30,15 +30,15 @@ import { ProductListToolbar } from "./components/product/product-list-toolbar";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { ProductDetailsModal } from "./components/product-details/product-details-modal";
 import { setErrorState, setLoadingState } from "../../app/rootSlice";
-import message from "../../common/messages";
-import { Product } from "../../interfaces/entity/product";
-import { ProductItem } from "../../interfaces/entity/product_item";
+import message from "common/messages";
+import { Product } from "database/entity/product";
+import { ProductItem } from "database/entity/product_item";
 import {
   PRODUCT_ITEM_STATUS_LABEL,
   GetLabelText,
   PRODUCT_ITEM_TYPES_LABEL,
   StatusColor,
-} from "../../common/constants";
+} from "common/constants";
 
 const ProductItems = () => {
   const dispatch = useDispatch();

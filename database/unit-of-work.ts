@@ -5,10 +5,10 @@ import {
   AccountEntity,
   SessionEntity,
   VerificationTokenEntity,
-} from "../entity/entities";
-import { ProductItem } from "../entity/product_item";
-import { Product } from "../entity/product";
-import { OrderEntity } from "../entity/order";
+} from "./entity/entities";
+import { ProductItem } from "./entity/product_item";
+import { Product } from "./entity/product";
+import { OrderEntity } from "./entity/order";
 
 export const sqliteConfigs = {
   type: "sqlite",
@@ -53,6 +53,7 @@ export const pgConfigs = {
 };
 
 export const dbConfigs = () => {
+  return sqliteConfigs as DataSourceOptions;
   if (process.env.NODE_ENV === "development") {
     return sqliteConfigs as DataSourceOptions;
   }

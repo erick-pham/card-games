@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
 
-import UnitOfWork from "../../interfaces/database/unit-of-work";
+import UnitOfWork from "database/unit-of-work";
 
 export default async function handler(
   req: NextApiRequest,

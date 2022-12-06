@@ -6,8 +6,8 @@ import { OrderListResults } from "./components/orders/orders-list-results";
 import { OrderListToolbar } from "./components/orders/orders-list-toolbar";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { setErrorState, setLoadingState } from "../../app/rootSlice";
-import message from "../../common/messages";
-import { OrderEntity } from "../../interfaces/entity/order";
+import message from "common/messages";
+import { OrderEntity } from "database/entity/order";
 
 export type OrderAPIReponse = {
   data: OrderEntity[];

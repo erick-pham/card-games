@@ -1,11 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import "reflect-metadata";
-import UnitOfWork from "../../interfaces/database/unit-of-work";
+import UnitOfWork from "database/unit-of-work";
 
 import { faker } from "@faker-js/faker";
-import { ProductItem } from "../../interfaces/entity/product_item";
-import { Product } from "../../interfaces/entity/product";
+import { ProductItem } from "database/entity/product_item";
+import { Product } from "database/entity/product";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

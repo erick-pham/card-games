@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import numeral from "numeral";
 
-import { StatusColor } from "../../../../common/constants";
+import { StatusColor } from "common/constants";
 import { OrderAPIReponse } from "../../orders";
 
 export const OrderListResults = ({

@@ -1,10 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import UnitOfWork from "../../../interfaces/database/unit-of-work";
-import {
-  PRODUCT_ITEM_TYPES,
-  PRODUCT_ITEM_STATUS,
-} from "../../../common/constants";
+import UnitOfWork from "database/unit-of-work";
+import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
 
 export default async function handler(
   req: NextApiRequest,

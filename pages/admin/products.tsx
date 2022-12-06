@@ -11,8 +11,8 @@ import { ProductCard } from "./components/product/product-card";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { ProductModal } from "./components/product/product-modal";
 import { setErrorState, setLoadingState } from "../../app/rootSlice";
-import message from "../../common/messages";
-import { Product } from "../../interfaces/entity/product";
+import message from "common/messages";
+import { Product } from "database/entity/product";
 const Products = () => {
   const dispatch = useDispatch();
   const [reloadPage, setReloadPage] = useState(false);

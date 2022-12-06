@@ -16,10 +16,10 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
-import { Product } from "../../../../interfaces/entity/product";
+import { Product } from "database/entity/product";
 import { setErrorState, setLoadingState } from "../../../../app/rootSlice";
-import { PRODUCT_STATUS_LABEL } from "../../../../common/constants";
-import message from "../../../../common/messages";
+import { PRODUCT_STATUS_LABEL } from "common/constants";
+import message from "common/messages";
 
 const FormHelperTextProps = {
   sx: {

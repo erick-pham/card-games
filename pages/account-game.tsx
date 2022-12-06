@@ -5,10 +5,10 @@ import styles from "../styles/Home.module.css";
 import NavBar from "./components/NavBar";
 import ListCard from "./components/CardList";
 import Container from "@mui/material/Container";
-import { Product } from "../interfaces/entity/product";
+import { Product } from "database/entity/product";
 import MyFooter from "./components/MyFooter";
 import { setErrorState, setLoadingState } from "../app/rootSlice";
-import message from "../common/messages";
+import message from "common/messages";
 
 function Home() {
   const dispatch = useDispatch();

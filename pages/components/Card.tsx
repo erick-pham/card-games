@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import DialogImage from "./DialogImage";
 import { setDialogImageState } from "../../app/rootSlice";
-import { ProductItem } from "../../interfaces/entity/product_item";
+import { ProductItem } from "database/entity/product_item";
 
 export default function RecipeReviewCard({
   product,

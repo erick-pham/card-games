@@ -7,9 +7,9 @@ import {
   TypeORMLegacyAdapter,
   Entities,
 } from "@next-auth/typeorm-legacy-adapter";
-import * as entities from "../../../interfaces/entity/entities";
+import * as entities from "database/entity/entities";
 
-import { dbConfigs } from "../../../interfaces/database/unit-of-work";
+import { dbConfigs } from "database/unit-of-work";
 
 import { createTransport } from "nodemailer";
 

@@ -4,16 +4,13 @@ import { FindOptionsWhere, Like } from "typeorm";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
 
-import UnitOfWork from "../../interfaces/database/unit-of-work";
+import UnitOfWork from "database/unit-of-work";
 import { checkIsAdmin } from "../../utils/check-role";
 import { paginateRequest, paginateResponse } from "../../utils/paginate";
-import { OrderEntity } from "../../interfaces/entity/order";
+import { OrderEntity } from "database/entity/order";
 import { generateCode } from "../../utils/generate-code";
 import { plainToInstance } from "class-transformer";
-import {
-  PRODUCT_ITEM_TYPES,
-  PRODUCT_ITEM_STATUS,
-} from "../../common/constants";
+import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
 
 interface OrderRequestBody {
   productItemId: string;
@@ -84,7 +81,7 @@ export default async function handler(
 
       if (item.type === PRODUCT_ITEM_TYPES.ACCOUNT) {
         await uow.ProuductItemRepository.update(input.productItemId, {
-          status: PRODUCT_ITEM_STATUS.SELLING,
+          status: PRODUCT_ITEM_STATUS.SOLD,
         });
       }
 

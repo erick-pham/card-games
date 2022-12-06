@@ -1,9 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { plainToInstance } from "class-transformer";
-import UnitOfWork from "../../../interfaces/database/unit-of-work";
-import { ProductItem } from "../../../interfaces/entity/product_item";
-import { Product } from "../../../interfaces/entity/product";
+import UnitOfWork from "database/unit-of-work";
+import { ProductItem } from "database/entity/product_item";
+import { Product } from "database/entity/product";
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,13 +15,29 @@ export default async function handler(
   try {
     if (req.method === "POST") {
       const productItemEntity = plainToInstance(ProductItem, req.body);
-      const productEntity = plainToInstance(Product, {
-        id: req.body.productId,
-      });
-      productItemEntity.product = productEntity;
-      const data = await uow.ProuductItemRepository.upsert(productItemEntity, [
-        "id",
-      ]);
+
+      let data = null;
+      if (productItemEntity.id) {
+        console.log("productItemEntity", productItemEntity);
+        data = await uow.ProuductItemRepository.createQueryBuilder()
+          .update(productItemEntity)
+          .where({
+            id: productItemEntity.id,
+          })
+          // .returning("*")
+          .execute();
+        data = await uow.ProuductItemRepository.findOne({
+          where: { id: productItemEntity.id },
+        });
+      } else {
+        const productEntity = plainToInstance(Product, {
+          id: req.body.productId,
+        });
+        productItemEntity.product = productEntity;
+        data = await uow.ProuductItemRepository.insert(productItemEntity);
+        data = data.generatedMaps[0];
+      }
+
       res.status(200).json(data);
       // } else if (req.method === "DELETE") {
       //   const data = await uow.ProuductItemRepository.delete({

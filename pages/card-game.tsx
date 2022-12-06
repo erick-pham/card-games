@@ -17,12 +17,13 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-
+import { ajvResolver } from "validator/ajvResolver";
+import { SubmitCardOrderValidation } from "validator/validationSchema/client-orders";
 import MyFooter from "./components/MyFooter";
 import { setErrorState, setLoadingState } from "../app/rootSlice";
-import message from "../common/messages";
+import message from "common/messages";
 import { Controller, useForm } from "react-hook-form";
-import { Product } from "../interfaces/entity/product";
+import { Product } from "database/entity/product";
 const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: 5,
@@ -35,18 +36,36 @@ const StyledTitle = styled(Typography)(({ theme }) => ({
   color: "#008B88",
 }));
 
-type InputCardGame = {
-  game: string;
+type SubmitCardOrderType = {
+  productItemId: string | undefined;
+  productId: string | undefined;
+  accountId: string | undefined;
+  accountName: string | undefined;
+  accountPassword: string | undefined;
+  accountServer: string | undefined;
+  accountCharacterName: string | undefined;
+  phoneNumber: string | undefined;
+  description: string | undefined;
 };
 
-function Home() {
+function CardGamePage() {
   const dispatch = useDispatch();
   const [products, setProducts] = useState<Product[]>([]);
   const { control, handleSubmit, reset, register, watch } = useForm({
-    // resolver: ajvResolver(schema),
+    // resolver: ajvResolver(SubmitCardOrderValidation),
+    // defaultValues: {
+    //   productItemId: "",
+    //   productId: "",
+    //   accountId: "",
+    //   accountName: "",
+    //   accountPassword: "",
+    //   accountServer: "",
+    //   accountCharacterName: "",
+    //   phoneNumber: "",
+    //   description: "",
+    // },
   });
-  const watchShowGame = watch("game", false); // you can supply default value as second argument
-  const [inputCardGame, setInputCardGame] = useState<InputCardGame>();
+  const watchShowGame = watch("productId", false) || false; // you can supply default value as second argument
 
   useEffect(() => {
     dispatch(
@@ -87,13 +106,18 @@ function Home() {
         loadingMessage: message.appAPILoading,
       })
     );
-    fetch("/api/product-item", {
+
+    const payload = data as SubmitCardOrderType;
+
+    fetch("/api/card-orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         ...data,
+        productId: payload?.productId,
+        productItemId: payload.productItemId,
       }),
     })
       .then((response) => response.json())
@@ -120,7 +144,7 @@ function Home() {
 
   const renderPackage = (activeProductId: string) => {
     const product = products.find((i) => i.id === activeProductId);
-    console.log("product", product);
+
     const productItems = product?.productItems || [
       {
         id: "id",
@@ -150,9 +174,9 @@ function Home() {
               <StyledTitle variant="h5" align="center" color="#008B88">
                 Nhập thông tin NẠP GENSHIN IMPACT
               </StyledTitle>
-              <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+              <form autoComplete="off">
                 <Controller
-                  name="game"
+                  name="productId"
                   control={control}
                   render={({
                     field: { onChange, value },
@@ -166,6 +190,7 @@ function Home() {
                         onChange={onChange}
                         variant="filled"
                         size="small"
+                        value={value || ""}
                         error={error ? true : false}
                         helperText={error?.message}
                       >
@@ -179,7 +204,7 @@ function Home() {
                   )}
                 />
                 <Controller
-                  name="package"
+                  name="productItemId"
                   control={control}
                   render={({
                     field: { onChange, value },
@@ -189,14 +214,15 @@ function Home() {
                       <TextField
                         id="outlined-multiline-flexible"
                         label="Gói"
-                        select={watchShowGame ? true : false}
+                        select={true}
                         onChange={onChange}
                         variant="filled"
                         size="small"
+                        value={value || ""}
                         error={error ? true : false}
                         helperText={error?.message}
                       >
-                        {watchShowGame && renderPackage(watchShowGame)}
+                        {renderPackage(watchShowGame)}
                       </TextField>
                     </FormControl>
                   )}
@@ -256,7 +282,7 @@ function Home() {
                   )}
                 />
                 <Controller
-                  name="server"
+                  name="accountServer"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth sx={{ m: 1 }} variant="standard">
@@ -273,7 +299,7 @@ function Home() {
                   )}
                 />
                 <Controller
-                  name="characterName"
+                  name="accountCharacterName"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth sx={{ m: 1 }} variant="standard">
@@ -332,7 +358,7 @@ function Home() {
                     alignContent: "center",
                     textAlign: "center",
                   }}
-                  type="submit"
+                  onClick={handleSubmit(onSubmit)}
                 >
                   Gửi yêu cầu
                 </Button>
@@ -352,9 +378,11 @@ function Home() {
                     textTransform: "uppercase",
                     fontWeight: "bold",
                   }}
+                  component="h1"
                 >
                   BÀI CÁC CÂU HỎI VỀ NẠP:
                 </Typography>
+
                 <Typography
                   style={{
                     color: "red",
@@ -401,7 +429,7 @@ function Home() {
                 </Typography>
                 <Typography style={{ backgroundColor: "red", color: "yellow" }}>
                   ❇️ Lưu ý : Khi nạp thành công đơn hãy đổi mật khẩu để đảm bảo
-                  an toàn !
+                  an toàn!
                 </Typography>
               </Box>
             </Grid>
@@ -414,4 +442,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default CardGamePage;
