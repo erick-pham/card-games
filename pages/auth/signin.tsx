@@ -36,10 +36,20 @@ export default function SignIn({
       <Box
         component="main"
         sx={{
-          alignItems: "center",
+          // position: "fixed",
+          // top: "50%",
+          // left: "50%",
+          // alignItems: "center",
+          // display: "flex",
+          // flexGrow: 1,
+          // minHeight: "100%",
+
           display: "flex",
-          flexGrow: 1,
-          minHeight: "100%",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          minHeight: "100vh",
         }}
       >
         <Container maxWidth="sm">
