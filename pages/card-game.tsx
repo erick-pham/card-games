@@ -1,4 +1,6 @@
 import Head from "next/head";
+import { GetServerSideProps, NextPage } from "next";
+import ErrorPage from "next/error";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styles from "../styles/Home.module.css";
@@ -24,6 +26,8 @@ import { setErrorState, setLoadingState } from "../app/rootSlice";
 import message from "common/messages";
 import { Controller, useForm } from "react-hook-form";
 import { Product } from "database/entity/product";
+import UnitOfWork from "database/unit-of-work";
+import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
 const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: 5,
@@ -35,6 +39,37 @@ const StyledTitle = styled(Typography)(({ theme }) => ({
   align: "center",
   color: "#008B88",
 }));
+
+export const getServerSideProps: GetServerSideProps<CardGamePageProps> = async (
+  context
+) => {
+  try {
+    const { params, req, res } = context;
+    // const response = await fetch(`http://localhost:3000/api/public/card-games`);
+    const uow = new UnitOfWork();
+    await uow.initialize();
+    const data = await uow.ProuductRepository.find({
+      where: {
+        // ...where,
+        productItems: {
+          type: PRODUCT_ITEM_TYPES.CARD_GAME,
+          status: PRODUCT_ITEM_STATUS.SELLING,
+        },
+      },
+      relations: {
+        productItems: true,
+      },
+    });
+    const productCardGames = JSON.parse(JSON.stringify(data));
+    return {
+      props: { productCardGames },
+    };
+  } catch (error) {
+    return {
+      props: { internalError: true, statusCode: 500 },
+    };
+  }
+};
 
 type SubmitCardOrderType = {
   productItemId: string | undefined;
@@ -48,9 +83,19 @@ type SubmitCardOrderType = {
   description: string | undefined;
 };
 
-function CardGamePage() {
+type CardGamePageProps = {
+  internalError?: boolean;
+  statusCode?: number;
+  productCardGames?: Product[];
+};
+
+const CardGamePage: NextPage = ({
+  internalError,
+  statusCode,
+  productCardGames,
+}: CardGamePageProps) => {
   const dispatch = useDispatch();
-  const [products, setProducts] = useState<Product[]>([]);
+  // const [products, setProducts] = useState<Product[]>([]);
   const { control, handleSubmit, reset, register, watch } = useForm({
     // resolver: ajvResolver(SubmitCardOrderValidation),
     // defaultValues: {
@@ -67,37 +112,37 @@ function CardGamePage() {
   });
   const watchShowGame = watch("productId", false) || false; // you can supply default value as second argument
 
-  useEffect(() => {
-    dispatch(
-      setLoadingState({
-        loading: true,
-        loadingMessage: message.appAPILoading,
-      })
-    );
-    fetch("/api/public/card-games")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error === true) {
-          dispatch(
-            setErrorState({
-              message: data.message,
-              values: "",
-              severity: "error",
-            })
-          );
-        } else {
-          setProducts(data);
-        }
-      })
-      .finally(() => {
-        dispatch(
-          setLoadingState({
-            loading: false,
-            loadingMessage: null,
-          })
-        );
-      });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(
+  //     setLoadingState({
+  //       loading: true,
+  //       loadingMessage: message.appAPILoading,
+  //     })
+  //   );
+  //   fetch("/api/public/card-games")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       if (data.error === true) {
+  //         dispatch(
+  //           setErrorState({
+  //             message: data.message,
+  //             values: "",
+  //             severity: "error",
+  //           })
+  //         );
+  //       } else {
+  //         setProducts(data);
+  //       }
+  //     })
+  //     .finally(() => {
+  //       dispatch(
+  //         setLoadingState({
+  //           loading: false,
+  //           loadingMessage: null,
+  //         })
+  //       );
+  //     });
+  // }, [dispatch]);
 
   const onSubmit = (data: object) => {
     dispatch(
@@ -143,7 +188,7 @@ function CardGamePage() {
   };
 
   const renderPackage = (activeProductId: string) => {
-    const product = products.find((i) => i.id === activeProductId);
+    const product = productCardGames?.find((i) => i.id === activeProductId);
 
     const productItems = product?.productItems || [
       {
@@ -158,6 +203,9 @@ function CardGamePage() {
     ));
   };
 
+  if (internalError && statusCode) {
+    return <ErrorPage statusCode={statusCode} />;
+  }
   return (
     <div className={styles.container}>
       <Head>
@@ -194,7 +242,7 @@ function CardGamePage() {
                         error={error ? true : false}
                         helperText={error?.message}
                       >
-                        {products.map((option) => (
+                        {productCardGames?.map((option) => (
                           <MenuItem key={option.id} value={option.id}>
                             {option.name}
                           </MenuItem>
@@ -440,6 +488,6 @@ function CardGamePage() {
       <MyFooter />
     </div>
   );
-}
+};
 
 export default CardGamePage;
