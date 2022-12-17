@@ -53,7 +53,6 @@ export const pgConfigs = {
 };
 
 export const dbConfigs = () => {
-  return sqliteConfigs as DataSourceOptions;
   if (process.env.NODE_ENV === "development") {
     return sqliteConfigs as DataSourceOptions;
   }
