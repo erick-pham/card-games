@@ -72,15 +72,15 @@ export const getServerSideProps: GetServerSideProps<CardGamePageProps> = async (
 };
 
 type SubmitCardOrderType = {
-  productItemId: string | undefined;
-  productId: string | undefined;
-  accountId: string | undefined;
-  accountName: string | undefined;
-  accountPassword: string | undefined;
-  accountServer: string | undefined;
-  accountCharacterName: string | undefined;
-  phoneNumber: string | undefined;
-  description: string | undefined;
+  productItemId: string;
+  productId: string;
+  accountUserId: string;
+  accountName: string;
+  accountPassword: string;
+  accountServer: string;
+  accountCharacterName: string;
+  phoneNumber: string;
+  description: string;
 };
 
 type CardGamePageProps = {
@@ -108,7 +108,7 @@ const CardGamePage: NextPage = ({
     description: '',
   };
 
-  const { handleSubmit, control, reset, register, watch, getValues, formState: { errors } } = useForm({
+  const { handleSubmit, control, reset, register, watch, getValues, formState: { errors } } = useForm<SubmitCardOrderType>({
     resolver: ajvResolver(SubmitCardOrderValidation),
     defaultValues
   });
@@ -118,7 +118,6 @@ const CardGamePage: NextPage = ({
   const onSubmit = (data: SubmitCardOrderType) => {
     console.log('data', data);
     console.log('data', getValues());
-    return true;
 
     //   dispatch(
     //     setLoadingState({
