@@ -153,17 +153,19 @@ function Home() {
                   justifyContent: "center",
                 }}
               >
-                <Button
-                  variant="contained"
-                  style={{
-                    width: "auto",
-                    color: "black",
-                    backgroundColor: "#FFC107",
-                    fontWeight: "bold",
-                  }}
-                >
-                  NẠP NGAY
-                </Button>
+                <Link href={"/card-game"}>
+                  <Button
+                    variant="contained"
+                    style={{
+                      width: "auto",
+                      color: "black",
+                      backgroundColor: "#FFC107",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    NẠP NGAY
+                  </Button>
+                </Link>
               </CardActions>
             </Card>
           </Grid>
