@@ -14,7 +14,7 @@
     "@hookform/resolvers": "^2.9.10",
     "@mui/icons-material": "^5.10.2",
     "@mui/material": "^5.10.2",
-    "@next-auth/typeorm-legacy-adapter": "^2.0.0",
+    "@next-auth/typeorm-legacy-adapter": "^2.0.1",
     "@reduxjs/toolkit": "^1.8.5",
     "@types/lodash": "^4.14.184",
     "@types/styled-components": "^5.1.26",
@@ -39,7 +39,7 @@
     "react-redux": "^8.0.2",
     "reflect-metadata": "^0.1.13",
     "styled-components": "^5.3.5",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.3.7"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.4.0",
