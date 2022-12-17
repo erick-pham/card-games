@@ -69,10 +69,10 @@ const OrderResultPage: NextPage = ({ orderData }: OrderResultPageProps) => {
                 </Typography>
 
                 <Typography variant="body1" color="text.secondary">
-                  Họ Tên: {orderData?.name}
+                  Họ Tên:
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  Email: {orderData?.email}
+                  Email:
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
                   Mã đơn: {orderData?.referenceNumber}
