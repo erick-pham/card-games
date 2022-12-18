@@ -5,6 +5,8 @@ import {
   ManyToOne,
   OneToMany,
   ValueTransformer,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 
 const transformer: Record<"date" | "bigint", ValueTransformer> = {
@@ -38,6 +40,9 @@ export class UserEntity {
   @Column({ type: "varchar", nullable: true })
   role!: string | null;
 
+  @Column({ type: "varchar", nullable: true })
+  address!: string | null;
+
   @Column({ type: "varchar", length: 15, nullable: true })
   phoneNumber!: string | null;
 
@@ -46,6 +51,12 @@ export class UserEntity {
 
   @OneToMany(() => AccountEntity, (account) => account.userId)
   accounts!: AccountEntity[];
+
+  @CreateDateColumn({ type: "timestamptz" })
+  createdAt!: Date;
+
+  @UpdateDateColumn({ type: "timestamptz" })
+  updatedAt!: Date;
 }
 
 @Entity({ name: "accounts" })
