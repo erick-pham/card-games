@@ -20,7 +20,6 @@ type OrderResultPageProps = {
 import NavBar from "./components/NavBar";
 import styles from "../styles/Home.module.css";
 const OrderResultPage: NextPage = ({ orderData }: OrderResultPageProps) => {
-  console.log(orderData);
   return (
     <div className={styles.container}>
       <Head>
@@ -65,14 +64,17 @@ const OrderResultPage: NextPage = ({ orderData }: OrderResultPageProps) => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                 <Typography gutterBottom variant="h5" component="div">
-                  Thông tin đặt hàng
+                  Thông tin liên hệ
                 </Typography>
 
                 <Typography variant="body1" color="text.secondary">
-                  Họ Tên:
+                  Họ Tên: {orderData?.contactName}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  Email:
+                  Số điện thoại: {orderData?.contactPhoneNumber}
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  Email: {orderData?.contactEmail}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
                   Mã đơn: {orderData?.referenceNumber}

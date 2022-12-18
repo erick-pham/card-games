@@ -21,7 +21,7 @@ export const SubmitCardOrderValidation: Ajv.JSONSchemaType<{}> = {
     },
     accountPassword: {
       type: "string",
-      minLength: 1,
+      // minLength: 1,
     },
     accountServer: {
       type: "string",
@@ -31,7 +31,15 @@ export const SubmitCardOrderValidation: Ajv.JSONSchemaType<{}> = {
       type: "string",
       minLength: 1,
     },
-    phoneNumber: {
+    contactName: {
+      type: "string",
+      minLength: 1,
+    },
+    contactEmail: {
+      type: "string",
+      minLength: 1,
+    },
+    contactPhoneNumber: {
       type: "string",
       minLength: 1,
     },

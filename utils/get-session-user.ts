@@ -1,4 +1,4 @@
-type SessionUser = {
+export type SessionUser = {
   name?: string | null | undefined;
   firstName?: string | null | undefined;
   lastName?: string | null | undefined;

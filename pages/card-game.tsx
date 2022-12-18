@@ -25,7 +25,13 @@ import { Controller, useForm } from "react-hook-form";
 import { Product } from "database/entity/product";
 import UnitOfWork from "database/unit-of-work";
 import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
-import { isEmpty, delay } from "lodash"
+import { isEmpty } from "lodash";
+import { getSessionUserInfo, SessionUser } from "utils/get-session-user";
+
+import { authOptions } from 'pages/api/auth/[...nextauth]'
+import { unstable_getServerSession } from "next-auth/next"
+import Router from 'next/router'
+
 const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   borderRadius: 5,
@@ -43,12 +49,14 @@ export const getServerSideProps: GetServerSideProps<CardGamePageProps> = async (
 ) => {
   try {
     const { params, req, res } = context;
+    const session = await unstable_getServerSession(context.req, context.res, authOptions)
+    const userInfo = getSessionUserInfo(session);
+
     // const response = await fetch(`http://localhost:3000/api/public/card-games`);
     const uow = new UnitOfWork();
     await uow.initialize();
     const data = await uow.ProuductRepository.find({
       where: {
-        // ...where,
         productItems: {
           type: PRODUCT_ITEM_TYPES.CARD_GAME,
           status: PRODUCT_ITEM_STATUS.SELLING,
@@ -60,9 +68,10 @@ export const getServerSideProps: GetServerSideProps<CardGamePageProps> = async (
     });
     const productCardGames = JSON.parse(JSON.stringify(data));
     return {
-      props: { productCardGames },
+      props: { productCardGames, userInfo },
     };
   } catch (error) {
+    console.log(error);
     return {
       props: { internalError: true, statusCode: 500 },
     };
@@ -77,7 +86,9 @@ type SubmitCardOrderType = {
   accountPassword: string;
   accountServer: string;
   accountCharacterName: string;
-  phoneNumber: string;
+  contactName: string,
+  contactEmail: string,
+  contactPhoneNumber: string;
   description: string;
 };
 
@@ -85,16 +96,18 @@ type CardGamePageProps = {
   internalError?: boolean;
   statusCode?: number;
   productCardGames?: Product[];
+  userInfo?: SessionUser | null
 };
 
 const CardGamePage: NextPage = ({
   internalError,
   statusCode,
   productCardGames,
+  userInfo
 }: CardGamePageProps) => {
   const dispatch = useDispatch();
 
-  const defaultValues = {
+  let defaultValues = {
     productId: '',
     productItemId: '',
     accountUserId: '',
@@ -102,7 +115,9 @@ const CardGamePage: NextPage = ({
     accountPassword: '',
     accountServer: '',
     accountCharacterName: '',
-    phoneNumber: '',
+    contactName: userInfo?.name || '',
+    contactEmail: userInfo?.email || '',
+    contactPhoneNumber: userInfo?.phoneNumber || '',
     description: '',
   };
 
@@ -114,16 +129,12 @@ const CardGamePage: NextPage = ({
   const watchShowGame = watch("productId", ''); // you can supply default value as second argument
 
   const onSubmit = async (data: SubmitCardOrderType) => {
-    console.log('data', data);
-
     dispatch(
       setLoadingState({
         loading: true,
         loadingMessage: message.appAPILoading,
       })
     );
-
-    await new Promise(resolve => setTimeout(resolve, 15000));
 
     const payload = data as SubmitCardOrderType;
 
@@ -148,6 +159,9 @@ const CardGamePage: NextPage = ({
               severity: "error",
             })
           );
+        } else {
+          // setOrderReferenceNumberSubmitted(data.referenceNumber);
+          Router.push(`/order-result?referenceNumber=${data.referenceNumber}`)
         }
       })
       .finally(() => {
@@ -332,8 +346,43 @@ const CardGamePage: NextPage = ({
                     </FormControl>
                   )} />
 
+                <Typography variant="h6" align="left" color="#008B88">
+                  Thông tin liên hệ
+                </Typography>
                 <Controller
-                  name="phoneNumber"
+                  name="contactName"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                      <TextField
+                        {...field}
+                        id="outlined-multiline-flexible"
+                        label="Địa chỉ email"
+                        variant="filled"
+                        size="small"
+                        error={error ? true : false}
+                        helperText={error?.message}
+                      />
+                    </FormControl>
+                  )} />
+                <Controller
+                  name="contactEmail"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                      <TextField
+                        {...field}
+                        id="outlined-multiline-flexible"
+                        label="Địa chỉ email"
+                        variant="filled"
+                        size="small"
+                        error={error ? true : false}
+                        helperText={error?.message}
+                      />
+                    </FormControl>
+                  )} />
+                <Controller
+                  name="contactPhoneNumber"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
                     <FormControl fullWidth sx={{ m: 1 }} variant="standard">

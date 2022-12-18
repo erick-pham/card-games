@@ -4,7 +4,8 @@
     "paths": {
       "@database/*": ["database/*"],
       "@common/*": ["common/*"],
-      "@validator/*": ["validator/*"]
+      "@validator/*": ["validator/*"],
+      "@utils/*": ["utils/*"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

@@ -8,7 +8,7 @@ import {
 } from "./entity/entities";
 import { ProductItem } from "./entity/product_item";
 import { Product } from "./entity/product";
-import { OrderEntity } from "./entity/order";
+import { OrderDetailEntity, OrderEntity } from "./entity/order";
 
 export const sqliteConfigs = {
   type: "sqlite",
@@ -21,6 +21,7 @@ export const sqliteConfigs = {
     ProductItem,
     Product,
     OrderEntity,
+    OrderDetailEntity,
   ],
   synchronize: false,
   logging: false,
@@ -41,6 +42,7 @@ export const pgConfigs = {
     ProductItem,
     Product,
     OrderEntity,
+    OrderDetailEntity,
   ],
   ssl: true,
   extra: {

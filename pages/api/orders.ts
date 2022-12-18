@@ -85,13 +85,6 @@ export default async function handler(
         });
       }
 
-      if (input.phoneNumber || input.name) {
-        await uow.UserRepository.update(session.userId as string, {
-          phoneNumber: input.phoneNumber ? input.phoneNumber : undefined,
-          name: input.name ? input.name : undefined,
-        });
-      }
-
       const orderEntity = plainToInstance(OrderEntity, {
         ...input,
         userId: session.userId,
