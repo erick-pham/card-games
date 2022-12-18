@@ -45,7 +45,7 @@ export class ProductItem extends AppBaseEntity {
   @ManyToOne(() => Product, (product) => product.productItems)
   product!: Product;
 
-  @Column({ length: 1000, nullable: true })
+  @Column({ nullable: false })
   productId!: string;
 
   @CreateDateColumn()

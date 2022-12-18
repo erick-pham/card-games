@@ -22,7 +22,7 @@ export const sqliteConfigs = {
     Product,
     OrderEntity,
   ],
-  synchronize: true,
+  synchronize: false,
   logging: false,
 };
 
@@ -53,10 +53,13 @@ export const pgConfigs = {
 };
 
 export const dbConfigs = () => {
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.DB_TYPE === "postgres") {
+    return pgConfigs as DataSourceOptions;
+  } else if (process.env.DB_TYPE === "sqlite3") {
     return sqliteConfigs as DataSourceOptions;
+  } else {
+    throw new Error("Missing DB configuration");
   }
-  return pgConfigs as DataSourceOptions;
 };
 
 export default class UnitOfWork {
