@@ -48,9 +48,9 @@ export class ProductItem extends AppBaseEntity {
   @Column({ nullable: false })
   productId!: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt!: Date | undefined;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date | undefined;
 }

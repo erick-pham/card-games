@@ -67,7 +67,7 @@ export class OrderEntity extends AppBaseEntity {
   })
   status!: string;
 
-  @Column({ type: "uuid" })
+  @Column({ type: "uuid", nullable: true })
   userId!: string;
 
   @ManyToOne(() => UserEntity, {
@@ -89,9 +89,9 @@ export class OrderEntity extends AppBaseEntity {
   @JoinColumn()
   orderDetails!: OrderDetailEntity;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date;
 }

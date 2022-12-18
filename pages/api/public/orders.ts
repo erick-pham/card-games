@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { FindOptionsWhere, Like } from "typeorm";
-import { authOptions } from "./auth/[...nextauth]";
+import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
 
 import UnitOfWork from "database/unit-of-work";
@@ -24,48 +24,16 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
-  if (!session) {
-    res.status(401).json({ message: "You must be logged in." });
-    return;
-  }
-  const isAdmmin = checkIsAdmin(session);
+  // if (!session) {
+  //   res.status(401).json({ message: "You must be logged in." });
+  //   return;
+  // }
+  // const isAdmmin = checkIsAdmin(session);
   const uow = new UnitOfWork();
   await uow.initialize();
 
   try {
-    if (req.method === "GET") {
-      const { take, page, skip, keyword } = paginateRequest(req);
-      let where = {
-        referenceNumber: Like(`%${keyword}%`),
-        userId: !isAdmmin ? (session.userId as string) : undefined,
-      };
-
-      const data = await uow.OrderRepository.findAndCount({
-        where: where as FindOptionsWhere<OrderEntity>,
-        take: take,
-        skip: skip,
-        select: {
-          user: {
-            name: true,
-          },
-          productItem: {
-            name: true,
-            type: true,
-            price: true,
-          },
-        },
-        relations: {
-          user: true,
-          productItem: true,
-        },
-        order: {
-          updatedAt: "DESC",
-        },
-      });
-
-      const result = paginateResponse(data, page, take);
-      res.status(200).json(result);
-    } else if (req.method === "POST") {
+    if (req.method === "POST") {
       const input: OrderRequestBody = req.body;
 
       const item = await uow.ProuductItemRepository.findOneBy({
@@ -79,16 +47,15 @@ export default async function handler(
         });
       }
 
-      if (input.phoneNumber || input.name) {
-        await uow.UserRepository.update(session.userId as string, {
-          phoneNumber: input.phoneNumber ? input.phoneNumber : undefined,
-          name: input.name ? input.name : undefined,
+      if (item.type === PRODUCT_ITEM_TYPES.ACCOUNT) {
+        await uow.ProuductItemRepository.update(input.productItemId, {
+          status: PRODUCT_ITEM_STATUS.SOLD,
         });
       }
 
       const orderEntity = plainToInstance(OrderEntity, {
         ...input,
-        userId: session.userId,
+        userId: session?.userId || null,
         amount: item.price,
         referenceNumber: generateCode(10),
       });

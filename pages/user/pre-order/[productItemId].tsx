@@ -228,7 +228,7 @@ function UserPreOrder() {
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
                     Ngày tạo:{" "}
-                    {format(new Date(submittedOrder?.createdAt), "dd-MMM-yyyy")}
+                    {format(new Date(submittedOrder?.createdAt), "Pp")}
                   </Typography>
                   <Typography variant="body1" color="text.secondary">
                     Trạng thái: {submittedOrder?.status}

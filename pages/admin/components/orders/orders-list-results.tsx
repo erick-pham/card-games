@@ -37,7 +37,7 @@ export const OrderListResults = ({
                 <TableCell>Order Ref</TableCell>
                 <TableCell>Product Name</TableCell>
                 <TableCell>Amount</TableCell>
-                <TableCell>Customer</TableCell>
+                <TableCell>User</TableCell>
                 <TableCell sortDirection="desc">
                   <Tooltip enterDelay={300} title="Sort">
                     <TableSortLabel active direction="desc">
@@ -63,10 +63,10 @@ export const OrderListResults = ({
                   <TableCell>{numeral(order.amount).format("0,0")}</TableCell>
                   <TableCell>{order?.user?.name}</TableCell>
                   <TableCell>
-                    {format(new Date(order.createdAt), "dd-MMM-yyyy")}
+                    {format(new Date(order.createdAt), "Pp")}
                   </TableCell>
                   <TableCell>
-                    {format(new Date(order.updatedAt), "dd-MMM-yyyy")}
+                    {format(new Date(order.updatedAt), "Pp")}
                   </TableCell>
                   <TableCell>
                     <Chip

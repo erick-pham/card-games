@@ -1,6 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import "reflect-metadata";
 import UnitOfWork from "database/unit-of-work";
 
 import { faker } from "@faker-js/faker";

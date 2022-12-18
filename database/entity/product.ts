@@ -32,9 +32,9 @@ export class Product extends AppBaseEntity {
   @OneToMany(() => ProductItem, (productItem) => productItem.product)
   productItems: ProductItem[] | undefined;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date | undefined;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt: Date | undefined;
 }

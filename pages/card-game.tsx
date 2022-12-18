@@ -357,7 +357,7 @@ const CardGamePage: NextPage = ({
                       <TextField
                         {...field}
                         id="outlined-multiline-flexible"
-                        label="Địa chỉ email"
+                        label="Họ Tên"
                         variant="filled"
                         size="small"
                         error={error ? true : false}

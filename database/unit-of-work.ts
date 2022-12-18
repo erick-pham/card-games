@@ -1,5 +1,4 @@
 import { DataSource, DataSourceOptions } from "typeorm";
-import "reflect-metadata";
 import {
   UserEntity,
   AccountEntity,

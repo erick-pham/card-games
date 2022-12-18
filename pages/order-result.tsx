@@ -81,7 +81,7 @@ const OrderResultPage: NextPage = ({ orderData }: OrderResultPageProps) => {
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
                   Ngày tạo:{" "}
-                  {orderData ? format(new Date(orderData?.createdAt), "dd-MMM-yyyy") : ""}
+                  {orderData ? format(new Date(orderData?.createdAt), "Pp") : ""}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
                   Trạng thái: {orderData?.status}
