@@ -1,14 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { FindOptionsWhere, Like } from "typeorm";
-import { authOptions } from "../api/auth/[...nextauth]";
+import { authOptions } from "pages/api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
 
 import UnitOfWork from "database/unit-of-work";
-import { checkIsAdmin } from "../../utils/check-role";
-import { paginateRequest, paginateResponse } from "../../utils/paginate";
+import { checkIsAdmin } from "utils/check-role";
+import { paginateRequest, paginateResponse } from "utils/paginate";
 import { OrderEntity } from "database/entity/order";
-import { generateCode } from "../../utils/generate-code";
+import { generateCode } from "utils/generate-code";
 import { plainToInstance } from "class-transformer";
 import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
 
