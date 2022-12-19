@@ -79,7 +79,7 @@ export default async function handler(
         });
       }
 
-      if (item.type === PRODUCT_ITEM_TYPES.ACCOUNT) {
+      if (item.type === PRODUCT_ITEM_TYPES.ACCOUNT_GAME) {
         await uow.ProuductItemRepository.update(input.productItemId, {
           status: PRODUCT_ITEM_STATUS.SOLD,
         });
