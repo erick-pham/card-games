@@ -80,7 +80,7 @@ export const Currencies = [
 ];
 
 export const PRODUCT_ITEM_TYPES = {
-  ACCOUNT: "ACCOUNT",
+  ACCOUNT_GAME: "ACCOUNT_GAME",
   CARD_GAME: "CARD_GAME",
 };
 

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import "../styles/globals.css";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import { SessionProvider, useSession } from "next-auth/react";
 import { Alert, Snackbar } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
@@ -29,6 +29,7 @@ function MyApp({
   pageProps: any;
 }) {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const error = useSelector(selectErrorState);
   const loading = useSelector(selectLoadingState);
   const loadingMessage = useSelector(selectLoadingMessageState);
@@ -38,6 +39,21 @@ function MyApp({
       setOpen(true);
     }
   }, [error.message]);
+
+  useEffect(() => {
+    Router.events.on("routeChangeStart", (url) => {
+      setIsLoading(true)
+    });
+
+    Router.events.on("routeChangeComplete", (url) => {
+      setIsLoading(false)
+    });
+
+    Router.events.on("routeChangeError", (url) => {
+      setIsLoading(false)
+    });
+
+  }, [])
 
   const handleErrorSnackbarClose = () => {
     dispatch(setErrorState({ message: "", values: "", severity: "error" }));
@@ -74,13 +90,13 @@ function MyApp({
         }}
       />
       <LoadingDialog
-        isLoading={loading}
+        isLoading={loading || isLoading}
         message={loadingMessage.id ? loadingMessage.defaultMessage : null}
       ></LoadingDialog>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={open}
-        // autoHideDuration={30000}
+        autoHideDuration={5000}
         onClose={handleErrorSnackbarClose}
       >
         <Alert

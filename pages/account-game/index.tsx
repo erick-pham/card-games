@@ -1,13 +1,13 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import styles from "../styles/Home.module.css";
-import NavBar from "./components/NavBar";
-import ListCard from "./components/CardList";
+import styles from "styles/Home.module.css";
+import NavBar from "../components/NavBar";
+import ListCard from "../components/CardList";
 import Container from "@mui/material/Container";
 import { Product } from "database/entity/product";
-import MyFooter from "./components/MyFooter";
-import { setErrorState, setLoadingState } from "../app/rootSlice";
+import MyFooter from "../components/MyFooter";
+import { setErrorState, setLoadingState } from "../../app/rootSlice";
 import message from "common/messages";
 
 function Home() {
@@ -20,7 +20,7 @@ function Home() {
         loadingMessage: message.appAPILoading,
       })
     );
-    fetch("/api/public/products")
+    fetch("/api/public/account-games")
       .then((response) => response.json())
       .then((data) => {
         if (data.error === true) {

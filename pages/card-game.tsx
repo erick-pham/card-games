@@ -121,7 +121,7 @@ const CardGamePage: NextPage = ({
     description: '',
   };
 
-  const { handleSubmit, control, reset, register, watch, formState: { errors } } = useForm<SubmitCardOrderType>({
+  const { handleSubmit, control, watch, formState: { errors } } = useForm<SubmitCardOrderType>({
     resolver: ajvResolver(SubmitCardOrderValidation),
     defaultValues
   });

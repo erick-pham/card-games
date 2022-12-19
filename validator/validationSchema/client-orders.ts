@@ -50,6 +50,34 @@ export const SubmitCardOrderValidation: Ajv.JSONSchemaType<{}> = {
   additionalProperties: false,
 };
 
+export const SubmitAccountOrderValidation: Ajv.JSONSchemaType<{}> = {
+  type: "object",
+  properties: {
+    // productId: { type: "string", nullable: false, minLength: 1 },
+    productItemId: {
+      type: "string",
+      nullable: false,
+      minLength: 1,
+    },
+    contactName: {
+      type: "string",
+      minLength: 1,
+    },
+    contactEmail: {
+      type: "string",
+      minLength: 1,
+    },
+    contactPhoneNumber: {
+      type: "string",
+      minLength: 1,
+    },
+    description: {
+      type: "string",
+    },
+  },
+  additionalProperties: false,
+};
+
 // export const SubmitCardOrderValidation = Joi.object({
 //   accountUserId: Joi.string().min(3).max(30).required(),
 //   accountName: Joi.string().min(3).max(30).required(),

@@ -22,7 +22,7 @@ export default async function handler(
         where: {
           ...where,
           productItems: {
-            type: PRODUCT_ITEM_TYPES.ACCOUNT,
+            type: PRODUCT_ITEM_TYPES.ACCOUNT_GAME,
             status: PRODUCT_ITEM_STATUS.SELLING,
           },
         },
