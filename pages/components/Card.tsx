@@ -95,7 +95,7 @@ export default function RecipeReviewCard({
                 </Typography>
               </Grid>
               <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
-                <Link href={`/account-game/${product.id}`}>
+                <Link href={`/account-game/${product.id}/checkout`}>
                   <Button
                     variant="contained"
                     size="small"

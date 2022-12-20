@@ -53,7 +53,6 @@ export const SubmitCardOrderValidation: Ajv.JSONSchemaType<{}> = {
 export const SubmitAccountOrderValidation: Ajv.JSONSchemaType<{}> = {
   type: "object",
   properties: {
-    // productId: { type: "string", nullable: false, minLength: 1 },
     productItemId: {
       type: "string",
       nullable: false,

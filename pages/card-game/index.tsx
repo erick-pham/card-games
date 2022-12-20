@@ -1,9 +1,10 @@
 import Head from "next/head";
+import Router from 'next/router'
 import { GetServerSideProps, NextPage } from "next";
 import ErrorPage from "next/error";
+import { unstable_getServerSession } from "next-auth/next"
 import { useDispatch } from "react-redux";
-import styles from "../styles/Home.module.css";
-import NavBar from "./components/NavBar";
+
 import {
   Container,
   Box,
@@ -18,8 +19,8 @@ import {
 } from "@mui/material";
 import { ajvResolver } from "validator/ajvResolver";
 import { SubmitCardOrderValidation } from "validator/validationSchema/client-orders";
-import MyFooter from "./components/MyFooter";
-import { setErrorState, setLoadingState } from "../app/rootSlice";
+
+import { setErrorState, setLoadingState } from "app/rootSlice";
 import message from "common/messages";
 import { Controller, useForm } from "react-hook-form";
 import { Product } from "database/entity/product";
@@ -29,8 +30,11 @@ import { isEmpty } from "lodash";
 import { getSessionUserInfo, SessionUser } from "utils/get-session-user";
 
 import { authOptions } from 'pages/api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
-import Router from 'next/router'
+
+import styles from "styles/Home.module.css";
+
+import NavBar from "pages/components/NavBar";
+import MyFooter from "pages/components/MyFooter";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
@@ -160,8 +164,7 @@ const CardGamePage: NextPage = ({
             })
           );
         } else {
-          // setOrderReferenceNumberSubmitted(data.referenceNumber);
-          Router.push(`/order-result?referenceNumber=${data.referenceNumber}`)
+          Router.push(`/history-order?referenceNumber=${data.referenceNumber}`);
         }
       })
       .finally(() => {

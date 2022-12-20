@@ -9,21 +9,23 @@ import {
   CardContent,
   Card,
   CardHeader,
+  Link,
 } from "@mui/material";
 import numeral from "numeral";
 import { format } from "date-fns";
-type OrderResultPageProps = {
+
+type HistoryOrderPageProps = {
   internalError?: boolean;
   statusCode?: number;
   orderData?: OrderEntity;
 };
-import NavBar from "./components/NavBar";
-import styles from "../styles/Home.module.css";
-const OrderResultPage: NextPage = ({ orderData }: OrderResultPageProps) => {
+import NavBar from "../components/NavBar";
+import styles from "styles/Home.module.css";
+const HistoryOrderPage: NextPage = ({ orderData }: HistoryOrderPageProps) => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Trạng thái đơn hàng</title>
+        <title>Lịch sử đơn hàng</title>
       </Head>
       <NavBar></NavBar>
       <Box
@@ -101,6 +103,9 @@ const OrderResultPage: NextPage = ({ orderData }: OrderResultPageProps) => {
                 <Typography variant="body1" color="text.secondary">
                   Đặc điểm: {orderData?.productItem.description}
                 </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  Chi tiết tài khoản: <Link href={`account-game/${orderData?.productItem.id}/details`}>Click vào đây</Link>
+                </Typography>
                 <Typography
                   variant="body1"
                   color="text.secondary"
@@ -173,4 +178,4 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 };
 
-export default OrderResultPage;
+export default HistoryOrderPage;
