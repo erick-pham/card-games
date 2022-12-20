@@ -10,8 +10,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   let PRODUCT_ITEMS: ProductItem[] = [];
-  // const uow = new UnitOfWork();
-  // await uow.initialize();
+  const uow = new UnitOfWork();
+  await uow.initialize();
 
   // const product = {
   //   id: faker.datatype.uuid(),
@@ -28,15 +28,16 @@ export default async function handler(
   //   let productItem = {
   //     id: faker.datatype.uuid(),
   //     name: faker.name.firstName(),
-  //     price: faker.datatype.number({ min: 150000, max: 500000 }),
-  //     currency: faker.finance.currencyCode(),
+  //     price: faker.datatype.number({ min: 150, max: 2000 }) * 1000,
+  //     currency: "VND",
   //     status: faker.helpers.arrayElement(["NEW"]),
   //     thumbnail: faker.image.abstract(500, 300, true),
   //     image: faker.image.abstract(500, 300, true),
   //     description: faker.lorem.sentence(),
+  //     type: "CARD_GAME",
   //     createdAt: new Date(),
   //     updatedAt: new Date(),
-  //     product: product,
+  //     productId: "bef960f7-5a09-44d2-a7cd-cf67f8660a1c",
   //   };
   //   PRODUCT_ITEMS.push(productItem as ProductItem);
   // });

@@ -86,8 +86,8 @@ export const PRODUCT_ITEM_TYPES = {
 
 export const PRODUCT_ITEM_TYPES_LABEL = [
   {
-    value: "ACCOUNT",
-    label: "Account",
+    value: "ACCOUNT_GAME",
+    label: "Tài khoản game",
   },
   {
     value: "CARD_GAME",
