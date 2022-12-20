@@ -1,3 +1,13 @@
+/* .container {
+ padding: 0 2rem;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ height: 100vh;
+ background-color: aquamarine;
+} */
+
 .container {
   min-height: 1024px;
   background-image: url('../asssets/backgound1.2.jpg');
@@ -20,8 +30,9 @@
 }
 
 .footer {
-  display: flex;
-  flex: 1;
+  /* display: flex;
+  flex: 1; */
+  flex-shrink: 0;
   padding: 2rem 0;
   /* border-top: 1px solid #eaeaea; */
   background-color: rgba(0, 0, 0, 0.40);

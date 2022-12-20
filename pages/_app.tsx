@@ -4,6 +4,7 @@ import { Router, useRouter } from "next/router";
 import { SessionProvider, useSession } from "next-auth/react";
 import { Alert, Snackbar } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from '@mui/material/CssBaseline';
 import { useState, useEffect } from "react";
 import { isEmpty } from "lodash";
 import {
@@ -13,19 +14,24 @@ import {
   selectLoadingMessageState,
 } from "../app/rootSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { wrapper } from "../app/store";
+import { wrapper } from "app/store";
 import LoadingDialog from "./components/LoadingDialog";
-import { theme } from "../theme";
+import { theme } from "theme";
+import createEmotionCache from "theme/createEmotionCache";
+import { CacheProvider } from "@emotion/react";
 import Script from "next/script";
 
 const FACEBOOK_PAGE_ID = process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID;
 const ATTRIBUTION = process.env.NEXT_PUBLIC_FACEBOOK_ATTRIBUTION;
+const clientSideEmotionCache = createEmotionCache();
 
 function MyApp({
   Component,
+  emotionCache = clientSideEmotionCache,
   pageProps: { session, ...pageProps },
 }: {
   Component: any;
+  emotionCache: any;
   pageProps: any;
 }) {
   const dispatch = useDispatch();
@@ -107,17 +113,20 @@ function MyApp({
           {error.message}
         </Alert>
       </Snackbar>
-      <ThemeProvider theme={theme}>
-        <SessionProvider session={session}>
-          {Component.auth ? (
-            <Auth auth={Component.auth}>
-              {getLayout(<Component {...pageProps} />)}
-            </Auth>
-          ) : (
-            getLayout(<Component {...pageProps} />)
-          )}
-        </SessionProvider>
-      </ThemeProvider>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <SessionProvider session={session}>
+            {Component.auth ? (
+              <Auth auth={Component.auth}>
+                {getLayout(<Component {...pageProps} />)}
+              </Auth>
+            ) : (
+              getLayout(<Component {...pageProps} />)
+            )}
+          </SessionProvider>
+        </ThemeProvider>
+      </CacheProvider>
     </div>
   );
 }
