@@ -38,7 +38,14 @@ export default async function handler(
       if (!item) {
         return res.status(400).json({
           error: true,
-          message: "Product not found.",
+          message: "Item not found.",
+        });
+      }
+
+      if (item.status === PRODUCT_ITEM_STATUS.SOLD) {
+        return res.status(400).json({
+          error: true,
+          message: "Item sold.",
         });
       }
 

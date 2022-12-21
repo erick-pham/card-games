@@ -33,7 +33,7 @@ import { getSessionUserInfo } from "@utils/get-session-user";
 import { ajvResolver } from "validator/ajvResolver";
 import { SubmitAccountOrderValidation } from "validator/validationSchema/client-orders";
 import { isEmpty } from "lodash";
-
+import { PRODUCT_ITEM_STATUS } from "common/constants";
 import UnitOfWork from "database/unit-of-work";
 
 import NotFoundData from "pages/components/NotFoundData";
@@ -324,7 +324,8 @@ export const getServerSideProps: GetServerSideProps = async (
       await uow.initialize();
       const data = await uow.ProuductItemRepository.findOne({
         where: {
-          id: query?.productItemId as string || ''
+          id: query?.productItemId as string || '',
+          status: PRODUCT_ITEM_STATUS.SELLING
         }
       });
       // const data = await uow.OrderRepository.findOneBy({
