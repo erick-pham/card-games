@@ -76,7 +76,7 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
                 Mã đơn: {orderData?.referenceNumber}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Ngày tạo:{" "}
+                Ngày tạo:
                 {orderData ? format(new Date(orderData?.createdAt), "Pp") : ""}
               </Typography>
               <Typography variant="body1" color="text.secondary">
@@ -98,17 +98,26 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
                 Đặc điểm: {orderData?.productItem.description}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Chi tiết tài khoản: <Link href={`account-game/${orderData?.productItem.id}/details`}>Click vào đây</Link>
+                Chi tiết tài khoản:{" "}
+                <Link
+                  href={`account-game/${orderData?.productItem.id}/details`}
+                >
+                  Click vào đây
+                </Link>
               </Typography>
               <Typography
                 variant="body1"
                 color="text.secondary"
                 style={{ fontWeight: "bold" }}
               >
-                Giá: {orderData ? `${numeral(orderData?.productItem?.price).format("0,0")} ${orderData?.productItem?.currency}` : ''}
+                Giá:{" "}
+                {orderData
+                  ? `${numeral(orderData?.productItem?.price).format("0,0")} ${
+                      orderData?.productItem?.currency
+                    }`
+                  : ""}
               </Typography>
             </Grid>
-
           </Grid>
 
           <Typography
@@ -116,9 +125,8 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
             color="error.main"
             sx={{ fontStyle: "italic", mt: 4 }}
           >
-            *NOTE: Sau khi bạn đặt hàng, vui lòng liên hệ fanpage hoặc
-            hotline để được shop liên hệ chuyển khoản và giao tài khoản. Xin
-            Cảm ơn!
+            *NOTE: Sau khi bạn đặt hàng, vui lòng liên hệ fanpage hoặc hotline
+            để được shop liên hệ chuyển khoản và giao tài khoản. Xin Cảm ơn!
           </Typography>
         </CardContent>
         {/* <CardMedia
@@ -129,13 +137,11 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
               alt=""
             /> */}
       </Card>
-    </Box >
+    </Box>
   );
-}
+};
 
-export const getServerSideProps: GetServerSideProps = async (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const { params, req, res, query } = context;
     let orderData = null;
@@ -145,7 +151,7 @@ export const getServerSideProps: GetServerSideProps = async (
       await uow.initialize();
       const data = await uow.OrderRepository.findOne({
         where: {
-          referenceNumber: query?.referenceNumber as string || ''
+          referenceNumber: (query?.referenceNumber as string) || "",
         },
         relations: {
           productItem: true,
@@ -171,5 +177,7 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 };
 
-HistoryOrderPage.getLayout = (page: any) => <MainLayout pageTitle='Lịch sử đơn hàng'>{page}</MainLayout>;
+HistoryOrderPage.getLayout = (page: any) => (
+  <MainLayout pageTitle="Lịch sử đơn hàng">{page}</MainLayout>
+);
 export default HistoryOrderPage;
