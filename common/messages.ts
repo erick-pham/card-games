@@ -3,7 +3,8 @@ export const scope = "app.containers.App";
 const msg = {
   appAPILoading: {
     id: `${scope}.appAPILoading`,
-    defaultMessage: `Please wait. We are handling data...`,
+    // defaultMessage: `Please wait. We are handling data...`,
+    defaultMessage: `Vui lòng đợi...`,
   },
   appReloading: {
     id: `${scope}.appReloading`,
