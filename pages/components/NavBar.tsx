@@ -34,7 +34,7 @@ const ResponsiveAppBar = () => {
   const userInfo = getSessionUserInfo(session);
 
   let pages = ["Mua tài khoản game", "Nạp game"];
-  let pageHrefs = ["/account-game", "/card-game"];
+  let pageHrefs = ["/product-account-game", "/product-card-game"];
 
   if (userInfo?.isAdmin) {
     pages.push("Admin");

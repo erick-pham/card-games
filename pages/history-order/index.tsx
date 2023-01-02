@@ -100,7 +100,7 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
               <Typography variant="body1" color="text.secondary">
                 Chi tiết tài khoản:{" "}
                 <Link
-                  href={`account-game/${orderData?.productItem.id}/details`}
+                  href={`product-account-game/${orderData?.productItem.id}/details`}
                 >
                   Click vào đây
                 </Link>
