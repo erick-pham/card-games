@@ -68,6 +68,13 @@ export const PRODUCT_ITEM_STATUS_LABEL = [
   },
 ];
 
+export const PRODUCT_ITEM_STATUS_TEXT_VI = {
+  NEW: "Mới",
+  SELLING: "Đang bán",
+  SOLD: "Đã bán",
+  DELETED: "Đã xóa",
+} as any;
+
 export const Currencies = [
   {
     value: "VND",

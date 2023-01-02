@@ -431,7 +431,7 @@ const RecipeReviewCard = ({ product }: { product: ProductItem }) => {
       </CardContent>
 
       <CardActions>
-        <Link href={`/account-game/${product.id}/checkout`}>
+        <Link href={`/account-game/${product.id}/details`}>
           <Button
             variant="contained"
             size="small"

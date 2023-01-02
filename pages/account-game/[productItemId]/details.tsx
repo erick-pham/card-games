@@ -1,34 +1,118 @@
-import NextLink from "next/link";
+import Router from "next/router";
 import { GetServerSideProps } from "next";
 import { useDispatch } from "react-redux";
-import numeral from "numeral";
+import { useSession } from "next-auth/react";
+import { Controller, useForm } from "react-hook-form";
 import {
-  Box,
-  Card,
-  CardHeader,
   Typography,
   Container,
-  CardContent,
+  FormControl,
+  TextField,
   Button,
+  Divider,
   CardMedia,
-  Tooltip,
   Grid,
+  FormHelperText,
+  Input,
+  Stack,
+  Chip,
 } from "@mui/material";
-import {
-  setDialogImageState,
-} from "app/rootSlice";
+import numeral from "numeral";
+
+import { setErrorState, setLoadingState } from "app/rootSlice";
+import message from "common/messages";
 import { ProductItem } from "database/entity/product_item";
+import { getSessionUserInfo } from "@utils/get-session-user";
+import { ajvResolver } from "validator/ajvResolver";
+import { SubmitAccountOrderValidation } from "validator/validationSchema/client-orders";
+import { isEmpty } from "lodash";
+import {
+  PRODUCT_ITEM_STATUS,
+  PRODUCT_ITEM_STATUS_TEXT_VI,
+} from "common/constants";
 import UnitOfWork from "database/unit-of-work";
-import { PRODUCT_ITEM_STATUS } from "common/constants";
-import DialogImage from "pages/components/DialogImage";
+
 import NotFoundData from "pages/components/NotFoundData";
 import MainLayout from "pages/components/MainLayout";
+import StyledMainBox from "pages/components/CustomStyledBox";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import PriceCheckIcon from "@mui/icons-material/PriceCheck";
+import SellIcon from "@mui/icons-material/Sell";
 
-const AccountGameDetailPage = ({ productItem }: { productItem: ProductItem }) => {
+type SubmitAccountOrderType = {
+  productItemId: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhoneNumber: string;
+  description: string;
+};
+
+const AccountGameDetailPage = ({
+  productItem,
+}: {
+  productItem: ProductItem;
+}) => {
   const dispatch = useDispatch();
+  const { data: session } = useSession();
+  let userInfo = getSessionUserInfo(session);
+  const isItemSold = productItem.status === PRODUCT_ITEM_STATUS.SOLD;
+  let defaultValues = {
+    productItemId: productItem?.id || "",
+    contactName: userInfo?.name || "",
+    contactEmail: userInfo?.email || "",
+    contactPhoneNumber: userInfo?.phoneNumber || "",
+    description: "",
+  };
 
-  const handleClickImage = () => {
-    dispatch(setDialogImageState({ open: true, url: productItem?.thumbnail }));
+  const {
+    handleSubmit,
+    control,
+    getValues,
+    formState: { errors },
+  } = useForm<SubmitAccountOrderType>({
+    resolver: ajvResolver(SubmitAccountOrderValidation),
+    defaultValues,
+  });
+
+  const onSubmit = (data: object) => {
+    dispatch(
+      setLoadingState({
+        loading: true,
+        loadingMessage: message.appAPILoading,
+      })
+    );
+    fetch("/api/public/account-orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...data,
+        productItemId: productItem.id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data || data.error === true) {
+          dispatch(
+            setErrorState({
+              message: data.message,
+              values: "",
+              severity: "error",
+            })
+          );
+        } else {
+          Router.push(`/history-order?referenceNumber=${data.referenceNumber}`);
+        }
+      })
+      .finally(() => {
+        dispatch(
+          setLoadingState({
+            loading: false,
+            loadingMessage: null,
+          })
+        );
+      });
   };
 
   if (!productItem) {
@@ -36,126 +120,193 @@ const AccountGameDetailPage = ({ productItem }: { productItem: ProductItem }) =>
   }
 
   return (
-    <>
-      <DialogImage></DialogImage>
-      <Container>
-        <Box sx={{ flexGrow: 1, marginTop: 8 }}>
-          <Card
-            variant="outlined"
-            style={{
-              padding: 0,
-              border: "none",
-              boxShadow: "none",
-              backgroundColor: "#1B3447",
-            }}
-          >
-            <CardHeader
-              title={"Thông tin và đặc điểm tài khoản"}
-              titleTypographyProps={{
-                color: "red",
-                fontSize: 28,
-                textAlign: "center",
-              }}
-              subheaderTypographyProps={{ color: "#B6B6B6" }}
-            />
+    <div>
+      <Container style={{ marginTop: 10 }}>
+        <Grid container spacing={2} mt={2}>
+          <Grid item xs={12} sm={8} md={8} lg={8} xl={8}>
+            <StyledMainBox>
+              <Typography variant="h5" fontWeight={800}>
+                {productItem.name}
+              </Typography>
+              <Typography variant="caption">
+                {`#${productItem.referenceNumber || ""}`}
+              </Typography>
+              <Divider></Divider>
+              <Stack direction="row" alignItems="center" gap={1}>
+                <SellIcon />
+                <Chip
+                  label={PRODUCT_ITEM_STATUS_TEXT_VI[productItem.status] || ""}
+                  color={isItemSold ? "warning" : "primary"}
+                />
+                <Typography variant="h6" color="text.primaryRed"></Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center" gap={1}>
+                <PriceCheckIcon />
+                <Typography
+                  variant="h6"
+                  // color="rgba(254, 52, 100, 0.9)"
+                  color="text.primaryRed"
+                  fontWeight={800}
+                >
+                  {`${numeral(productItem.price).format("0,0")} ${
+                    productItem.currency
+                  }`}
+                </Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center" gap={1}>
+                <AssignmentIcon />
+                <Typography variant="subtitle1" color="text.primary">
+                  Mô tả sản phẩm
+                </Typography>
+              </Stack>
+              <Typography variant="body1" color="text.primary">
+                {productItem.description}
+              </Typography>
+              {/* <Tooltip
+                title="click để xem ảnh lớn hơn"
+                placement="top"
+                open={true}
+              > */}
+              <CardMedia
+                component="img"
+                // height="200"
+                // width="auto"
+                image={productItem.thumbnail}
+                alt="alt"
+                // sx={{
+                //   height: 200,
+                //   width: 200,
+                // }}
+                // onClick={handleClickImage}
+              />
+              {/* </Tooltip> */}
+            </StyledMainBox>
+          </Grid>
+          <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+            <StyledMainBox>
+              <Typography variant="h5" fontWeight={800}>
+                Thông tin liên hệ
+              </Typography>
+              <form autoComplete="off">
+                <Controller
+                  name="productItemId"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <Input {...field} type="hidden" />
+                  )}
+                />
 
-            <CardContent
-              style={{
-                backgroundColor: "#fff",
-              }}
-            >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Đơn hàng:
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Loại: {productItem.type}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Tên sản phẩm: {productItem.name}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Đặc điểm: {productItem.description}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    color="text.secondary"
-                    style={{ fontWeight: "bold" }}
+                <Controller
+                  name="contactName"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                      <TextField
+                        {...field}
+                        label="Họ Tên"
+                        error={error ? true : false}
+                        helperText={error?.message}
+                        disabled={isItemSold}
+                      />
+                    </FormControl>
+                  )}
+                />
+
+                <Controller
+                  name="contactEmail"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                      <TextField
+                        {...field}
+                        label="Email"
+                        error={error ? true : false}
+                        helperText={error?.message}
+                        disabled={isItemSold}
+                      />
+                    </FormControl>
+                  )}
+                />
+
+                <Controller
+                  name="contactPhoneNumber"
+                  control={control}
+                  render={({
+                    field: { onChange, value },
+                    fieldState: { error },
+                  }) => (
+                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                      <TextField
+                        label="Số điện thoại"
+                        onChange={onChange}
+                        value={value}
+                        error={error ? true : false}
+                        helperText={error?.message}
+                        disabled={isItemSold}
+                      ></TextField>
+                    </FormControl>
+                  )}
+                />
+
+                <Controller
+                  name="description"
+                  control={control}
+                  defaultValue={""}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                      <TextField
+                        {...field}
+                        label="Ghi chú"
+                        error={error ? true : false}
+                        helperText={error?.message}
+                        disabled={isItemSold}
+                      />
+                    </FormControl>
+                  )}
+                />
+
+                <FormControl
+                  fullWidth
+                  error={!isEmpty(errors)}
+                  variant="standard"
+                >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    style={{
+                      margin: 4,
+                      alignItems: "center",
+                      alignContent: "center",
+                      textAlign: "center",
+                    }}
+                    onClick={handleSubmit(onSubmit)}
+                    disabled={isItemSold}
                   >
-                    Giá: {`${numeral(productItem.price).format("0,0")} ${productItem.currency}`}
-                  </Typography>
-                  <br></br>
-                  {productItem.status === PRODUCT_ITEM_STATUS.SOLD ? (
-                    <Button
-                      variant="contained"
-                      size="small"
-                      color="inherit"
-                      style={{
-                        fontWeight: "bold",
-                        textTransform: "uppercase",
-                        bottom: 0,
-                        borderRadius: "0px",
-                      }}
-                      disabled={true}
-                    >
-                      Đã bán
-                    </Button>) : (
-                    <NextLink href={`/account-game/${productItem.id}/checkout`}>
-                      <Button
-                        variant="contained"
-                        size="small"
-                        color="inherit"
-                        style={{
-                          fontWeight: "bold",
-                          textTransform: "uppercase",
-                          bottom: 0,
-                          borderRadius: "0px",
-                        }}
-                      >
-                        Mua Ngay
-                      </Button>
-                    </NextLink>)}
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <Tooltip
-                    title="click để xem ảnh lớn hơn"
-                    placement="top"
-                    open={true}
-                  >
-                    <CardMedia
-                      component="img"
-                      // height="200"
-                      // width="auto"
-                      image={productItem.thumbnail}
-                      alt="alt"
-                      sx={{
-                        height: 200,
-                        width: 200,
-                      }}
-                      onClick={handleClickImage}
-                    />
-                  </Tooltip>
-                </Grid>
-              </Grid>
-            </CardContent>
-            {/* <CardMedia
-              component="img"
-              height="auto"
-              width="auto"
-              image="/static/images/banner.jpg"
-              alt=""
-            /> */}
-          </Card>
-        </Box>
+                    {isItemSold ? "Đã bán" : "Mua ngay"}
+                  </Button>
+                  <FormHelperText>
+                    {!isEmpty(errors) ? "Thông tin không lợp lệ!" : ""}
+                  </FormHelperText>
+                </FormControl>
+              </form>
+              <Typography
+                variant="h6"
+                color="text.primaryRed"
+                sx={{ fontStyle: "italic", mt: 2 }}
+              >
+                *NOTE: Sau khi bạn đặt hàng, vui lòng liên hệ fanpage hoặc
+                hotline để được shop liên hệ chuyển khoản và giao tài khoản. Xin
+                Cảm ơn!
+              </Typography>
+            </StyledMainBox>
+          </Grid>
+        </Grid>
       </Container>
-    </>
+    </div>
   );
-}
+};
 
-export const getServerSideProps: GetServerSideProps = async (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const { params, req, res, query } = context;
     let productItemData = null;
@@ -165,15 +316,19 @@ export const getServerSideProps: GetServerSideProps = async (
       await uow.initialize();
       const data = await uow.ProuductItemRepository.findOne({
         where: {
-          id: query?.productItemId as string || ''
-        }
+          id: (query?.productItemId as string) || "",
+        },
       });
 
-      productItemData = JSON.parse(JSON.stringify(data));
+      const productItemData = JSON.parse(JSON.stringify(data));
+      return {
+        props: { productItem: productItemData },
+      };
+    } else {
+      return {
+        props: { productItem: productItemData },
+      };
     }
-    return {
-      props: { productItem: productItemData },
-    };
   } catch (error) {
     return {
       props: { internalError: true, statusCode: 500 },
@@ -181,5 +336,8 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 };
 
-AccountGameDetailPage.getLayout = (page: any) => <MainLayout pageTitle='Chi tiết tài khoản'>{page}</MainLayout>;
+AccountGameDetailPage.auth = {};
+AccountGameDetailPage.getLayout = (page: any) => (
+  <MainLayout pageTitle="Chi tiết account">{page}</MainLayout>
+);
 export default AccountGameDetailPage;
