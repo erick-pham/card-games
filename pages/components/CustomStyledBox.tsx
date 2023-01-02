@@ -7,3 +7,5 @@ export const StyledMainBox = styled(Box)(({ theme }) => ({
   marginBottom: 4,
   // backgroundColor: "rgba(0, 0, 0, 0.40)",
 }));
+
+export default StyledMainBox;
