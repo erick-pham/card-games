@@ -1,7 +1,7 @@
-import Router from 'next/router'
+import Router from "next/router";
 import { GetServerSideProps } from "next";
 import ErrorPage from "next/error";
-import { unstable_getServerSession } from "next-auth/next"
+import { unstable_getServerSession } from "next-auth/next";
 import { useDispatch } from "react-redux";
 import {
   Container,
@@ -27,27 +27,20 @@ import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
 import { isEmpty } from "lodash";
 import { getSessionUserInfo, SessionUser } from "utils/get-session-user";
 
-import { authOptions } from 'pages/api/auth/[...nextauth]'
+import { authOptions } from "pages/api/auth/[...nextauth]";
 import MainLayout from "pages/components/MainLayout";
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  backgroundColor: "white",
-  borderRadius: 5,
-  padding: 18,
-}));
-
-const StyledTitle = styled(Typography)(({ theme }) => ({
-  variant: "h5",
-  align: "center",
-  color: "#008B88",
-}));
+import { StyledMainBox } from "pages/components/CustomStyledBox";
 
 export const getServerSideProps: GetServerSideProps<CardGamePageProps> = async (
   context
 ) => {
   try {
     const { params, req, res } = context;
-    const session = await unstable_getServerSession(context.req, context.res, authOptions)
+    const session = await unstable_getServerSession(
+      context.req,
+      context.res,
+      authOptions
+    );
     const userInfo = getSessionUserInfo(session);
 
     // const response = await fetch(`http://localhost:3000/api/public/card-games`);
@@ -84,8 +77,8 @@ type SubmitCardOrderType = {
   accountPassword: string;
   accountServer: string;
   accountCharacterName: string;
-  contactName: string,
-  contactEmail: string,
+  contactName: string;
+  contactEmail: string;
   contactPhoneNumber: string;
   description: string;
 };
@@ -94,37 +87,42 @@ type CardGamePageProps = {
   internalError?: boolean;
   statusCode?: number;
   productCardGames?: Product[];
-  userInfo?: SessionUser | null
+  userInfo?: SessionUser | null;
 };
 
 const CardGamePage = ({
   internalError,
   statusCode,
   productCardGames,
-  userInfo
+  userInfo,
 }: CardGamePageProps) => {
   const dispatch = useDispatch();
 
   let defaultValues = {
-    productId: '',
-    productItemId: '',
-    accountUserId: '',
-    accountName: '',
-    accountPassword: '',
-    accountServer: '',
-    accountCharacterName: '',
-    contactName: userInfo?.name || '',
-    contactEmail: userInfo?.email || '',
-    contactPhoneNumber: userInfo?.phoneNumber || '',
-    description: '',
+    productId: "",
+    productItemId: "",
+    accountUserId: "",
+    accountName: "",
+    accountPassword: "",
+    accountServer: "",
+    accountCharacterName: "",
+    contactName: userInfo?.name || "",
+    contactEmail: userInfo?.email || "",
+    contactPhoneNumber: userInfo?.phoneNumber || "",
+    description: "",
   };
 
-  const { handleSubmit, control, watch, formState: { errors } } = useForm<SubmitCardOrderType>({
+  const {
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<SubmitCardOrderType>({
     resolver: ajvResolver(SubmitCardOrderValidation),
-    defaultValues
+    defaultValues,
   });
 
-  const watchShowGame = watch("productId", ''); // you can supply default value as second argument
+  const watchShowGame = watch("productId", ""); // you can supply default value as second argument
 
   const onSubmit = async (data: SubmitCardOrderType) => {
     dispatch(
@@ -145,7 +143,7 @@ const CardGamePage = ({
         ...data,
         productId: payload?.productId,
         productItemId: payload.productItemId,
-      })
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -192,239 +190,12 @@ const CardGamePage = ({
   }
   return (
     <Container style={{ marginTop: 10 }}>
-      <StyledBox>
-        <Grid container>
-          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
-            <StyledTitle variant="h5" align="center" color="#008B88">
-              Nhập thông tin NẠP GENSHIN IMPACT
-            </StyledTitle>
-            <form autoComplete="off">
-              <Controller
-                name="productId"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      label="Game"
-                      select={true}
-                      onChange={onChange}
-                      variant="filled"
-                      size="small"
-                      value={value}
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    >
-                      {productCardGames?.map((option) => (
-                        <MenuItem key={option.id} value={option.id}>
-                          {option.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </FormControl>
-                )} />
-
-              <Controller
-                name="productItemId"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                    <TextField
-                      id="outlined-multiline-flexible"
-                      label="Gói nạp"
-                      select={true}
-                      onChange={onChange}
-                      variant="filled"
-                      size="small"
-                      value={value || ""}
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    >
-                      {renderPackage(watchShowGame)}
-                    </TextField>
-                  </FormControl>
-                )} />
-
-              <Controller
-                name="accountUserId"
-                control={control}
-                render={({ field, fieldState: { error } }) => (<FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                  <TextField
-                    {...field}
-                    id="outlined-multiline-flexible"
-                    label="User ID"
-                    variant="filled"
-                    size="small"
-                    error={error ? true : false}
-                    helperText={error?.message}
-                  />
-                </FormControl>
-                )} />
-
-              <Controller
-                name="accountName"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                    <TextField
-                      {...field}
-                      id="outlined-multiline-flexible"
-                      label="Tên tài khoản"
-                      variant="filled"
-                      size="small"
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    />
-                  </FormControl>
-                )} />
-
-              <Controller
-                name="accountPassword"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                    <TextField
-                      {...field}
-                      id="outlined-multiline-flexible"
-                      label="Mật khẩu"
-                      variant="filled"
-                      size="small"
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    />
-                  </FormControl>
-                )} />
-
-              <Controller
-                name="accountServer"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                    <TextField
-                      {...field}
-                      id="outlined-multiline-flexible"
-                      label="Server"
-                      variant="filled"
-                      size="small"
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    />
-                  </FormControl>
-                )} />
-
-              <Controller
-                name="accountCharacterName"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                    <TextField
-                      {...field}
-                      id="outlined-multiline-flexible"
-                      label="Tên nhân vật"
-                      variant="filled"
-                      size="small"
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    />
-                  </FormControl>
-                )} />
-
-              <Typography variant="h6" align="left" color="#008B88">
-                Thông tin liên hệ
-              </Typography>
-              <Controller
-                name="contactName"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                    <TextField
-                      {...field}
-                      id="outlined-multiline-flexible"
-                      label="Họ Tên"
-                      variant="filled"
-                      size="small"
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    />
-                  </FormControl>
-                )} />
-              <Controller
-                name="contactEmail"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                    <TextField
-                      {...field}
-                      id="outlined-multiline-flexible"
-                      label="Địa chỉ email"
-                      variant="filled"
-                      size="small"
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    />
-                  </FormControl>
-                )} />
-              <Controller
-                name="contactPhoneNumber"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                    <TextField
-                      {...field}
-                      id="outlined-multiline-flexible"
-                      label="Số điện thoại"
-                      variant="filled"
-                      size="small"
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    />
-                  </FormControl>
-                )} />
-
-              <Controller
-                name="description"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                    <TextField
-                      {...field}
-                      id="outlined-multiline-flexible"
-                      label="Ghi chú"
-                      variant="filled"
-                      size="small"
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    />
-                  </FormControl>
-                )} />
-              <FormControl error={!isEmpty(errors)} variant="standard">
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    margin: 4,
-                    alignItems: "center",
-                    alignContent: "center",
-                    textAlign: "center",
-                  }}
-                  onClick={handleSubmit(onSubmit)}
-                >
-                  Gửi yêu cầu
-                </Button>
-                <FormHelperText>{!isEmpty(errors) ? 'Thông tin không lợp lệ!' : ''}</FormHelperText>
-              </FormControl>
-            </form>
-          </Grid>
-          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
-            <StyledTitle variant="h5" align="center" color="#008B88">
+      <Grid container spacing={2} mt={2}>
+        <Grid item xs={12} sm={8} md={8} lg={8} xl={8}>
+          <StyledMainBox>
+            <Typography variant="h5" align="center" color="#008B88">
               Hướng dẫn NẠP GENSHIN IMPACT
-            </StyledTitle>
+            </Typography>
             <Box p={2}>
               <Typography style={{ backgroundColor: "red", color: "yellow" }}>
                 📛 Giá nạp hiện đã ổn định các bạn nên đơn ok nhé
@@ -463,12 +234,12 @@ const CardGamePage = ({
                 📛Nếu đơn hủy tiền sẽ được hoàn về tài khoản các bạn
               </Typography>
               <Typography style={{}}>
-                📛Tài khoản và mật khẩu nên đơn phải là tài khoản Mihoyo ko
-                lên = FB - Google<br></br>
+                📛Tài khoản và mật khẩu nên đơn phải là tài khoản Mihoyo ko lên
+                = FB - Google<br></br>
                 📛UID là UID các bạn vẫn dùng kết bạn<br></br>
                 📛Các gói nạp chưa tính x2 nếu có <br></br>
-                📛 Hãy cung cấp mã đăng nhập khi shop liên hệ lấy mã login
-                trong thư maill <br></br>
+                📛 Hãy cung cấp mã đăng nhập khi shop liên hệ lấy mã login trong
+                thư maill <br></br>
                 📛 Nếu không có SĐT hãy điền link fb hoặc zalo ở mục ghi chú
               </Typography>
 
@@ -484,17 +255,311 @@ const CardGamePage = ({
               <Typography style={{}}>
                 📛 Mọi thông tin nạp nếu không hiểu hãy ib cho Fanpage
               </Typography>
-              <Typography style={{ backgroundColor: "red", color: "yellow" }}>
-                ❇️ Lưu ý : Khi nạp thành công đơn hãy đổi mật khẩu để đảm bảo
-                an toàn!
+              <Typography style={{ backgroundColor: "blue", color: "yellow" }}>
+                ❇️ Lưu ý : Khi nạp thành công đơn hãy đổi mật khẩu để đảm bảo an
+                toàn!
               </Typography>
             </Box>
-          </Grid>
+          </StyledMainBox>
         </Grid>
-      </StyledBox>
+        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+          <StyledMainBox>
+            <Typography variant="h5" align="center" color="#008B88">
+              Nhập thông tin NẠP
+            </Typography>
+            <form autoComplete="off">
+              <Controller
+                name="productId"
+                control={control}
+                render={({
+                  field: { onChange, value },
+                  fieldState: { error },
+                }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      label="Game"
+                      select={true}
+                      onChange={onChange}
+                      variant="filled"
+                      size="small"
+                      value={value}
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    >
+                      {productCardGames?.map((option) => (
+                        <MenuItem key={option.id} value={option.id}>
+                          {option.name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </FormControl>
+                )}
+              />
+
+              <Controller
+                name="productItemId"
+                control={control}
+                render={({
+                  field: { onChange, value },
+                  fieldState: { error },
+                }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      label="Gói nạp"
+                      select={true}
+                      onChange={onChange}
+                      variant="filled"
+                      size="small"
+                      value={value || ""}
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    >
+                      {renderPackage(watchShowGame)}
+                    </TextField>
+                  </FormControl>
+                )}
+              />
+
+              <Controller
+                name="accountUserId"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      {...field}
+                      label="User ID"
+                      variant="filled"
+                      size="small"
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    />
+                  </FormControl>
+                )}
+              />
+
+              <Controller
+                name="accountName"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      {...field}
+                      label="Tên tài khoản"
+                      variant="filled"
+                      size="small"
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    />
+                  </FormControl>
+                )}
+              />
+
+              <Controller
+                name="accountPassword"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      {...field}
+                      label="Mật khẩu"
+                      variant="filled"
+                      size="small"
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    />
+                  </FormControl>
+                )}
+              />
+
+              <Controller
+                name="accountServer"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      {...field}
+                      label="Server"
+                      variant="filled"
+                      size="small"
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    />
+                  </FormControl>
+                )}
+              />
+
+              <Controller
+                name="accountCharacterName"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      {...field}
+                      label="Tên nhân vật"
+                      variant="filled"
+                      size="small"
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    />
+                  </FormControl>
+                )}
+              />
+
+              <Typography variant="h6" align="left" color="#008B88">
+                Thông tin liên hệ
+              </Typography>
+              <Controller
+                name="contactName"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      {...field}
+                      label="Họ Tên"
+                      variant="filled"
+                      size="small"
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    />
+                  </FormControl>
+                )}
+              />
+              <Controller
+                name="contactEmail"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      {...field}
+                      label="Địa chỉ email"
+                      variant="filled"
+                      size="small"
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    />
+                  </FormControl>
+                )}
+              />
+              <Controller
+                name="contactPhoneNumber"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      {...field}
+                      label="Số điện thoại"
+                      variant="filled"
+                      size="small"
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    />
+                  </FormControl>
+                )}
+              />
+
+              <Controller
+                name="description"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      {...field}
+                      label="Ghi chú"
+                      variant="filled"
+                      size="small"
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    />
+                  </FormControl>
+                )}
+              />
+              <FormControl
+                error={!isEmpty(errors)}
+                fullWidth
+                variant="standard"
+                size="small"
+                sx={{ mt: 1 }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    alignItems: "center",
+                    alignContent: "center",
+                    textAlign: "center",
+                  }}
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  Gửi yêu cầu
+                </Button>
+                <FormHelperText>
+                  {!isEmpty(errors) ? "Thông tin không lợp lệ!" : ""}
+                </FormHelperText>
+              </FormControl>
+            </form>
+          </StyledMainBox>
+        </Grid>
+      </Grid>
     </Container>
   );
 };
 
-CardGamePage.getLayout = (page: any) => <MainLayout pageTitle='Nạp games'>{page}</MainLayout>;
+CardGamePage.getLayout = (page: any) => (
+  <MainLayout pageTitle="Nạp games">{page}</MainLayout>
+);
 export default CardGamePage;
