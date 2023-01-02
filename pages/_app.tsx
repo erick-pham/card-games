@@ -4,7 +4,8 @@ import { Router, useRouter } from "next/router";
 import { SessionProvider, useSession } from "next-auth/react";
 import { Alert, Snackbar } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from '@mui/material/CssBaseline';
+import CssBaseline from "@mui/material/CssBaseline";
+import LinearProgress from "@mui/material/LinearProgress";
 import { useState, useEffect } from "react";
 import { isEmpty } from "lodash";
 import {
@@ -48,18 +49,17 @@ function MyApp({
 
   useEffect(() => {
     Router.events.on("routeChangeStart", (url) => {
-      setIsLoading(true)
+      setIsLoading(true);
     });
 
     Router.events.on("routeChangeComplete", (url) => {
-      setIsLoading(false)
+      setIsLoading(false);
     });
 
     Router.events.on("routeChangeError", (url) => {
-      setIsLoading(false)
+      setIsLoading(false);
     });
-
-  }, [])
+  }, []);
 
   const handleErrorSnackbarClose = () => {
     dispatch(setErrorState({ message: "", values: "", severity: "error" }));
@@ -142,7 +142,7 @@ function Auth({ children, auth }: { children: any; auth: any }) {
   });
 
   if (status === "loading") {
-    return <div>Loading...</div>;
+    return <LinearProgress></LinearProgress>;
   }
 
   if (status === "authenticated") {

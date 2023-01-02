@@ -4,7 +4,6 @@ import { authOptions } from "../auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
 import UnitOfWork from "database/unit-of-work";
 import { OrderEntity } from "database/entity/order";
-import { generateCode } from "utils/generate-code";
 import { plainToInstance } from "class-transformer";
 import { PRODUCT_ITEM_STATUS } from "common/constants";
 interface OrderRequestBody {
@@ -53,7 +52,6 @@ export default async function handler(
         ...input,
         userId: session?.userId || null,
         amount: item.price,
-        referenceNumber: generateCode(10),
       });
 
       const data = await uow.OrderRepository.save(orderEntity);

@@ -197,6 +197,7 @@ export const theme = createTheme({
     text: {
       primary: "#121828",
       secondary: "#65748B",
+      primaryRed: "rgba(254, 52, 100, 0.9)",
       disabled: "rgba(55, 65, 81, 0.48)",
     },
   },

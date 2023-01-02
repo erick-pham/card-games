@@ -7,12 +7,14 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
+  BeforeInsert,
 } from "typeorm";
 
 import AppBaseEntity from "./base";
 import { ProductItem } from "./product_item";
 import { ORDER_STATUS } from "common/constants";
 import { UserEntity } from "./entities";
+import { generateCode } from "@utils/generate-code";
 
 @Entity({ name: "order_details" })
 export class OrderDetailEntity extends AppBaseEntity {
@@ -94,4 +96,9 @@ export class OrderEntity extends AppBaseEntity {
 
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date;
+
+  @BeforeInsert()
+  beforeInsertActions() {
+    this.referenceNumber = generateCode(10);
+  }
 }

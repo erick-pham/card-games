@@ -5,9 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  BeforeInsert,
 } from "typeorm";
 import AppBaseEntity from "./base";
-
+import { generateCode } from "utils/generate-code";
 import { Product } from "./product";
 import { PRODUCT_ITEM_STATUS } from "common/constants";
 
@@ -18,6 +19,9 @@ export class ProductItem extends AppBaseEntity {
 
   @Column({ length: 256 })
   name!: string;
+
+  @Column({ length: 10 })
+  referenceNumber!: string;
 
   @Column({ length: 50, nullable: true })
   type!: string;
@@ -53,4 +57,9 @@ export class ProductItem extends AppBaseEntity {
 
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date;
+
+  @BeforeInsert()
+  beforeInsertActions() {
+    this.referenceNumber = generateCode(10);
+  }
 }

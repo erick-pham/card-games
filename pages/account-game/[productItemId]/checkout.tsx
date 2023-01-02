@@ -4,12 +4,8 @@ import { useDispatch } from "react-redux";
 import { useSession } from "next-auth/react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Box,
-  Card,
-  CardHeader,
   Typography,
   Container,
-  CardContent,
   FormControl,
   TextField,
   Button,
@@ -19,6 +15,7 @@ import {
   Grid,
   FormHelperText,
   Input,
+  Stack,
 } from "@mui/material";
 import numeral from "numeral";
 
@@ -39,32 +36,43 @@ import UnitOfWork from "database/unit-of-work";
 import NotFoundData from "pages/components/NotFoundData";
 import DialogImage from "pages/components/DialogImage";
 import MainLayout from "pages/components/MainLayout";
+import StyledMainBox from "pages/components/CustomStyledBox";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 
 type SubmitAccountOrderType = {
   productItemId: string;
-  contactName: string,
-  contactEmail: string,
+  contactName: string;
+  contactEmail: string;
   contactPhoneNumber: string;
   description: string;
 };
 
-
-const AccountGameCheckOutPage = ({ productItem }: { productItem: ProductItem }) => {
+const AccountGameCheckOutPage = ({
+  productItem,
+}: {
+  productItem: ProductItem;
+}) => {
   const dispatch = useDispatch();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   let userInfo = getSessionUserInfo(session);
 
   let defaultValues = {
-    productItemId: productItem?.id || '',
-    contactName: userInfo?.name || '',
-    contactEmail: userInfo?.email || '',
-    contactPhoneNumber: userInfo?.phoneNumber || '',
-    description: '',
+    productItemId: productItem?.id || "",
+    contactName: userInfo?.name || "",
+    contactEmail: userInfo?.email || "",
+    contactPhoneNumber: userInfo?.phoneNumber || "",
+    description: "",
   };
 
-  const { handleSubmit, control, getValues, formState: { errors } } = useForm<SubmitAccountOrderType>({
+  const {
+    handleSubmit,
+    control,
+    getValues,
+    formState: { errors },
+  } = useForm<SubmitAccountOrderType>({
     resolver: ajvResolver(SubmitAccountOrderValidation),
-    defaultValues
+    defaultValues,
   });
 
   const onSubmit = (data: object) => {
@@ -119,86 +127,70 @@ const AccountGameCheckOutPage = ({ productItem }: { productItem: ProductItem }) 
   return (
     <div>
       <DialogImage></DialogImage>
-      <Container>
-        <Box sx={{ flexGrow: 1, marginTop: 8 }}>
-          <Card
-            variant="outlined"
-            style={{
-              padding: 0,
-              border: "none",
-              boxShadow: "none",
-              backgroundColor: "#1B3447",
-            }}
-          >
-            <CardHeader
-              title={"Thông tin đặt hàng"}
-              titleTypographyProps={{
-                color: "red",
-                fontSize: 28,
-                textAlign: "center",
-              }}
-              subheaderTypographyProps={{ color: "#B6B6B6" }}
-            />
-
-            <CardContent
-              style={{
-                backgroundColor: "#fff",
-              }}
-            >
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Đơn hàng:
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Loại: {productItem.type}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Tên sản phẩm: {productItem.name}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    Đặc điểm: {productItem.description}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    color="text.secondary"
-                    style={{ fontWeight: "bold" }}
-                  >
-                    Giá: {`${numeral(productItem.price).format("0,0")} ${productItem.currency}`}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <Tooltip
-                    title="click để xem ảnh lớn hơn"
-                    placement="top"
-                    open={true}
-                  >
-                    <CardMedia
-                      component="img"
-                      // height="200"
-                      // width="auto"
-                      image={productItem.thumbnail}
-                      alt="alt"
-                      sx={{
-                        height: 200,
-                        width: 200,
-                      }}
-                      onClick={handleClickImage}
-                    />
-                  </Tooltip>
-                </Grid>
-              </Grid>
+      <Container style={{ marginTop: 10 }}>
+        <Grid container spacing={2} mt={2}>
+          <Grid item xs={12} sm={8} md={8} lg={8} xl={8}>
+            <StyledMainBox>
+              <Typography variant="h5" fontWeight={800}>
+                {productItem.name}
+              </Typography>
+              <Typography variant="caption">
+                {`#${productItem.referenceNumber || ""}`}
+              </Typography>
               <Divider></Divider>
-              <Typography gutterBottom variant="h5" component="div">Thông tin liên hệ:</Typography>
+              <Stack direction="row" alignItems="center" gap={1}>
+                <PriceCheckIcon />
+                <Typography
+                  variant="h6"
+                  // color="rgba(254, 52, 100, 0.9)"
+                  color="text.primaryRed"
+                  fontWeight={800}
+                >
+                  {`${numeral(productItem.price).format("0,0")} ${
+                    productItem.currency
+                  }`}
+                </Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center" gap={1}>
+                <AssignmentIcon />
+                <Typography variant="subtitle1" color="text.primary">
+                  Mô tả sản phẩm
+                </Typography>
+              </Stack>
+              <Typography variant="body1" color="text.primary">
+                {productItem.description}
+              </Typography>
+              <Tooltip
+                title="click để xem ảnh lớn hơn"
+                placement="top"
+                open={true}
+              >
+                <CardMedia
+                  component="img"
+                  // height="200"
+                  // width="auto"
+                  image={productItem.thumbnail}
+                  alt="alt"
+                  // sx={{
+                  //   height: 200,
+                  //   width: 200,
+                  // }}
+                  onClick={handleClickImage}
+                />
+              </Tooltip>
+            </StyledMainBox>
+          </Grid>
+          <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+            <StyledMainBox>
+              <Typography variant="h5" fontWeight={800}>
+                Thông tin liên hệ
+              </Typography>
               <form autoComplete="off">
                 <Controller
                   name="productItemId"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
-                    <Input
-                      {...field}
-                      type="hidden"
-                    />
+                    <Input {...field} type="hidden" />
                   )}
                 />
 
@@ -209,7 +201,6 @@ const AccountGameCheckOutPage = ({ productItem }: { productItem: ProductItem }) 
                     <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                       <TextField
                         {...field}
-
                         label="Họ Tên"
                         error={error ? true : false}
                         helperText={error?.message}
@@ -225,7 +216,6 @@ const AccountGameCheckOutPage = ({ productItem }: { productItem: ProductItem }) 
                     <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                       <TextField
                         {...field}
-
                         label="Email"
                         error={error ? true : false}
                         helperText={error?.message}
@@ -243,7 +233,6 @@ const AccountGameCheckOutPage = ({ productItem }: { productItem: ProductItem }) 
                   }) => (
                     <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                       <TextField
-
                         label="Số điện thoại"
                         onChange={onChange}
                         value={value}
@@ -262,7 +251,6 @@ const AccountGameCheckOutPage = ({ productItem }: { productItem: ProductItem }) 
                     <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                       <TextField
                         {...field}
-
                         label="Ghi chú"
                         error={error ? true : false}
                         helperText={error?.message}
@@ -271,7 +259,11 @@ const AccountGameCheckOutPage = ({ productItem }: { productItem: ProductItem }) 
                   )}
                 />
 
-                <FormControl error={!isEmpty(errors)} variant="standard">
+                <FormControl
+                  fullWidth
+                  error={!isEmpty(errors)}
+                  variant="standard"
+                >
                   <Button
                     variant="contained"
                     color="primary"
@@ -285,36 +277,29 @@ const AccountGameCheckOutPage = ({ productItem }: { productItem: ProductItem }) 
                   >
                     Mua ngay
                   </Button>
-                  <FormHelperText>{!isEmpty(errors) ? 'Thông tin không lợp lệ!' : ''}</FormHelperText>
+                  <FormHelperText>
+                    {!isEmpty(errors) ? "Thông tin không lợp lệ!" : ""}
+                  </FormHelperText>
                 </FormControl>
               </form>
               <Typography
                 variant="h6"
-                color="error.main"
-                sx={{ fontStyle: "italic", mt: 4 }}
+                color="text.primaryRed"
+                sx={{ fontStyle: "italic", mt: 2 }}
               >
                 *NOTE: Sau khi bạn đặt hàng, vui lòng liên hệ fanpage hoặc
                 hotline để được shop liên hệ chuyển khoản và giao tài khoản. Xin
                 Cảm ơn!
               </Typography>
-            </CardContent>
-            {/* <CardMedia
-              component="img"
-              height="auto"
-              width="auto"
-              image="/static/images/banner.jpg"
-              alt=""
-            /> */}
-          </Card>
-        </Box>
+            </StyledMainBox>
+          </Grid>
+        </Grid>
       </Container>
     </div>
   );
-}
+};
 
-export const getServerSideProps: GetServerSideProps = async (
-  context
-) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const { params, req, res, query } = context;
     let productItemData = null;
@@ -324,13 +309,10 @@ export const getServerSideProps: GetServerSideProps = async (
       await uow.initialize();
       const data = await uow.ProuductItemRepository.findOne({
         where: {
-          id: query?.productItemId as string || '',
-          status: PRODUCT_ITEM_STATUS.SELLING
-        }
+          id: (query?.productItemId as string) || "",
+          status: PRODUCT_ITEM_STATUS.SELLING,
+        },
       });
-      // const data = await uow.OrderRepository.findOneBy({
-      //   referenceNumber: query?.referenceNumber as string || ''
-      // });
 
       const productItemData = JSON.parse(JSON.stringify(data));
       return {
@@ -348,5 +330,8 @@ export const getServerSideProps: GetServerSideProps = async (
   }
 };
 
-AccountGameCheckOutPage.getLayout = (page: any) => <MainLayout pageTitle='Chi tiết tài khoản'>{page}</MainLayout>;
+AccountGameCheckOutPage.auth = {};
+AccountGameCheckOutPage.getLayout = (page: any) => (
+  <MainLayout pageTitle="Chi tiết tài khoản">{page}</MainLayout>
+);
 export default AccountGameCheckOutPage;
