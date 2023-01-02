@@ -7,20 +7,21 @@ import {
   Button,
   Container,
   Typography,
-  styled,
   Box,
   Stack,
   Grid,
   TablePagination,
   FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   SelectChangeEvent,
   CardActions,
   CardContent,
   CardMedia,
   Card,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Slider,
 } from "@mui/material";
 import { ProductItem } from "database/entity/product_item";
 import UnitOfWork from "database/unit-of-work";
@@ -29,15 +30,10 @@ import message from "common/messages";
 import MainLayout from "pages/components/MainLayout";
 import { PRODUCT_STATUS } from "@common/constants";
 
-import { Product } from "@database/entity/product";
 import { useRouter } from "next/dist/client/router";
 import { format as datefnsFormat } from "date-fns";
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  backgroundColor: "white",
-  borderRadius: 5,
-  padding: 18,
-}));
+import { StyledMainBox } from "pages/components/CustomStyledBox";
 
 type ProductCatType = {
   id: string;
@@ -78,37 +74,40 @@ const DEFAULT_ORDERS = [
   },
 ];
 
-const DEFAULT_PRICE_RANGE = "price_range_0";
+const DEFAULT_PRICE_RANGE = "0,500000";
 const DEFAULT_PRICE_RANGES = [
   {
-    key: "price_range_0",
-    value: [],
-    text: "Tất cả",
+    value: 0,
+    label: "0tr",
   },
   {
-    key: "price_range_1",
-    value: [0, 300000],
-    text: "0k - 300k",
+    key: "20",
+    value: 20,
+    label: "0.5tr",
+    amount: 500000,
   },
   {
-    key: "price_range_2",
-    value: [301000, 500000],
-    text: "301k - 500k",
+    key: "40",
+    value: 40,
+    label: "1tr",
+    amount: 1000000,
   },
   {
-    key: "price_range_3",
-    value: [501000, 1000000],
-    text: "501k - 1000k",
+    key: "60",
+    value: 60,
+    label: "1.5tr",
+    amount: 1500000,
   },
   {
-    key: "price_range_4",
-    value: [1001000, 3000000],
-    text: "1001k - 3000k",
+    key: "80",
+    value: 80,
+    label: "2tr",
+    amount: 2000000,
   },
   {
-    key: "price_range_5",
-    value: [3001000],
-    text: "Trên 3000k",
+    key: "100",
+    value: 100,
+    label: "Trên 2tr",
   },
 ];
 
@@ -121,7 +120,7 @@ const DEFAULT_PANIGATION = {
 const AccountGamePage = ({
   productCategories,
 }: {
-  productCategories: Product[];
+  productCategories: ProductCatType[];
 }) => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -130,7 +129,7 @@ const AccountGamePage = ({
     {
       id: "all",
       active: true,
-      name: "All",
+      name: "Tất cả",
     },
   ];
   productCategories?.map((item) =>
@@ -149,18 +148,21 @@ const AccountGamePage = ({
     keyword: "",
     game: String(router.query.game || "all"),
     orderBy: String(router.query.orderBy || DEFAULT_ORDER_BY),
-    priceRange: String(router.query.priceRange || DEFAULT_PRICE_RANGE),
+    priceLow: String(
+      router.query.priceLow || DEFAULT_PRICE_RANGE.split(",")[0]
+    ),
+    priceHigh: String(
+      router.query.priceHigh || DEFAULT_PRICE_RANGE.split(",")[1]
+    ),
   });
 
   const [productData, setProductData] = useState<ProductDataType>();
 
   useEffect(() => {
-    const prices = DEFAULT_PRICE_RANGES.find(
-      (item) => item.key === queryString.priceRange
-    );
     const orders = DEFAULT_ORDERS.find(
       (item) => item.key === queryString.orderBy
     );
+
     const qs =
       "?" +
       new URLSearchParams({
@@ -168,8 +170,8 @@ const AccountGamePage = ({
         page: queryString.page + "",
         keyword: queryString.keyword + "",
         game: queryString.game + "",
-        price_gte: (prices?.value[0] ? prices?.value[0] : "") + "",
-        price_lte: (prices?.value[1] ? prices?.value[1] : "") + "",
+        price_gte: queryString.priceLow + "",
+        price_lte: queryString.priceHigh + "",
         sort: (orders?.value ? orders?.value : "") + "",
       }).toString();
 
@@ -267,21 +269,53 @@ const AccountGamePage = ({
     });
   };
 
-  const handleChangePriceRange = (event: SelectChangeEvent) => {
+  const [sliderValue, setSliderValue] = useState<number[]>([0, 20]);
+
+  const handleChangeSlider = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number
+  ) => {
+    const minDistance = 20;
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+    let results = newValue;
+    if (newValue[1] - newValue[0] < minDistance) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 100 - minDistance);
+        results = [clamped, clamped + minDistance];
+      } else {
+        const clamped = Math.max(newValue[1], minDistance);
+        results = [clamped - minDistance, clamped];
+      }
+    } else {
+      // setSliderValue(newValue as number[]);
+    }
+    setSliderValue(results);
+
+    const priceLow = DEFAULT_PRICE_RANGES.find(
+      (item) => item.key === String(results[0])
+    );
+    const priceHigh = DEFAULT_PRICE_RANGES.find(
+      (item) => item.key === String(results[1])
+    );
+    const lowAmount = priceLow?.amount ? String(priceLow.amount) : "";
+    const highAmount = priceHigh?.amount ? String(priceHigh.amount) : "";
     setQueryString({
       ...queryString,
-      priceRange: event.target.value,
+      priceLow: lowAmount,
+      priceHigh: highAmount,
     });
     router.replace({
-      query: { ...router.query, priceRange: event.target.value },
+      query: { ...router.query, priceLow: lowAmount, priceHigh: highAmount },
     });
   };
-
   return (
     <Container style={{ marginTop: 10 }}>
-      <StyledBox>
-        <Typography variant="subtitle1">Games</Typography>
-        <Stack direction="row" spacing={2}>
+      <StyledMainBox>
+        <Typography variant="subtitle1">Bộ Lọc</Typography>
+        <Stack direction="row" mt={2} spacing={2}>
           {currentCategories.map((cat) => (
             <Button
               variant="contained"
@@ -295,49 +329,46 @@ const AccountGamePage = ({
           ))}
         </Stack>
 
-        <Stack direction="row" mt={2} spacing={2}>
-          <FormControl variant="standard" size="small" sx={{ width: 150 }}>
-            <InputLabel>Sắp xếp theo</InputLabel>
-            <Select
-              value={queryString.orderBy}
-              label="sort"
-              onChange={handleChangeSort}
-            >
-              {DEFAULT_ORDERS.map((item, index) => (
-                <MenuItem key={index} value={item.key}>
-                  {item.text}
-                </MenuItem>
-              ))}
-              {/* <MenuItem value={"price_asc"}>Giá tăng dần</MenuItem>
-              <MenuItem value={"price_desc"}>Giá giảm dần</MenuItem>
-              <MenuItem value={"created_at_desc"}>Mới nhất</MenuItem> */}
-            </Select>
-          </FormControl>
-          <FormControl variant="standard" size="small" sx={{ width: 150 }}>
-            <InputLabel>Khoản giá</InputLabel>
-            <Select
-              value={queryString.priceRange}
-              label="priceRange"
-              onChange={handleChangePriceRange}
-            >
-              {DEFAULT_PRICE_RANGES.map((item, index) => (
-                <MenuItem key={index} value={item.key}>
-                  {item.text}
-                </MenuItem>
-              ))}
-              {/* <MenuItem value={"price_range_1"}>0k - 300k</MenuItem>
-              <MenuItem value={"price_range_2"}>301k - 500k</MenuItem>
-              <MenuItem value={"price_range_3"}>501k - 1000k</MenuItem>
-              <MenuItem value={"price_range_4"}>1001k - 3000k</MenuItem>
-              <MenuItem value={"price_range_5"}>Trên 3000k</MenuItem> */}
-            </Select>
+        <Stack sx={{ width: 300 }} mt={2}>
+          <FormControl variant="standard" size="small">
+            <FormLabel>Khoảng giá</FormLabel>
+            <Slider
+              step={20}
+              getAriaLabel={() => "Price Range"}
+              value={sliderValue}
+              onChange={handleChangeSlider}
+              valueLabelDisplay="off"
+              disableSwap
+              marks={DEFAULT_PRICE_RANGES}
+            />
           </FormControl>
         </Stack>
+      </StyledMainBox>
 
+      <StyledMainBox>
         <Box mt={2}>
           <Typography variant="body1">
             {productData?.count || 0} tài khoản trong kho
           </Typography>
+          <FormControl variant="outlined" size="small">
+            <FormLabel>Sắp xếp theo</FormLabel>
+            <RadioGroup
+              row
+              name="position"
+              value={queryString.orderBy}
+              onChange={handleChangeSort}
+            >
+              {DEFAULT_ORDERS.map((item, index) => (
+                <FormControlLabel
+                  key={index}
+                  value={item.key}
+                  control={<Radio />}
+                  label={item.text}
+                  labelPlacement="start"
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
         </Box>
 
         <Grid container spacing={2} mt={2}>
@@ -362,7 +393,7 @@ const AccountGamePage = ({
           labelRowsPerPage={"Số lượng mỗi trang"}
           rowsPerPageOptions={DEFAULT_PANIGATION.rowPerPage}
         ></TablePagination>
-      </StyledBox>
+      </StyledMainBox>
     </Container>
   );
 };

@@ -1,0 +1,9 @@
+import { styled, Box } from "@mui/material";
+export const StyledMainBox = styled(Box)(({ theme }) => ({
+  backgroundColor: "#EBF3FF",
+  borderRadius: 4,
+  padding: 18,
+  marginTop: 4,
+  marginBottom: 4,
+  // backgroundColor: "rgba(0, 0, 0, 0.40)",
+}));
