@@ -7,7 +7,8 @@ import {
 } from "./entity/entities";
 import { ProductItem } from "./entity/product_item";
 import { Product } from "./entity/product";
-import { OrderDetailEntity, OrderEntity } from "./entity/order";
+import OrderEntity from "./entity/order";
+import OrderDetailEntity from "./entity/order-details";
 
 export const sqliteConfigs = {
   type: "sqlite",
@@ -85,6 +86,10 @@ export default class UnitOfWork {
 
   get OrderRepository() {
     return this.AppDataSource.getRepository(OrderEntity);
+  }
+
+  get OrderDetailsRepository() {
+    return this.AppDataSource.getRepository(OrderDetailEntity);
   }
 
   get UserRepository() {
