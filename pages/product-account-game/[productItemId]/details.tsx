@@ -39,6 +39,8 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import SellIcon from "@mui/icons-material/Sell";
 
+import ProductDetail from "components/ProductDetail";
+
 type SubmitAccountOrderType = {
   productItemId: string;
   contactName: string;
@@ -125,61 +127,7 @@ const AccountGameDetailPage = ({
         <Grid container spacing={2} mt={2}>
           <Grid item xs={12} sm={8} md={8} lg={8} xl={8}>
             <StyledMainBox>
-              <Typography variant="h5" fontWeight={800}>
-                {productItem.name}
-              </Typography>
-              <Typography variant="caption">
-                {`#${productItem.referenceNumber || ""}`}
-              </Typography>
-              <Divider></Divider>
-              <Stack direction="row" alignItems="center" gap={1}>
-                <SellIcon />
-                <Chip
-                  label={PRODUCT_ITEM_STATUS_TEXT_VI[productItem.status] || ""}
-                  color={isItemSold ? "warning" : "primary"}
-                />
-                <Typography variant="h6" color="text.primaryRed"></Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" gap={1}>
-                <PriceCheckIcon />
-                <Typography
-                  variant="h6"
-                  // color="rgba(254, 52, 100, 0.9)"
-                  color="text.primaryRed"
-                  fontWeight={800}
-                >
-                  {`${numeral(productItem.price).format("0,0")} ${
-                    productItem.currency
-                  }`}
-                </Typography>
-              </Stack>
-              <Stack direction="row" alignItems="center" gap={1}>
-                <AssignmentIcon />
-                <Typography variant="subtitle1" color="text.primary">
-                  Mô tả sản phẩm
-                </Typography>
-              </Stack>
-              <Typography variant="body1" color="text.primary">
-                {productItem.description}
-              </Typography>
-              {/* <Tooltip
-                title="click để xem ảnh lớn hơn"
-                placement="top"
-                open={true}
-              > */}
-              <CardMedia
-                component="img"
-                // height="200"
-                // width="auto"
-                image={productItem.thumbnail}
-                alt="alt"
-                // sx={{
-                //   height: 200,
-                //   width: 200,
-                // }}
-                // onClick={handleClickImage}
-              />
-              {/* </Tooltip> */}
+              <ProductDetail productItem={productItem}></ProductDetail>
             </StyledMainBox>
           </Grid>
           <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
