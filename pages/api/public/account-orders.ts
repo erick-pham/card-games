@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { authOptions } from "../auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
 import UnitOfWork from "database/unit-of-work";
-import { OrderEntity } from "database/entity/order";
+import OrderEntity from "database/entity/order";
 import { plainToInstance } from "class-transformer";
 import { PRODUCT_ITEM_STATUS } from "common/constants";
 interface OrderRequestBody {

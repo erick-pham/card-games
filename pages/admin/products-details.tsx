@@ -9,22 +9,16 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  // Pagination,
   Select,
-  // TextField,
   Table,
   TableBody,
   TableHead,
-  TableCell,
   TableRow,
   TableContainer,
   Paper,
   Chip,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { styled } from "@mui/material/styles";
-
-import { tableCellClasses } from "@mui/material/TableCell";
 import numeral from "numeral";
 import { ProductListToolbar } from "./components/product/product-list-toolbar";
 import { DashboardLayout } from "./components/dashboard-layout";
@@ -39,7 +33,7 @@ import {
   PRODUCT_ITEM_TYPES_LABEL,
   StatusColor,
 } from "common/constants";
-
+import { StyledTableCell, StyledTableRow } from "components/Admin/CustomTable";
 const ProductItems = () => {
   const dispatch = useDispatch();
   const [selectedProductId, setSelectedProductId] = useState<string>("");
@@ -259,26 +253,6 @@ const ProductItems = () => {
     </>
   );
 };
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
 
 ProductItems.auth = {
   required: true,

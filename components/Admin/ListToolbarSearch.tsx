@@ -7,13 +7,17 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { SearchIcon } from "../../icons";
+import { SearchIcon } from "./Icons";
 
 export const OrderListToolbar = ({
   handleSearch,
+  placeholderSearch,
+  headTitle,
   ...rest
 }: {
   handleSearch: any;
+  placeholderSearch: string;
+  headTitle: string;
 }) => (
   <Box {...rest}>
     <Box
@@ -26,7 +30,7 @@ export const OrderListToolbar = ({
       }}
     >
       <Typography sx={{ m: 1 }} variant="h4">
-        Orders
+        {headTitle}
       </Typography>
     </Box>
     <Box sx={{ mt: 3 }}>
@@ -44,7 +48,7 @@ export const OrderListToolbar = ({
                   </InputAdornment>
                 ),
               }}
-              placeholder="Search Order Ref. Number"
+              placeholder={placeholderSearch}
               variant="outlined"
               onKeyPress={handleSearch}
             />

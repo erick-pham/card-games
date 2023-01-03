@@ -7,7 +7,7 @@ import { unstable_getServerSession } from "next-auth/next";
 import UnitOfWork from "database/unit-of-work";
 import { checkIsAdmin } from "utils/check-role";
 import { paginateRequest, paginateResponse } from "utils/paginate";
-import { OrderEntity } from "database/entity/order";
+import OrderEntity from "database/entity/order";
 import { plainToInstance } from "class-transformer";
 import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
 

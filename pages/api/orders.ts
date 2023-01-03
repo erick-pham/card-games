@@ -1,13 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { FindOptionsWhere, Like } from "typeorm";
+import { FindOptionsWhere, ILike } from "typeorm";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
 
 import UnitOfWork from "database/unit-of-work";
 import { checkIsAdmin } from "../../utils/check-role";
 import { paginateRequest, paginateResponse } from "../../utils/paginate";
-import { OrderEntity } from "database/entity/order";
+import OrderEntity from "database/entity/order";
 import { plainToInstance } from "class-transformer";
 import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
 
@@ -35,27 +35,31 @@ export default async function handler(
     if (req.method === "GET") {
       const { take, page, skip, keyword } = paginateRequest(req);
       let where = {
-        referenceNumber: Like(`%${keyword}%`),
         userId: !isAdmmin ? (session.userId as string) : undefined,
-      };
+      } as FindOptionsWhere<OrderEntity>;
+
+      if (keyword) {
+        where.referenceNumber = ILike(`%${keyword}%`);
+      }
 
       const data = await uow.OrderRepository.findAndCount({
-        where: where as FindOptionsWhere<OrderEntity>,
+        where: where,
         take: take,
         skip: skip,
-        select: {
-          user: {
-            name: true,
-          },
-          productItem: {
-            name: true,
-            type: true,
-            price: true,
-          },
-        },
+        // select: {
+        //   user: {
+        //     name: true,
+        //   },
+        //   productItem: {
+        //     name: true,
+        //     type: true,
+        //     price: true,
+        //   },
+        // },
         relations: {
-          user: true,
-          productItem: true,
+          // user: true,
+          // productItem: true,
+          orderDetails: true,
         },
         order: {
           updatedAt: "DESC",

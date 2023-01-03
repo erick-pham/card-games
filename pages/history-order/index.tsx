@@ -1,5 +1,5 @@
 import { GetServerSideProps, NextPage } from "next";
-import { OrderEntity } from "database/entity/order";
+import OrderEntity from "database/entity/order";
 import UnitOfWork from "database/unit-of-work";
 import {
   Box,
@@ -98,7 +98,7 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
                 Đặc điểm: {orderData?.productItem.description}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Chi tiết tài khoản:{" "}
+                Chi tiết:
                 <Link
                   href={`product-account-game/${orderData?.productItem.id}/details`}
                 >

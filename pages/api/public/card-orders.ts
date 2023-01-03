@@ -4,15 +4,21 @@ import { authOptions } from "../auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
 
 import UnitOfWork from "database/unit-of-work";
-import { OrderEntity } from "database/entity/order";
+import OrderEntity from "database/entity/order";
+import OrderDetailEntity from "database/entity/order-details";
 import { plainToInstance } from "class-transformer";
 
 interface OrderRequestBody {
-  productItemId: string;
-  email: string;
-  name: string;
+  accountCharacterName: string;
+  accountName: string;
+  accountPassword: string;
+  accountServer: string;
+  accountUserId: string;
+  contactEmail: string;
+  contactName: string;
+  contactPhoneNumber: string;
   description: string;
-  phoneNumber: string;
+  productItemId: string;
 }
 export default async function handler(
   req: NextApiRequest,
@@ -20,7 +26,7 @@ export default async function handler(
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
   // if (!session) {
-  //   res.status(401).json({ error: true, message: "You must be logged in." });
+  //   res.status(401).json({ message: "You must be logged in." });
   //   return;
   // }
   // const isAdmmin = checkIsAdmin(session);
@@ -44,12 +50,23 @@ export default async function handler(
 
       const orderEntity = plainToInstance(OrderEntity, {
         ...input,
-        userId: session?.userId || null,
+        userId: session?.userId,
         amount: item.price,
       });
 
-      const data = await uow.OrderRepository.save(orderEntity);
-      res.status(200).json(data);
+      const orderData = await uow.OrderRepository.save(orderEntity);
+
+      const orderDetailEntity = plainToInstance(OrderDetailEntity, {
+        ...input,
+        orderId: orderData.id,
+      });
+      console.log("orderDetailEntity", orderDetailEntity);
+      const orderDetailData = await uow.OrderDetailsRepository.save(
+        orderDetailEntity
+      );
+      console.log(orderDetailData);
+      // orderData.orderDetails = orderDetailData;
+      res.status(200).json(orderData);
     } else {
       return res.status(405).json({
         error: true,

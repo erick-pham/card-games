@@ -1,4 +1,4 @@
-import {
+import typeorm, {
   Entity,
   Column,
   PrimaryGeneratedColumn,
@@ -15,33 +15,9 @@ import { ProductItem } from "./product_item";
 import { ORDER_STATUS } from "common/constants";
 import { UserEntity } from "./entities";
 import { generateCode } from "@utils/generate-code";
-
-@Entity({ name: "order_details" })
-export class OrderDetailEntity extends AppBaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id!: string;
-
-  @Column({ length: 255 })
-  accountUserId!: string;
-
-  @Column({ length: 255 })
-  accountName!: string;
-
-  @Column({ length: 255 })
-  accountPassword!: string;
-
-  @Column({ length: 255 })
-  accountServer!: string;
-
-  @Column({ length: 255 })
-  accountCharacterName!: string;
-
-  @Column({ length: 1000, nullable: true })
-  description!: string;
-}
-
+import OrderDetailEntity from "./order-details";
 @Entity({ name: "orders" })
-export class OrderEntity extends AppBaseEntity {
+export default class OrderEntity extends AppBaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -87,9 +63,11 @@ export class OrderEntity extends AppBaseEntity {
   @JoinColumn()
   productItem!: ProductItem;
 
-  @OneToOne((type) => OrderDetailEntity)
-  @JoinColumn()
-  orderDetails!: OrderDetailEntity;
+  @OneToOne(
+    () => OrderDetailEntity,
+    (orderDetailEntity) => orderDetailEntity.order
+  )
+  orderDetails!: typeorm.Relation<OrderDetailEntity>;
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt!: Date;
