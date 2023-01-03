@@ -22,13 +22,13 @@ export interface SimpleDialogProps {
 const OrderDetailsModalChangeStatus = (props: SimpleDialogProps) => {
   const { onClose, open, handleConfirmModalChangeStatus, itemId, itemStatus } =
     props;
-  console.log("props", props);
+
   const handleClose = () => {
     onClose();
   };
 
   const [status, setStatus] = useState(itemStatus);
-  console.log("status", status);
+
   const handleChangeStatus = (event: SelectChangeEvent) => {
     setStatus(event.target.value as string);
   };

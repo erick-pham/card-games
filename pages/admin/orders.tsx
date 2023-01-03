@@ -37,6 +37,7 @@ import { StyledTableCell } from "components/Admin/CustomTable";
 
 const OrderPage = () => {
   const dispatch = useDispatch();
+  const [reload, setReload] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [orderDataModal, setOrderDataModal] = useState<Order>();
   const [queryString, setQueryString] = useState({
@@ -84,7 +85,7 @@ const OrderPage = () => {
           })
         );
       });
-  }, [dispatch, queryString]);
+  }, [dispatch, queryString, reload]);
 
   const handleLimitChange = (event: any) => {
     setQueryString({
@@ -152,7 +153,46 @@ const OrderPage = () => {
     orderId: string,
     newStatus: string
   ) => {
-    console.log(orderId, newStatus);
+    console.log("handleConfirmModalChangeStatus", orderId, newStatus);
+    dispatch(
+      setLoadingState({
+        loading: true,
+        loadingMessage: message.appAPILoading,
+      })
+    );
+    fetch("/api/orders", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: orderId,
+        status: newStatus,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error === true) {
+          dispatch(
+            setErrorState({
+              message: data.message,
+              values: "",
+              severity: "error",
+            })
+          );
+        } else {
+          setReload(!reload);
+          handleCloseModalChangeStatus();
+        }
+      })
+      .finally(() => {
+        dispatch(
+          setLoadingState({
+            loading: false,
+            loadingMessage: null,
+          })
+        );
+      });
   };
 
   return (

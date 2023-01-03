@@ -11,13 +11,11 @@ import OrderEntity from "database/entity/order";
 import { plainToInstance } from "class-transformer";
 import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
 
-interface OrderRequestBody {
-  productItemId: string;
-  email: string;
-  name: string;
-  description: string;
-  phoneNumber: string;
+interface OrderRequestBodyPUT {
+  id: string;
+  status: string;
 }
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -28,6 +26,9 @@ export default async function handler(
     return;
   }
   const isAdmmin = checkIsAdmin(session);
+  if (!isAdmmin) {
+    return res.status(401).json({ message: "Acction denied." });
+  }
   const uow = new UnitOfWork();
   await uow.initialize();
 
@@ -68,34 +69,17 @@ export default async function handler(
 
       const result = paginateResponse(data, page, take);
       res.status(200).json(result);
-    } else if (req.method === "POST") {
-      const input: OrderRequestBody = req.body;
-
-      const item = await uow.ProuductItemRepository.findOneBy({
-        id: input.productItemId,
-      });
-
-      if (!item) {
-        return res.status(400).json({
-          error: true,
-          message: "Product not found.",
-        });
-      }
-
-      if (item.type === PRODUCT_ITEM_TYPES.ACCOUNT_GAME) {
-        await uow.ProuductItemRepository.update(input.productItemId, {
-          status: PRODUCT_ITEM_STATUS.SOLD,
-        });
-      }
-
-      const orderEntity = plainToInstance(OrderEntity, {
-        ...input,
-        userId: session.userId,
-        amount: item.price,
-      });
-
-      const data = await uow.OrderRepository.save(orderEntity);
-      res.status(200).json(data);
+    } else if (req.method === "PUT") {
+      const body = req.body as OrderRequestBodyPUT;
+      const result = await uow.OrderRepository.update(
+        {
+          id: body.id,
+        },
+        {
+          status: body.status,
+        }
+      );
+      res.status(200).json({ affected: result.affected });
     } else {
       return res.status(405).json({
         error: true,
