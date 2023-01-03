@@ -16,7 +16,7 @@ import {
   TableSortLabel,
   Tooltip,
 } from "@mui/material";
-import PerfectScrollbar from "react-perfect-scrollbar";
+// import PerfectScrollbar from "react-perfect-scrollbar";
 import { DashboardLayout } from "pages/admin/components/dashboard-layout";
 import { setErrorState, setLoadingState } from "app/rootSlice";
 
@@ -25,16 +25,17 @@ import message from "@common/messages";
 
 import numeral from "numeral";
 import { format as datefnsFormat } from "date-fns";
-import ListToolbarSearch from "../../components/Admin/ListToolbarSearch";
+import ListToolbarSearch from "components/Admin/ListToolbarSearch";
 import {
   OrderAPIReponse,
   OrderListResultsProps,
   Order,
 } from "components/Admin//OrderPage/types";
-import { OrderDetailsModal } from "../../components/Admin/OrderPage/OrderDetailsModal";
-import { StyledTableCell } from "../../components/Admin/CustomTable";
+import OrderDetailsModal from "components/Admin/OrderPage/OrderDetailsModal";
+import OrderDetailsModalChangeStatus from "components/Admin/OrderPage/OrderDetailsModalChangeStatus";
+import { StyledTableCell } from "components/Admin/CustomTable";
 
-const Orders = () => {
+const OrderPage = () => {
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const [orderDataModal, setOrderDataModal] = useState<Order>();
@@ -129,6 +130,31 @@ const Orders = () => {
     setOpenModal(true);
   };
 
+  const [openModalChangeStatus, setOpenModalChangeStatus] = useState(false);
+  const [orderDataModalChangeStatus, setOrderDataModalChangeStatus] = useState({
+    itemId: "",
+    itemStatus: "",
+  });
+
+  const handleCloseModalChangeStatus = () => {
+    setOpenModalChangeStatus(false);
+  };
+
+  const handleClickCellStatus = (orderId: string, status: string) => {
+    setOrderDataModalChangeStatus({
+      itemId: orderId,
+      itemStatus: status,
+    });
+    setOpenModalChangeStatus(true);
+  };
+
+  const handleConfirmModalChangeStatus = (
+    orderId: string,
+    newStatus: string
+  ) => {
+    console.log(orderId, newStatus);
+  };
+
   return (
     <>
       <Head>
@@ -137,11 +163,18 @@ const Orders = () => {
       <OrderDetailsModal
         openModal={openModal}
         orderDataModal={orderDataModal}
-        // handleReloadPage={handleReloadPage}
         handleOpen={handleOpenModal}
         handleClose={handleCloseModal}
-        // productEdit={productEdit}
       ></OrderDetailsModal>
+      {openModalChangeStatus && (
+        <OrderDetailsModalChangeStatus
+          open={openModalChangeStatus}
+          onClose={handleCloseModalChangeStatus}
+          itemStatus={orderDataModalChangeStatus.itemStatus}
+          itemId={orderDataModalChangeStatus.itemId}
+          handleConfirmModalChangeStatus={handleConfirmModalChangeStatus}
+        ></OrderDetailsModalChangeStatus>
+      )}
       <Box
         component="main"
         sx={{
@@ -161,6 +194,7 @@ const Orders = () => {
               handleLimitChange={handleLimitChange}
               handlePageChange={handlePageChange}
               handleClickAction={handleClickAction}
+              handleClickCellStatus={handleClickCellStatus}
             />
           </Box>
         </Container>
@@ -174,6 +208,7 @@ const OrderListResults = ({
   handleLimitChange,
   handlePageChange,
   handleClickAction,
+  handleClickCellStatus,
 }: OrderListResultsProps) => {
   return (
     <Card>
@@ -182,18 +217,8 @@ const OrderListResults = ({
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
-              <TableRow
-                onClick={() => {
-                  console.log("Detected Row Click");
-                }}
-              >
-                <StyledTableCell
-                  onClick={() => {
-                    console.log("Detected Row Click");
-                  }}
-                >
-                  Order Ref
-                </StyledTableCell>
+              <TableRow>
+                <StyledTableCell>Order Ref</StyledTableCell>
                 <StyledTableCell>Status</StyledTableCell>
                 <StyledTableCell>Amount</StyledTableCell>
                 <StyledTableCell>Contact Name</StyledTableCell>
@@ -217,13 +242,15 @@ const OrderListResults = ({
             </TableHead>
             <TableBody>
               {orders?.data?.map((order) => (
-                <TableRow
-                  hover
-                  key={order.id}
-                  onClick={() => handleClickAction(order.id)}
-                >
-                  <StyledTableCell>{order.referenceNumber}</StyledTableCell>
-                  <StyledTableCell>
+                <TableRow hover key={order.id}>
+                  <StyledTableCell onClick={() => handleClickAction(order.id)}>
+                    {order?.referenceNumber}
+                  </StyledTableCell>
+                  <StyledTableCell
+                    onClick={() =>
+                      handleClickCellStatus(order.id, order.status)
+                    }
+                  >
                     <Chip
                       label={order?.status}
                       color={StatusColor(order?.status)}
@@ -262,12 +289,12 @@ const OrderListResults = ({
   );
 };
 
-Orders.auth = {
+OrderPage.auth = {
   required: true,
   role: "Admin",
   // loading: <div>Loading...</div>,
   // unauthorized: "/auth/signin", // redirect to this url
 };
-Orders.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
+OrderPage.getLayout = (page: any) => <DashboardLayout>{page}</DashboardLayout>;
 
-export default Orders;
+export default OrderPage;

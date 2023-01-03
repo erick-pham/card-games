@@ -11,13 +11,13 @@ import {
 import { format as datefnsFormat } from "date-fns";
 import { OrderDetailsModalProps } from "./types";
 
-export const OrderDetailsModal = ({
+const OrderDetailsModal = ({
   openModal,
   orderDataModal,
   handleClose,
 }: OrderDetailsModalProps) => {
   return (
-    <Dialog open={openModal} onClose={handleClose}>
+    <Dialog open={openModal} onClose={handleClose} fullWidth maxWidth={"sm"}>
       <DialogTitle>Order Details</DialogTitle>
       <DialogContent>
         <DialogContentText variant="h6" color={"text.primaryRed"}>

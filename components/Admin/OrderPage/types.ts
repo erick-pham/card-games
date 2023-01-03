@@ -57,4 +57,5 @@ export type OrderListResultsProps = {
   handleLimitChange: (event: any) => void;
   handlePageChange: (event: any, newPage: any) => void;
   handleClickAction: (orderId: string) => void;
+  handleClickCellStatus: (orderId: string, status: string) => void;
 };
