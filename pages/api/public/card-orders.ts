@@ -58,14 +58,14 @@ export default async function handler(
 
       const orderDetailEntity = plainToInstance(OrderDetailEntity, {
         ...input,
-        orderId: orderData.id,
+        // orderId: orderData.id,
       });
-      console.log("orderDetailEntity", orderDetailEntity);
+      orderDetailEntity.order = orderEntity;
+
       const orderDetailData = await uow.OrderDetailsRepository.save(
         orderDetailEntity
       );
-      console.log(orderDetailData);
-      // orderData.orderDetails = orderDetailData;
+
       res.status(200).json(orderData);
     } else {
       return res.status(405).json({
@@ -74,7 +74,7 @@ export default async function handler(
       });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res
       .status(500)
       .send({ error: true, message: "Internal Server Error" });

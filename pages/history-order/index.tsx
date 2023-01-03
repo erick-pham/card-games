@@ -76,7 +76,7 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
                 Mã đơn: {orderData?.referenceNumber}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Ngày tạo:
+                Ngày tạo:{" "}
                 {orderData ? format(new Date(orderData?.createdAt), "Pp") : ""}
               </Typography>
               <Typography variant="body1" color="text.secondary">
@@ -98,12 +98,21 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
                 Đặc điểm: {orderData?.productItem.description}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Chi tiết:
-                <Link
-                  href={`product-account-game/${orderData?.productItem.id}/details`}
-                >
-                  Click vào đây
-                </Link>
+                Chi tiết sản phẩm:{" "}
+                {orderData?.productItem.type === "CARD_GAME" && (
+                  <Link
+                    href={`product-card-game?game=${orderData?.productItem.productId}&itemId=${orderData?.productItem.id}`}
+                  >
+                    Click vào đây
+                  </Link>
+                )}
+                {orderData?.productItem.type === "ACCOUNT_GAME" && (
+                  <Link
+                    href={`product-account-game/${orderData?.productItem.id}/details`}
+                  >
+                    Click vào đây
+                  </Link>
+                )}
               </Typography>
               <Typography
                 variant="body1"

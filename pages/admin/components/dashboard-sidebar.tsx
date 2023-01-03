@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import { signOut } from "next-auth/react";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import GroupIcon from "@mui/icons-material/Group";
@@ -10,14 +9,7 @@ import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import StackedBarChartIcon from "@mui/icons-material/StackedBarChart";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import {
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Divider, Drawer, useMediaQuery } from "@mui/material";
 
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";

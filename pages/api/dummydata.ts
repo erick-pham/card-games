@@ -5,6 +5,7 @@ import UnitOfWork from "database/unit-of-work";
 import { faker } from "@faker-js/faker";
 import { ProductItem } from "database/entity/product_item";
 import { Product } from "database/entity/product";
+import { generateCode } from "@utils/generate-code";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -24,17 +25,17 @@ export default async function handler(
 
   // await uow.ProuductRepository.save(product);
 
-  // Array.from({ length: 10 }).forEach(() => {
+  // Array.from({ length: 100 }).forEach(() => {
   //   let productItem = {
   //     id: faker.datatype.uuid(),
   //     name: faker.name.firstName(),
   //     price: faker.datatype.number({ min: 150, max: 2000 }) * 1000,
   //     currency: "VND",
-  //     status: faker.helpers.arrayElement(["NEW"]),
+  //     status: faker.helpers.arrayElement(["SELLING"]),
   //     thumbnail: faker.image.abstract(500, 300, true),
   //     image: faker.image.abstract(500, 300, true),
   //     description: faker.lorem.sentence(),
-  //     type: "CARD_GAME",
+  //     type: "ACCOUNT_GAME",
   //     createdAt: new Date(),
   //     updatedAt: new Date(),
   //     productId: "bef960f7-5a09-44d2-a7cd-cf67f8660a1c",
@@ -44,5 +45,19 @@ export default async function handler(
 
   // const rs = await uow.ProuductItemRepository.save(PRODUCT_ITEMS);
 
+  // const rows = await uow.ProuductItemRepository.find();
+  // for (var i = 0; i < rows.length; i++) {
+  //   if (!rows[i].referenceNumber) {
+  //     await uow.ProuductItemRepository.update(
+  //       {
+  //         id: rows[i].id as string,
+  //       },
+  //       {
+  //         referenceNumber: generateCode(10),
+  //       }
+  //     );
+  //   }
+  // }
+  // res.status(200).json(rows);
   // res.status(200).json(rs);
 }

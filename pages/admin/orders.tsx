@@ -153,7 +153,6 @@ const OrderPage = () => {
     orderId: string,
     newStatus: string
   ) => {
-    console.log("handleConfirmModalChangeStatus", orderId, newStatus);
     dispatch(
       setLoadingState({
         loading: true,

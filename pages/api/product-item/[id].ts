@@ -28,7 +28,7 @@ export default async function handler(
       });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res
       .status(500)
       .send({ error: true, message: "Internal Server Error" });

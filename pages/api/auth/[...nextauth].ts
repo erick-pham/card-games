@@ -117,7 +117,6 @@ export const authOptions: NextAuthOptions = {
         url,
         provider: { server, from },
       }) {
-        // console.log("param", params);
         // const { identifier, url, provider, theme } = params;
         const { host } = new URL(url);
         // NOTE: You are not required to use `nodemailer`, use whatever you want.

@@ -18,7 +18,6 @@ export default async function handler(
   const uow = new UnitOfWork();
   await uow.initialize();
 
-  console.log(`${req.method} ${req.url}`);
   try {
     if (req.method === "POST") {
       const data = await uow.ProuductRepository.upsert(req.body, ["id"]);
@@ -60,7 +59,7 @@ export default async function handler(
       });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res
       .status(500)
       .send({ error: true, message: "Internal Server Error" });

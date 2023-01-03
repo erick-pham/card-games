@@ -20,7 +20,6 @@ export default async function handler(
   const uow = new UnitOfWork();
   await uow.initialize();
 
-  console.log(`${req.method} ${req.url}`);
   try {
     if (req.method === "GET") {
       let where = {
@@ -52,12 +51,6 @@ export default async function handler(
 
       const { take, page, skip, keyword } = paginateRequest(req);
 
-      // let where = {
-      //   name: Like(`%${keyword}%`),
-      // };
-      console.log("take", take);
-      console.log("page", page);
-      console.log("skip", skip);
       const data = await uow.ProuductItemRepository.findAndCount({
         where: {
           ...where,
@@ -85,7 +78,7 @@ export default async function handler(
       });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res
       .status(500)
       .send({ error: true, message: "Internal Server Error" });

@@ -18,7 +18,6 @@ export default async function handler(
 
       let data = null;
       if (productItemEntity.id) {
-        console.log("productItemEntity", productItemEntity);
         data = await uow.ProuductItemRepository.createQueryBuilder()
           .update(productItemEntity)
           .where({
@@ -62,7 +61,7 @@ export default async function handler(
       });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res
       .status(500)
       .send({ error: true, message: "Internal Server Error" });

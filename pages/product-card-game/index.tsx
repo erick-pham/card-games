@@ -1,4 +1,4 @@
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import ErrorPage from "next/error";
 import { unstable_getServerSession } from "next-auth/next";
@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import {
   Container,
   Box,
-  styled,
   Grid,
   FormControl,
   TextField,
@@ -22,6 +21,7 @@ import { setErrorState, setLoadingState } from "app/rootSlice";
 import message from "common/messages";
 import { Controller, useForm } from "react-hook-form";
 import { Product } from "database/entity/product";
+
 import UnitOfWork from "database/unit-of-work";
 import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
 import { isEmpty } from "lodash";
@@ -30,6 +30,8 @@ import { getSessionUserInfo, SessionUser } from "utils/get-session-user";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import MainLayout from "pages/components/MainLayout";
 import { StyledMainBox } from "pages/components/CustomStyledBox";
+import ProductDetail from "components/ProductDetail";
+import { useState } from "react";
 
 export const getServerSideProps: GetServerSideProps<CardGamePageProps> = async (
   context
@@ -62,11 +64,22 @@ export const getServerSideProps: GetServerSideProps<CardGamePageProps> = async (
       props: { productCardGames, userInfo },
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       props: { internalError: true, statusCode: 500 },
     };
   }
+};
+
+type ProductItemType = {
+  id: string;
+  name: string;
+  referenceNumber: string;
+  price: number;
+  currency: string;
+  description: string;
+  thumbnail: string;
+  status: string;
 };
 
 type SubmitCardOrderType = {
@@ -97,10 +110,21 @@ const CardGamePage = ({
   userInfo,
 }: CardGamePageProps) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+
+  const { game, itemId } = router.query as { game: string; itemId: string };
+  const selectedProduct = productCardGames?.find((i) => i.id === game);
+  const selectedItem = selectedProduct?.productItems?.find(
+    (i) => i.id === itemId
+  );
+
+  const [productItemList, setProductItemList] = useState(
+    selectedProduct?.productItems
+  );
 
   let defaultValues = {
-    productId: "",
-    productItemId: "",
+    productId: String(game) || "",
+    productItemId: String(itemId) || "",
     accountUserId: "",
     accountName: "",
     accountPassword: "",
@@ -122,7 +146,40 @@ const CardGamePage = ({
     defaultValues,
   });
 
-  const watchShowGame = watch("productId", ""); // you can supply default value as second argument
+  // const watchShowGame = watch("productId", ""); // you can supply default value as second argument
+
+  const [productItem, setProductItem] = useState<ProductItemType | undefined>(
+    selectedItem
+  );
+
+  watch((data, { name, type }) => {
+    if (name === "productId") {
+      const selectedProduct = productCardGames?.find(
+        (i) => i.id === data.productId
+      );
+      if (selectedProduct) {
+        router.replace({
+          query: { ...router.query, game: selectedProduct?.id, itemId: "" },
+        });
+        setProductItemList(selectedProduct?.productItems);
+      }
+    }
+
+    if (name === "productItemId") {
+      const product = productCardGames?.find((i) => i.id === data.productId);
+      const productItem = product?.productItems?.find(
+        (i) => i.id === data.productItemId
+      );
+      if (productItem) {
+        setProductItem(productItem);
+        router.replace({
+          query: { ...router.query, itemId: productItem.id },
+        });
+      } else {
+        setProductItem(undefined);
+      }
+    }
+  });
 
   const onSubmit = async (data: SubmitCardOrderType) => {
     dispatch(
@@ -169,29 +226,17 @@ const CardGamePage = ({
       });
   };
 
-  const renderPackage = (activeProductId: string) => {
-    const product = productCardGames?.find((i) => i.id === activeProductId);
-
-    const productItems = product?.productItems || [
-      {
-        id: "id",
-        name: "No data",
-      },
-    ];
-    return productItems.map((option) => (
-      <MenuItem key={option.id} value={option.id}>
-        {option.name}
-      </MenuItem>
-    ));
-  };
-
   if (internalError && statusCode) {
     return <ErrorPage statusCode={statusCode} />;
   }
+
   return (
     <Container style={{ marginTop: 10 }}>
       <Grid container spacing={2} mt={2}>
         <Grid item xs={12} sm={8} md={8} lg={8} xl={8}>
+          <StyledMainBox>
+            <ProductDetail productItem={productItem}></ProductDetail>
+          </StyledMainBox>
           <StyledMainBox>
             <Typography variant="h5" align="center" color="#008B88">
               Hướng dẫn NẠP GENSHIN IMPACT
@@ -291,6 +336,9 @@ const CardGamePage = ({
                       error={error ? true : false}
                       helperText={error?.message}
                     >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
                       {productCardGames?.map((option) => (
                         <MenuItem key={option.id} value={option.id}>
                           {option.name}
@@ -324,7 +372,16 @@ const CardGamePage = ({
                       error={error ? true : false}
                       helperText={error?.message}
                     >
-                      {renderPackage(watchShowGame)}
+                      {/* {renderPackage(watchShowGame)} */}
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {productItemList?.length &&
+                        productItemList.map((option) => (
+                          <MenuItem key={option.id} value={option.id}>
+                            {option.name}
+                          </MenuItem>
+                        ))}
                     </TextField>
                   </FormControl>
                 )}
