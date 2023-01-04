@@ -90,8 +90,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
   color: "#fff",
 }));
 
-const settings = ["Logout", "Profile"];
-const settingsHrefs = ["/", "profile"];
+const settings = ["Profile", "Logout"];
+const settingsHrefs = ["profile", "/"];
 
 const ResponsiveAppBar = () => {
   const { data: session } = useSession();

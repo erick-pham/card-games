@@ -127,3 +127,18 @@ export const GetLabelText = (lables: Array<any>, type: string) => {
   }
   return "";
 };
+
+export const GENDERS = [
+  {
+    value: "NONE",
+    label: "Chưa cập nhật",
+  },
+  {
+    value: "MALE",
+    label: "Nam",
+  },
+  {
+    value: "Female",
+    label: "Nữ",
+  },
+];
