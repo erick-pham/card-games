@@ -1,4 +1,11 @@
-import { Typography, Stack, Divider, Chip, CardMedia } from "@mui/material";
+import {
+  Typography,
+  Stack,
+  Divider,
+  Chip,
+  CardMedia,
+  Box,
+} from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import SellIcon from "@mui/icons-material/Sell";
@@ -22,7 +29,9 @@ const ProductDetail = ({
       <Typography variant="caption">
         {`#${productItem?.referenceNumber || ""}`}
       </Typography>
-      <Divider></Divider>
+      <Box mt={2} mb={2}>
+        <Divider></Divider>
+      </Box>
       <Stack direction="row" alignItems="center" gap={1}>
         <SellIcon />
         {productItem && (

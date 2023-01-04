@@ -266,7 +266,8 @@ const CardGamePage = ({
               </Typography>
               <Typography
                 style={{
-                  backgroundColor: "yellow",
+                  // backgroundColor: "red",
+                  color: "yellow",
                   fontWeight: "bold",
                 }}
               >

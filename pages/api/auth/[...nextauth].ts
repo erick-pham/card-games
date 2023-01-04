@@ -12,7 +12,7 @@ import { dbConfigs } from "database/unit-of-work";
 
 import { createTransport } from "nodemailer";
 
-import { theme } from "../../../theme";
+import { themeLight as theme } from "theme";
 
 declare module "next-auth" {
   interface Session {
