@@ -16,7 +16,7 @@ import {
 } from "../app/rootSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { wrapper } from "app/store";
-import LoadingDialog from "./components/LoadingDialog";
+import LoadingDialog from "components/LoadingDialog";
 import { theme } from "theme";
 import createEmotionCache from "theme/createEmotionCache";
 import { CacheProvider } from "@emotion/react";
@@ -70,11 +70,12 @@ function MyApp({
     <div>
       <div id="fb-root"></div>
       <div id="fb-customer-chat" className="fb-customerchat"></div>
-      <Script
-        id="fb-chat"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
+      {process.env.FB_CHAT === "true" && (
+        <Script
+          id="fb-chat"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
           var chatbox = document.getElementById('fb-customer-chat');
           chatbox.setAttribute("page_id", "${FACEBOOK_PAGE_ID}");
           chatbox.setAttribute("attribution", "${ATTRIBUTION}");
@@ -93,8 +94,10 @@ function MyApp({
             fjs.parentNode.insertBefore(js, fjs);
           }(document, 'script', 'facebook-jssdk'));
           `,
-        }}
-      />
+          }}
+        />
+      )}
+
       <LoadingDialog
         isLoading={loading || isLoading}
         message={loadingMessage.id ? loadingMessage.defaultMessage : null}

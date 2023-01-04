@@ -11,10 +11,7 @@ import {
   IconButton,
 } from "@mui/material";
 
-import {
-  setDialogImageState,
-  selectDialogImageState,
-} from "../../app/rootSlice";
+import { setDialogImageState, selectDialogImageState } from "app/rootSlice";
 
 export default function ResponsiveDialog() {
   const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps } from "next";
 import OrderEntity from "database/entity/order";
 import UnitOfWork from "database/unit-of-work";
 import {
@@ -19,7 +19,7 @@ type HistoryOrderPageProps = {
   orderData?: OrderEntity;
 };
 
-import MainLayout from "pages/components/MainLayout";
+import MainLayout from "components/MainLayout";
 const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
   return (
     <Box

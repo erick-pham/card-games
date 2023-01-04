@@ -28,8 +28,8 @@ import { isEmpty } from "lodash";
 import { getSessionUserInfo, SessionUser } from "utils/get-session-user";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
-import MainLayout from "pages/components/MainLayout";
-import { StyledMainBox } from "pages/components/CustomStyledBox";
+import MainLayout from "components/MainLayout";
+import { StyledMainBox } from "components/CustomStyledBox";
 import ProductDetail from "components/ProductDetail";
 import { useState } from "react";
 

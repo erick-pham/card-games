@@ -1,21 +1,8 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  TextField,
-  InputAdornment,
-  SvgIcon,
-  Typography,
-  Stack,
-  Divider,
-  Chip,
-  CardMedia,
-} from "@mui/material";
+import { Typography, Stack, Divider, Chip, CardMedia } from "@mui/material";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import SellIcon from "@mui/icons-material/Sell";
 import numeral from "numeral";
-import { ProductItemType } from "./Types";
 import {
   PRODUCT_ITEM_STATUS,
   PRODUCT_ITEM_STATUS_TEXT_VI,
@@ -69,6 +56,17 @@ const ProductDetail = ({
       <CardMedia component="img" image={productItem?.thumbnail} alt="alt" />
     </>
   );
+};
+
+export type ProductItemType = {
+  id: string;
+  name: string;
+  referenceNumber: string;
+  price: number | null;
+  currency: string;
+  description: string;
+  thumbnail: string;
+  status: string;
 };
 
 export default ProductDetail;

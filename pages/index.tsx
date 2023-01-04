@@ -7,9 +7,9 @@ import {
   CardHeader,
   Button,
   Grid,
-  Container
+  Container,
 } from "@mui/material";
-import MainLayout from "./components/MainLayout";
+import MainLayout from "components/MainLayout";
 
 const HomePage = () => {
   return (
@@ -177,8 +177,10 @@ const HomePage = () => {
       </Container>
     </div>
   );
-}
+};
 
-HomePage.getLayout = (page: any) => <MainLayout pageTitle='Trang chủ'>{page}</MainLayout>;
+HomePage.getLayout = (page: any) => (
+  <MainLayout pageTitle="Trang chủ">{page}</MainLayout>
+);
 
 export default HomePage;

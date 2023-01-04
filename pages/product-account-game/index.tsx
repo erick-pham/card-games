@@ -27,13 +27,13 @@ import { ProductItem } from "database/entity/product_item";
 import UnitOfWork from "database/unit-of-work";
 import { setErrorState, setLoadingState } from "app/rootSlice";
 import message from "common/messages";
-import MainLayout from "pages/components/MainLayout";
+import MainLayout from "components/MainLayout";
 import { PRODUCT_STATUS } from "@common/constants";
 
 import { useRouter } from "next/dist/client/router";
 import { format as datefnsFormat } from "date-fns";
 
-import { StyledMainBox } from "pages/components/CustomStyledBox";
+import { StyledMainBox } from "components/CustomStyledBox";
 
 type ProductCatType = {
   id: string;

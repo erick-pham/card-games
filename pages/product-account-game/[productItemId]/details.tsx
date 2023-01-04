@@ -32,9 +32,9 @@ import {
 } from "common/constants";
 import UnitOfWork from "database/unit-of-work";
 
-import NotFoundData from "pages/components/NotFoundData";
-import MainLayout from "pages/components/MainLayout";
-import StyledMainBox from "pages/components/CustomStyledBox";
+import NotFoundData from "components/NotFoundData";
+import MainLayout from "components/MainLayout";
+import StyledMainBox from "components/CustomStyledBox";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import SellIcon from "@mui/icons-material/Sell";
