@@ -26,8 +26,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
   color: "#fff",
 }));
 
-const settings = ["Logout"];
-const settingsHrefs = ["/"];
+const settings = ["Logout", "Profile"];
+const settingsHrefs = ["/", "profile"];
 
 const ResponsiveAppBar = () => {
   const { data: session } = useSession();
@@ -210,15 +210,14 @@ const ResponsiveAppBar = () => {
               >
                 {settings.map((setting, index) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <NextLink href={settingsHrefs[index]} passHref>
-                      <Button
-                        component="a"
-                        onClick={
-                          setting === "Logout" ? () => signOut() : undefined
-                        }
-                      >
-                        {setting}
-                      </Button>
+                    <NextLink
+                      href={settingsHrefs[index]}
+                      passHref={setting === "Logout"}
+                      onClick={
+                        setting === "Logout" ? () => signOut() : undefined
+                      }
+                    >
+                      {setting}
                     </NextLink>
                   </MenuItem>
                 ))}
