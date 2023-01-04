@@ -40,9 +40,13 @@ export default async function handler(
       if (req.query.game) {
         let productId = req.query.game as string;
         let productIds = productId.split(",");
-        productIds = productIds.filter((item) => item.toLowerCase() !== "all");
-        if (productIds.length > 0) {
-          where.productId = In(productIds);
+        if (!productIds.includes("all")) {
+          productIds = productIds.filter(
+            (item) => item.toLowerCase() !== "all"
+          );
+          if (productIds.length > 0) {
+            where.productId = In(productIds);
+          }
         }
       }
 

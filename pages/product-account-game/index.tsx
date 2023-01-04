@@ -22,6 +22,7 @@ import {
   Radio,
   RadioGroup,
   Slider,
+  styled,
 } from "@mui/material";
 import { ProductItem } from "database/entity/product_item";
 import UnitOfWork from "database/unit-of-work";
@@ -322,7 +323,7 @@ const AccountGamePage = ({
               key={cat.id}
               onClick={() => changeCategory(cat.id)}
               size={"small"}
-              color={cat.active == true ? "secondary" : "inherit"}
+              color={cat.active == true ? "secondary" : "info"}
             >
               {cat.name}
             </Button>
@@ -398,9 +399,17 @@ const AccountGamePage = ({
   );
 };
 
+const StyledCard = styled(Card)(({ theme }) => ({
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? theme.palette.background.default
+      : "#E8E8E8",
+  // backgroundColor: "rgba(0, 0, 0, 0.40)",
+}));
+
 const RecipeReviewCard = ({ product }: { product: ProductItem }) => {
   return (
-    <Card sx={{ bgcolor: "#E8E8E8" }}>
+    <StyledCard>
       <CardMedia
         component="img"
         height="194"
@@ -448,7 +457,7 @@ const RecipeReviewCard = ({ product }: { product: ProductItem }) => {
           </Button>
         </Link>
       </CardActions>
-    </Card>
+    </StyledCard>
   );
 };
 
