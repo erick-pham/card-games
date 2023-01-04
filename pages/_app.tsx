@@ -14,7 +14,8 @@ import {
   setErrorState,
   selectLoadingState,
   selectLoadingMessageState,
-} from "../app/rootSlice";
+  selectThemeModeState,
+} from "app/rootSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { wrapper } from "app/store";
 import LoadingDialog from "components/LoadingDialog";
@@ -22,7 +23,6 @@ import { themeLight, themeDark } from "theme";
 import createEmotionCache from "theme/createEmotionCache";
 import { CacheProvider } from "@emotion/react";
 import Script from "next/script";
-import MyFooterSettings from "components/MyFooterSettings";
 const FACEBOOK_PAGE_ID = process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID;
 const ATTRIBUTION = process.env.NEXT_PUBLIC_FACEBOOK_ATTRIBUTION;
 const clientSideEmotionCache = createEmotionCache();
@@ -68,24 +68,24 @@ function MyApp({
   };
   const getLayout = Component?.getLayout ?? ((page: any) => page);
 
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  // const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  // const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   // useMemo(() => setIsDarkTheme(prefersDarkMode), [prefersDarkMode]);
 
   // The light theme is used by default
 
   // This function is triggered when the Switch component is toggled
-  const changeTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
-  };
-
+  // const changeTheme = () => {
+  //   setIsDarkTheme(!isDarkTheme);
+  // };
+  const themeMode = useSelector(selectThemeModeState);
   return (
     <div>
       <div id="fb-root"></div>
       <div id="fb-customer-chat" className="fb-customerchat"></div>
-      {process.env.FB_CHAT === "true" && (
+      {process.env.FB_CHAT === "true" ? (
         <Script
           id="fb-chat"
           strategy="afterInteractive"
@@ -111,6 +111,8 @@ function MyApp({
           `,
           }}
         />
+      ) : (
+        <></>
       )}
 
       <LoadingDialog
@@ -132,7 +134,7 @@ function MyApp({
         </Alert>
       </Snackbar>
       <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={isDarkTheme ? themeDark : themeLight}>
+        <ThemeProvider theme={themeMode === "light" ? themeLight : themeDark}>
           <CssBaseline />
           <SessionProvider session={session}>
             {Component.auth ? (
@@ -143,10 +145,6 @@ function MyApp({
               getLayout(<Component {...pageProps} />)
             )}
           </SessionProvider>
-          <MyFooterSettings
-            darkModevalue={isDarkTheme}
-            onChangeDarkMode={changeTheme}
-          ></MyFooterSettings>
         </ThemeProvider>
       </CacheProvider>
     </div>
