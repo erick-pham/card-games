@@ -86,7 +86,7 @@ const HomePage = () => {
                   justifyContent: "center",
                 }}
               >
-                <Link href={"/account-game"}>
+                <Link href={"/product-account-game"}>
                   <Button
                     variant="contained"
                     style={{
@@ -142,7 +142,7 @@ const HomePage = () => {
                   justifyContent: "center",
                 }}
               >
-                <Link href={"/card-game"}>
+                <Link href={"/product-card-game"}>
                   <Button
                     variant="contained"
                     style={{

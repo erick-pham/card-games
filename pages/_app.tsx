@@ -85,12 +85,12 @@ function MyApp({
     <div>
       <div id="fb-root"></div>
       <div id="fb-customer-chat" className="fb-customerchat"></div>
-      {process.env.FB_CHAT === "true" ? (
-        <Script
-          id="fb-chat"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
+
+      <Script
+        id="fb-chat"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
           var chatbox = document.getElementById('fb-customer-chat');
           chatbox.setAttribute("page_id", "${FACEBOOK_PAGE_ID}");
           chatbox.setAttribute("attribution", "${ATTRIBUTION}");
@@ -109,11 +109,8 @@ function MyApp({
             fjs.parentNode.insertBefore(js, fjs);
           }(document, 'script', 'facebook-jssdk'));
           `,
-          }}
-        />
-      ) : (
-        <></>
-      )}
+        }}
+      />
 
       <LoadingDialog
         isLoading={loading || isLoading}
