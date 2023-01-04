@@ -54,7 +54,17 @@ export const getServerSideProps: GetServerSideProps<
       await uow.initialize();
 
       const data = (await uow.UserRepository.findOne({
-        select: ["id", "image", "name", "email", "phoneNumber", "createdAt"],
+        select: [
+          "id",
+          "gender",
+          "firstName",
+          "lastName",
+          "image",
+          "name",
+          "email",
+          "phoneNumber",
+          "createdAt",
+        ],
         where: {
           id: session?.userId as string,
         },
@@ -95,6 +105,7 @@ const ProfilePage = ({
   statusCode,
   userProfile,
 }: ProfilePageProps) => {
+  const dispatch = useDispatch();
   let defaultValues = {
     name: userProfile?.name || "",
     email: userProfile?.email || "",
@@ -111,59 +122,57 @@ const ProfilePage = ({
     defaultValues,
   });
 
-  // const onSubmit = async () => {
-  //   dispatch(
-  //     setLoadingState({
-  //       loading: true,
-  //       loadingMessage: message.appAPILoading,
-  //     })
-  //   );
-
-  //   const payload = data as SubmitCardOrderType;
-
-  //   fetch("/api/public/card-orders", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       ...data,
-  //       productId: payload?.productId,
-  //       productItemId: payload.productItemId,
-  //     }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       if (data.error === true) {
-  //         dispatch(
-  //           setErrorState({
-  //             message: data.message,
-  //             values: "",
-  //             severity: "error",
-  //           })
-  //         );
-  //       }
-  //     })
-  //     .finally(() => {
-  //       dispatch(
-  //         setLoadingState({
-  //           loading: false,
-  //           loadingMessage: null,
-  //         })
-  //       );
-  //     });
-  // };
-
   const [values, setValues] = useState({
-    id: userProfile?.id,
+    id: userProfile?.id || "",
     email: userProfile?.email,
-    image: userProfile?.image,
-    firstName: userProfile?.firstName,
-    lastName: userProfile?.lastName,
-    phoneNumber: userProfile?.phoneNumber,
-    name: userProfile?.name,
-    gender: userProfile?.gender || "NONE",
+    image: userProfile?.image || "",
+    firstName: userProfile?.firstName || "",
+    lastName: userProfile?.lastName || "",
+    phoneNumber: userProfile?.phoneNumber || "",
+    name: userProfile?.name || "",
+    gender: userProfile?.gender || "",
   });
+
+  const handleOnSave = () => {
+    dispatch(
+      setLoadingState({
+        loading: true,
+        loadingMessage: message.appAPILoading,
+      })
+    );
+
+    const payload = values as UserProfile;
+
+    fetch("/api/profile", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...payload,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error === true) {
+          dispatch(
+            setErrorState({
+              message: data.message,
+              values: "",
+              severity: "error",
+            })
+          );
+        }
+      })
+      .finally(() => {
+        dispatch(
+          setLoadingState({
+            loading: false,
+            loadingMessage: null,
+          })
+        );
+      });
+  };
 
   const handleChange = (event: any) => {
     setValues({
@@ -188,6 +197,7 @@ const ProfilePage = ({
             <AccountProfileDetails
               values={values}
               handleChange={handleChange}
+              handleOnSave={handleOnSave}
             />
           </Grid>
         </Grid>
@@ -238,9 +248,11 @@ const AccountProfile = ({ userProfile }: { userProfile: UserProfile }) => (
 const AccountProfileDetails = ({
   values,
   handleChange,
+  handleOnSave,
 }: {
   values: UserProfile;
   handleChange: (event: any) => void;
+  handleOnSave: () => void;
 }) => {
   return (
     <form autoComplete="off">
@@ -260,11 +272,17 @@ const AccountProfileDetails = ({
                 value={values.gender}
                 variant="outlined"
               >
-                {GENDERS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                {GENDERS?.map((option) =>
+                  !option.value ? (
+                    <MenuItem key={option.value} value="">
+                      <em>None</em>
+                    </MenuItem>
+                  ) : (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  )
+                )}
               </TextField>
             </Grid>
             <Grid item md={6} xs={12}>
@@ -352,7 +370,7 @@ const AccountProfileDetails = ({
             p: 2,
           }}
         >
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={handleOnSave}>
             Save details
           </Button>
         </Box>

@@ -28,6 +28,15 @@ export class UserEntity {
   @Column({ type: "varchar", nullable: true })
   name!: string | null;
 
+  @Column({ type: "varchar", nullable: true })
+  gender!: string | null;
+
+  @Column({ type: "varchar", nullable: true })
+  firstName!: string | null;
+
+  @Column({ type: "varchar", nullable: true })
+  lastName!: string | null;
+
   @Column({ type: "varchar", nullable: true, unique: true })
   email!: string | null;
 

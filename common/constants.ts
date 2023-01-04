@@ -130,8 +130,8 @@ export const GetLabelText = (lables: Array<any>, type: string) => {
 
 export const GENDERS = [
   {
-    value: "NONE",
-    label: "Chưa cập nhật",
+    value: "",
+    label: "NONE",
   },
   {
     value: "MALE",
