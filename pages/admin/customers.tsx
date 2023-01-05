@@ -23,18 +23,18 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import { format } from "date-fns";
 
 type CustomerDataListType = {
-  customers: UserEntity[],
-  limit: number,
-  count: number,
-  currentPage: number,
-  rowsPerPageOptions: number[],
+  customers: UserEntity[];
+  limit: number;
+  count: number;
+  currentPage: number;
+  rowsPerPageOptions: number[];
   // lastPage: number,
   // nextPage: number,
   // prevPage: number,
 
-  handleLimitChange(event: any): void,
-  handlePageChange(event: any, newPage: any): void
-}
+  handleLimitChange(event: any): void;
+  handlePageChange(event: any, newPage: any): void;
+};
 
 export const CustomerListResults = ({
   customers,
@@ -43,9 +43,9 @@ export const CustomerListResults = ({
   currentPage,
   rowsPerPageOptions,
   handleLimitChange,
-  handlePageChange
+  handlePageChange,
 }: CustomerDataListType) => {
-
+  console.log("customer", customers);
   return (
     <Card>
       <PerfectScrollbar>
@@ -65,6 +65,7 @@ export const CustomerListResults = ({
                   />
                 </TableCell> */}
                 <TableCell>Name</TableCell>
+                <TableCell>Gender</TableCell>
                 <TableCell>Email</TableCell>
                 <TableCell>Address</TableCell>
                 <TableCell>Phone</TableCell>
@@ -72,44 +73,46 @@ export const CustomerListResults = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers && customers.map((customer) => (
-                <TableRow
-                  hover
-                  key={customer.id}
-                // selected={selectedCustomerIds.indexOf(customer.id) !== -1}
-                >
-                  {/* <TableCell padding="checkbox">
+              {customers &&
+                customers.map((customer) => (
+                  <TableRow
+                    hover
+                    key={customer.id}
+                    // selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                  >
+                    {/* <TableCell padding="checkbox">
                     <Checkbox
                       checked={selectedCustomerIds.indexOf(customer.id) !== -1}
                       onChange={(event) => handleSelectOne(event, customer.id)}
                       value="true"
                     />
                   </TableCell> */}
-                  <TableCell>
-                    <Box
-                      sx={{
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
-                      <Avatar src={customer?.image || ''} sx={{ mr: 2 }}>
-                        AP
-                      </Avatar>
-                      <Typography color="textPrimary" variant="body1">
-                        {customer.name}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>{customer.email}</TableCell>
-                  <TableCell>
-                    {customer.address || ''}
-                  </TableCell>
-                  <TableCell>{customer.phoneNumber}</TableCell>
-                  <TableCell>
-                    {customer.createdAt ? format(new Date(customer.createdAt), "Pp") : ''}
-                  </TableCell>
-                </TableRow>
-              ))}
+                    <TableCell>
+                      <Box
+                        sx={{
+                          alignItems: "center",
+                          display: "flex",
+                        }}
+                      >
+                        <Avatar src={customer?.image || ""} sx={{ mr: 2 }}>
+                          AP
+                        </Avatar>
+                        <Typography color="textPrimary" variant="body1">
+                          {customer.name}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>{customer.gender}</TableCell>
+                    <TableCell>{customer.email}</TableCell>
+                    <TableCell>{customer.address}</TableCell>
+                    <TableCell>{customer.phoneNumber}</TableCell>
+                    <TableCell>
+                      {customer.createdAt
+                        ? format(new Date(customer.createdAt), "Pp")
+                        : ""}
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </Box>
@@ -203,7 +206,7 @@ const Customers = () => {
       </Box>
     </>
   );
-}
+};
 
 Customers.auth = {
   required: true,

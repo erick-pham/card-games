@@ -57,7 +57,7 @@ const AccountGameDetailPage = ({
   const dispatch = useDispatch();
   const { data: session } = useSession();
   let userInfo = getSessionUserInfo(session);
-  const isItemSold = productItem.status === PRODUCT_ITEM_STATUS.SOLD;
+  const isItemSold = productItem?.status === PRODUCT_ITEM_STATUS.SOLD;
   let defaultValues = {
     productItemId: productItem?.id || "",
     contactName: userInfo?.name || "",

@@ -92,6 +92,7 @@ type UserProfile = {
   phoneNumber: string;
   image: string;
   gender: string;
+  address: string;
 };
 
 type ProfilePageProps = {
@@ -131,6 +132,7 @@ const ProfilePage = ({
     phoneNumber: userProfile?.phoneNumber || "",
     name: userProfile?.name || "",
     gender: userProfile?.gender || "",
+    address: userProfile?.address || "",
   });
 
   const handleOnSave = () => {
@@ -330,18 +332,18 @@ const AccountProfileDetails = ({
                 variant="outlined"
               />
             </Grid>
-            {/* <Grid item md={6} xs={12}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Country"
-                name="country"
+                label="Address"
+                name="address"
                 onChange={handleChange}
                 required
-                value={values.country}
+                value={values.address}
                 variant="outlined"
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            {/* <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Select State"

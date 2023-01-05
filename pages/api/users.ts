@@ -33,7 +33,18 @@ export default async function handler(
         where: where as FindOptionsWhere<UserEntity>,
         take: take,
         skip: skip,
-        select: ["id", "email", "image", "phoneNumber", "address", "createdAt"],
+        select: [
+          "id",
+          "name",
+          "firstName",
+          "lastName",
+          "gender",
+          "email",
+          "image",
+          "phoneNumber",
+          "address",
+          "createdAt",
+        ],
       });
 
       const result = paginateResponse(data, page, take);
