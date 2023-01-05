@@ -57,6 +57,7 @@ export const getServerSideProps: GetServerSideProps<
         select: [
           "id",
           "gender",
+          "address",
           "firstName",
           "lastName",
           "image",
