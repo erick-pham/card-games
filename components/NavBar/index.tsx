@@ -190,13 +190,26 @@ const ResponsiveAppBar = () => {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <NextLink href={"/"}>
+                <NextLink
+                  href={"/"}
+                  style={{
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
+                >
                   <HomeIcon></HomeIcon>
                 </NextLink>
               </MenuItem>
               {pages.map((page, index) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <NextLink href={pageHrefs[index]} key={page}>
+                  <NextLink
+                    href={pageHrefs[index]}
+                    key={page}
+                    style={{
+                      textDecoration: "none",
+                      color: "inherit",
+                    }}
+                  >
                     <Typography textAlign="center">{page}</Typography>
                   </NextLink>
                 </MenuItem>
@@ -228,12 +241,25 @@ const ResponsiveAppBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <MenuItem onClick={handleCloseNavMenu}>
-              <NextLink href={"/"}>
+              <NextLink
+                href={"/"}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
+              >
                 <HomeIcon fontSize="medium"></HomeIcon>
               </NextLink>
             </MenuItem>
             {pages.map((page, index) => (
-              <NextLink href={pageHrefs[index]} key={page}>
+              <NextLink
+                href={pageHrefs[index]}
+                key={page}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
+              >
                 <StyledButton
                   onClick={handleCloseNavMenu}
                   sx={{
@@ -283,6 +309,10 @@ const ResponsiveAppBar = () => {
                       onClick={
                         setting === "Logout" ? () => signOut() : undefined
                       }
+                      style={{
+                        textDecoration: "none",
+                        color: "inherit",
+                      }}
                     >
                       {setting}
                     </NextLink>
@@ -292,7 +322,13 @@ const ResponsiveAppBar = () => {
             </Box>
           ) : (
             <Box sx={{ flexGrow: 0 }}>
-              <NextLink href={"/auth/signin"}>
+              <NextLink
+                href={"/auth/signin"}
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
+              >
                 <StyledButton>Đăng nhập</StyledButton>
               </NextLink>
             </Box>

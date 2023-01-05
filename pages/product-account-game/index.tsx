@@ -324,6 +324,7 @@ const AccountGamePage = ({
               onClick={() => changeCategory(cat.id)}
               size={"small"}
               color={cat.active == true ? "secondary" : "info"}
+              sx={{ padding: 1 }}
             >
               {cat.name}
             </Button>
@@ -363,9 +364,9 @@ const AccountGamePage = ({
                 <FormControlLabel
                   key={index}
                   value={item.key}
-                  control={<Radio />}
+                  control={<Radio size="small" />}
                   label={item.text}
-                  labelPlacement="start"
+                  labelPlacement="end"
                 />
               ))}
             </RadioGroup>
