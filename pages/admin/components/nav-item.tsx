@@ -46,9 +46,16 @@ export const NavItem = (props: any) => {
       }}
       {...others}
     >
-      <NextLink href={href || "/"} passHref>
+      <NextLink
+        href={href || "/"}
+        passHref
+        style={{
+          textDecoration: "none",
+          color: "inherit",
+        }}
+      >
         <MyStyledButton
-          component="a"
+          // component="a"
           startIcon={icon}
           disableRipple
           active={active === true ? "true" : undefined}

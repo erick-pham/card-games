@@ -4,6 +4,8 @@ import {
   Container,
   Avatar,
   Card,
+  Paper,
+  TableContainer,
   Table,
   TableBody,
   TableCell,
@@ -19,7 +21,7 @@ import { setLoadingState, setErrorState } from "app/rootSlice";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import message from "common/messages";
-import PerfectScrollbar from "react-perfect-scrollbar";
+// import PerfectScrollbar from "react-perfect-scrollbar";
 import { format } from "date-fns";
 
 type CustomerDataListType = {
@@ -45,15 +47,13 @@ export const CustomerListResults = ({
   handleLimitChange,
   handlePageChange,
 }: CustomerDataListType) => {
-  console.log("customer", customers);
   return (
     <Card>
-      <PerfectScrollbar>
-        <Box sx={{ minWidth: 1050 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {/* <TableCell padding="checkbox">
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              {/* <TableCell padding="checkbox">
                   <Checkbox
                     checked={selectedCustomerIds.length === customers.length}
                     color="primary"
@@ -64,59 +64,58 @@ export const CustomerListResults = ({
                     onChange={handleSelectAll}
                   />
                 </TableCell> */}
-                <TableCell>Name</TableCell>
-                <TableCell>Gender</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Address</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Registration date</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {customers &&
-                customers.map((customer) => (
-                  <TableRow
-                    hover
-                    key={customer.id}
-                    // selected={selectedCustomerIds.indexOf(customer.id) !== -1}
-                  >
-                    {/* <TableCell padding="checkbox">
+              <TableCell>Name</TableCell>
+              <TableCell>Gender</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Address</TableCell>
+              <TableCell>Phone</TableCell>
+              <TableCell>Registration date</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {customers &&
+              customers.map((customer) => (
+                <TableRow
+                  hover
+                  key={customer.id}
+                  // selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                >
+                  {/* <TableCell padding="checkbox">
                     <Checkbox
                       checked={selectedCustomerIds.indexOf(customer.id) !== -1}
                       onChange={(event) => handleSelectOne(event, customer.id)}
                       value="true"
                     />
                   </TableCell> */}
-                    <TableCell>
-                      <Box
-                        sx={{
-                          alignItems: "center",
-                          display: "flex",
-                        }}
-                      >
-                        <Avatar src={customer?.image || ""} sx={{ mr: 2 }}>
-                          AP
-                        </Avatar>
-                        <Typography color="textPrimary" variant="body1">
-                          {customer.name}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>{customer.gender}</TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>{customer.address}</TableCell>
-                    <TableCell>{customer.phoneNumber}</TableCell>
-                    <TableCell>
-                      {customer.createdAt
-                        ? format(new Date(customer.createdAt), "Pp")
-                        : ""}
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </Box>
-      </PerfectScrollbar>
+                  <TableCell>
+                    <Box
+                      sx={{
+                        alignItems: "center",
+                        display: "flex",
+                      }}
+                    >
+                      <Avatar src={customer?.image || ""} sx={{ mr: 2 }}>
+                        AP
+                      </Avatar>
+                      <Typography color="textPrimary" variant="body1">
+                        {customer.name}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>{customer.gender}</TableCell>
+                  <TableCell>{customer.email}</TableCell>
+                  <TableCell>{customer.address}</TableCell>
+                  <TableCell>{customer.phoneNumber}</TableCell>
+                  <TableCell>
+                    {customer.createdAt
+                      ? format(new Date(customer.createdAt), "Pp")
+                      : ""}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <TablePagination
         component="div"
         count={count}
