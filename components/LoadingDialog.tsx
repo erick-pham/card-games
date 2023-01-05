@@ -1,29 +1,25 @@
 import React from "react";
-import styled from "styled-components";
 import { Dialog, CircularProgress, Typography } from "@mui/material";
-
-const StyledDialog = styled((props) => (
-  <Dialog
-    {...props}
-    classes={{
-      paper: "paper",
-    }}
-  />
-))`
-  & .paper {
-    display: flex;
-    align-items: center;
-    overflow: visible;
-    background-color: transparent;
-    text-align: center;
-    box-shadow: none;
-    color: #ffffff;
-  }
-`;
 
 function LoadingDialog(props: { isLoading: boolean; message: string | null }) {
   return (
-    <StyledDialog open={props.isLoading}>
+    <Dialog
+      open={props.isLoading}
+      // classes={{
+      //   paper: "paper",
+      // }}
+      sx={{
+        ".MuiDialog-paper": {
+          display: "flex",
+          alignItems: "center",
+          overflow: "visible",
+          backgroundColor: "transparent",
+          textAlign: "center",
+          boxShadow: "none",
+          color: "#ffffff",
+        },
+      }}
+    >
       <CircularProgress color="primary" />
       {props.message ? (
         <Typography
@@ -39,7 +35,7 @@ function LoadingDialog(props: { isLoading: boolean; message: string | null }) {
           {props.message}
         </Typography>
       ) : null}
-    </StyledDialog>
+    </Dialog>
   );
 }
 
