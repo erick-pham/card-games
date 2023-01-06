@@ -117,7 +117,7 @@ export const ProductDetailsModal = ({
         <DialogContentText>
           To add/edit a product item, please enter all fields here.
         </DialogContentText>
-        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+        <form autoComplete="off">
           <Controller
             name="type"
             control={control}
@@ -266,7 +266,7 @@ export const ProductDetailsModal = ({
           <Controller
             name="longDescription"
             control={control}
-            defaultValue={productEdit?.description}
+            defaultValue={productEdit?.longDescription}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                 {/* <TextField
@@ -279,23 +279,23 @@ export const ProductDetailsModal = ({
                 /> */}
                 <FormLabel>Long Description</FormLabel>
                 <RichTextEditor
+                  initValue={productEdit?.longDescription}
                   handleEditorCallback={onChange}
                 ></RichTextEditor>
               </FormControl>
             )}
           />
-
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ margin: 4 }}
-            type="submit"
-          >
-            Save
-          </Button>
         </form>
       </DialogContent>
       <DialogActions>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          onClick={handleSubmit(onSubmit)}
+        >
+          Save
+        </Button>
         <Button onClick={handleClose}>Cancel</Button>
       </DialogActions>
     </Dialog>
