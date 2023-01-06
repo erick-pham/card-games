@@ -14,7 +14,7 @@ import {
   FormLabel,
 } from "@mui/material";
 
-import { ProductItem } from "database/entity/product_item";
+import { ProductItem } from "components/Admin/OrderPage/types";
 import { setErrorState, setLoadingState } from "app/rootSlice";
 import {
   PRODUCT_ITEM_STATUS_LABEL,
@@ -31,14 +31,14 @@ const RichTextEditor = dynamic(() => import("components/RichTextEditor"), {
 export const ProductDetailsModal = ({
   openModal,
   handleReloadPage,
-  handleOpen,
+  // handleOpen,
   handleClose,
   productEdit,
   selectedProductId,
 }: {
   openModal: boolean;
   handleReloadPage: any;
-  handleOpen: any;
+  // handleOpen: any;
   handleClose: any;
   productEdit: ProductItem | undefined | null;
   selectedProductId: string | undefined | null;
@@ -67,8 +67,8 @@ export const ProductDetailsModal = ({
         loadingMessage: message.appAPILoading,
       })
     );
-    fetch("/api/product-item", {
-      method: "POST",
+    fetch("/api/product-items", {
+      method: productEdit ? "PUT" : "POST",
       headers: {
         "Content-Type": "application/json",
       },

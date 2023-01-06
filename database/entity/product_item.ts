@@ -9,11 +9,11 @@ import {
 } from "typeorm";
 import AppBaseEntity from "./base";
 import { generateCode } from "utils/generate-code";
-import { Product } from "./product";
+import ProductEntity from "./product";
 import { PRODUCT_ITEM_STATUS } from "common/constants";
 
 @Entity({ name: "product_items" })
-export class ProductItem extends AppBaseEntity {
+export default class ProductItemEntity extends AppBaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -49,8 +49,8 @@ export class ProductItem extends AppBaseEntity {
   @Column({ length: 1000, nullable: true })
   thumbnail!: string;
 
-  @ManyToOne(() => Product, (product) => product.productItems)
-  product!: Product;
+  @ManyToOne(() => ProductEntity, (product) => product.productItems)
+  product!: ProductEntity;
 
   @Column({ nullable: false })
   productId!: string;

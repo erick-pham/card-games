@@ -4,9 +4,21 @@ export type User = {
   name: string;
 };
 
-export type ProductItem = {
+export type Product = {
   id: string;
   name: string;
+};
+
+export type ProductItem = {
+  id: string;
+  type: string;
+  currency: string;
+  name: string;
+  status: string;
+  price: number;
+  description: string;
+  longDescription: string;
+  thumbnail: string;
 };
 
 export type OrderDetails = {
@@ -35,7 +47,7 @@ export type Order = {
   orderDetails: OrderDetails;
 };
 
-export type OrderAPIReponse = {
+export type OrderListAPIReponse = {
   data: Order[];
   count: number;
   limit: number;
@@ -53,9 +65,19 @@ export type OrderDetailsModalProps = {
 };
 
 export type OrderListResultsProps = {
-  orders: OrderAPIReponse | undefined | null;
+  orders: OrderListAPIReponse | undefined | null;
   handleLimitChange: (event: any) => void;
   handlePageChange: (event: any, newPage: any) => void;
   handleClickAction: (orderId: string) => void;
   handleClickCellStatus: (orderId: string, status: string) => void;
+};
+
+export type ProductItemListAPIReponse = {
+  data: ProductItem[];
+  count: number;
+  limit: number;
+  currentPage: number;
+  nextPage: number;
+  prevPage: number;
+  lastPage: number;
 };

@@ -27,7 +27,7 @@ import numeral from "numeral";
 import { format as datefnsFormat } from "date-fns";
 import ListToolbarSearch from "components/Admin/ListToolbarSearch";
 import {
-  OrderAPIReponse,
+  OrderListAPIReponse,
   OrderListResultsProps,
   Order,
 } from "components/Admin//OrderPage/types";
@@ -46,7 +46,7 @@ const OrderPage = () => {
     keyword: "",
   });
 
-  const [orders, setOrders] = useState<OrderAPIReponse>();
+  const [orders, setOrders] = useState<OrderListAPIReponse>();
 
   useEffect(() => {
     const qs =
@@ -218,7 +218,7 @@ const OrderPage = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8,
+          py: 1,
         }}
       >
         <Container maxWidth={false}>

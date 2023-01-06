@@ -5,8 +5,8 @@ import {
   SessionEntity,
   VerificationTokenEntity,
 } from "./entity/entities";
-import { ProductItem } from "./entity/product_item";
-import { Product } from "./entity/product";
+import ProductItemEntity from "./entity/product_item";
+import ProductEntity from "./entity/product";
 import OrderEntity from "./entity/order";
 import OrderDetailEntity from "./entity/order-details";
 
@@ -18,8 +18,8 @@ export const sqliteConfigs = {
     AccountEntity,
     SessionEntity,
     VerificationTokenEntity,
-    ProductItem,
-    Product,
+    ProductItemEntity,
+    ProductEntity,
     OrderEntity,
     OrderDetailEntity,
   ],
@@ -39,8 +39,8 @@ export const pgConfigs = {
     AccountEntity,
     SessionEntity,
     VerificationTokenEntity,
-    ProductItem,
-    Product,
+    ProductItemEntity,
+    ProductEntity,
     OrderEntity,
     OrderDetailEntity,
   ],
@@ -77,11 +77,11 @@ export default class UnitOfWork {
   }
 
   get ProuductRepository() {
-    return this.AppDataSource.getRepository(Product);
+    return this.AppDataSource.getRepository(ProductEntity);
   }
 
   get ProuductItemRepository() {
-    return this.AppDataSource.getRepository(ProductItem);
+    return this.AppDataSource.getRepository(ProductItemEntity);
   }
 
   get OrderRepository() {

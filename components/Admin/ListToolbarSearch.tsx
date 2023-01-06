@@ -6,20 +6,25 @@ import {
   InputAdornment,
   SvgIcon,
   Typography,
+  Button,
 } from "@mui/material";
 import { SearchIcon } from "./Icons";
 
-export const OrderListToolbar = ({
+export const ListToolbarSearch = ({
   handleSearch,
   placeholderSearch,
   headTitle,
+  rightComponent,
+  primaryComponent,
   ...rest
 }: {
   handleSearch: any;
   placeholderSearch: string;
-  headTitle: string;
+  headTitle?: string;
+  rightComponent?: any;
+  primaryComponent?: any;
 }) => (
-  <Box {...rest}>
+  <Box>
     <Box
       sx={{
         alignItems: "center",
@@ -32,10 +37,12 @@ export const OrderListToolbar = ({
       <Typography sx={{ m: 1 }} variant="h4">
         {headTitle}
       </Typography>
+      {rightComponent && <Box sx={{ m: 1 }}>{rightComponent}</Box>}
     </Box>
     <Box sx={{ mt: 3 }}>
       <Card>
         <CardContent>
+          {primaryComponent && <Box>{primaryComponent}</Box>}
           <Box sx={{ maxWidth: 500 }}>
             <TextField
               fullWidth
@@ -59,4 +66,4 @@ export const OrderListToolbar = ({
   </Box>
 );
 
-export default OrderListToolbar;
+export default ListToolbarSearch;

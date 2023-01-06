@@ -8,10 +8,10 @@ import {
 } from "typeorm";
 
 import AppBaseEntity from "./base";
-import { ProductItem } from "./product_item";
+import ProductItemEntity from "./product_item";
 import { PRODUCT_STATUS } from "common/constants";
 @Entity({ name: "products" })
-export class Product extends AppBaseEntity {
+export default class Product extends AppBaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -29,8 +29,8 @@ export class Product extends AppBaseEntity {
   @Column({ length: 1000, nullable: true })
   thumbnail!: string;
 
-  @OneToMany(() => ProductItem, (productItem) => productItem.product)
-  productItems: ProductItem[] | undefined;
+  @OneToMany(() => ProductItemEntity, (productItem) => productItem.product)
+  productItems: ProductItemEntity[] | undefined;
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date | undefined;

@@ -11,7 +11,7 @@ import typeorm, {
 } from "typeorm";
 
 import AppBaseEntity from "./base";
-import { ProductItem } from "./product_item";
+import ProductItemEntity from "./product_item";
 import { ORDER_STATUS } from "common/constants";
 import { UserEntity } from "./entities";
 import { generateCode } from "@utils/generate-code";
@@ -57,11 +57,11 @@ export default class OrderEntity extends AppBaseEntity {
   @Column({ type: "uuid" })
   productItemId!: string;
 
-  @ManyToOne(() => ProductItem, {
+  @ManyToOne(() => ProductItemEntity, {
     createForeignKeyConstraints: false,
   })
   @JoinColumn()
-  productItem!: ProductItem;
+  productItem!: ProductItemEntity;
 
   @OneToOne(
     () => OrderDetailEntity,

@@ -36,9 +36,9 @@ const items = [
     title: "Products",
   },
   {
-    href: "/admin/products-details",
+    href: "/admin/products-items",
     icon: <ShoppingBagIcon fontSize="small" />,
-    title: "Products Details",
+    title: "Products Items",
   },
   {
     href: "/admin/account",

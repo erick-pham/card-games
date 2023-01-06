@@ -2,8 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { plainToInstance } from "class-transformer";
 import UnitOfWork from "database/unit-of-work";
-import { ProductItem } from "database/entity/product_item";
-import { Product } from "database/entity/product";
+import ProductItem from "database/entity/product_item";
+import Product from "database/entity/product";
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,7 +23,6 @@ export default async function handler(
           .where({
             id: productItemEntity.id,
           })
-          // .returning("*")
           .execute();
         data = await uow.ProuductItemRepository.findOne({
           where: { id: productItemEntity.id },
