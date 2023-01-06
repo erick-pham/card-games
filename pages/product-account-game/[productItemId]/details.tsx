@@ -9,35 +9,24 @@ import {
   FormControl,
   TextField,
   Button,
-  Divider,
-  CardMedia,
   Grid,
   FormHelperText,
   Input,
-  Stack,
-  Chip,
 } from "@mui/material";
-import numeral from "numeral";
 
 import { setErrorState, setLoadingState } from "app/rootSlice";
 import message from "common/messages";
-import { ProductItem } from "database/entity/product_item";
+import ProductItemEntity from "@database/entity/product_item";
 import { getSessionUserInfo } from "@utils/get-session-user";
 import { ajvResolver } from "validator/ajvResolver";
 import { SubmitAccountOrderValidation } from "validator/validationSchema/client-orders";
 import { isEmpty } from "lodash";
-import {
-  PRODUCT_ITEM_STATUS,
-  PRODUCT_ITEM_STATUS_TEXT_VI,
-} from "common/constants";
+import { PRODUCT_ITEM_STATUS } from "common/constants";
 import UnitOfWork from "database/unit-of-work";
 
 import NotFoundData from "components/NotFoundData";
 import MainLayout from "components/MainLayout";
 import StyledMainBox from "components/CustomStyledBox";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import PriceCheckIcon from "@mui/icons-material/PriceCheck";
-import SellIcon from "@mui/icons-material/Sell";
 
 import ProductDetail from "components/ProductDetail";
 
@@ -52,7 +41,7 @@ type SubmitAccountOrderType = {
 const AccountGameDetailPage = ({
   productItem,
 }: {
-  productItem: ProductItem;
+  productItem: ProductItemEntity;
 }) => {
   const dispatch = useDispatch();
   const { data: session } = useSession();

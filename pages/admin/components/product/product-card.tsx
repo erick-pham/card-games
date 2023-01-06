@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import Chip from "@mui/material/Chip";
 import CardMedia from "@mui/material/CardMedia";
-import { Product } from "database/entity/product";
+import ProductEntity from "database/entity/product";
 import {
   GetLabelText,
   PRODUCT_STATUS_LABEL,
@@ -22,7 +22,7 @@ export const ProductCard = ({
   handleClickEditProduct,
   ...rest
 }: {
-  product: Product;
+  product: ProductEntity;
   handleClickEditProduct: any;
 }) => (
   <Card

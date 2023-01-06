@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { ajvResolver } from "../../../../validator/ajvResolver";
-import * as AdminProductValidation from "../../../../validator/validationSchema/admin-product";
+import { ajvResolver } from "@validator/ajvResolver";
+import * as AdminProductValidation from "@validator/validationSchema/admin-product";
 
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -16,8 +16,8 @@ import {
   MenuItem,
   Button,
 } from "@mui/material";
-import { Product } from "database/entity/product";
-import { setErrorState, setLoadingState } from "../../../../app/rootSlice";
+import Product from "database/entity/product";
+import { setErrorState, setLoadingState } from "app/rootSlice";
 import { PRODUCT_STATUS_LABEL } from "common/constants";
 import message from "common/messages";
 

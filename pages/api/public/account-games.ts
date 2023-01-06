@@ -11,7 +11,7 @@ import {
   In,
   LessThanOrEqual,
 } from "typeorm";
-import { ProductItem } from "@database/entity/product_item";
+import ProductItemEntity from "@database/entity/product_item";
 import _ from "lodash";
 export default async function handler(
   req: NextApiRequest,
@@ -68,7 +68,7 @@ export default async function handler(
         // relations: {
         //   productItems: true,
         // },
-        order: order as FindOptionsOrder<ProductItem>,
+        order: order as FindOptionsOrder<ProductItemEntity>,
         take: take,
         skip: skip,
       });

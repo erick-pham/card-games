@@ -20,7 +20,7 @@ import { SubmitCardOrderValidation } from "validator/validationSchema/client-ord
 import { setErrorState, setLoadingState } from "app/rootSlice";
 import message from "common/messages";
 import { Controller, useForm } from "react-hook-form";
-import { Product } from "database/entity/product";
+import ProductEntity from "@database/entity/product";
 
 import UnitOfWork from "database/unit-of-work";
 import { PRODUCT_ITEM_TYPES, PRODUCT_ITEM_STATUS } from "common/constants";
@@ -78,6 +78,7 @@ type ProductItemType = {
   price: number;
   currency: string;
   description: string;
+  longDescription: string;
   thumbnail: string;
   status: string;
 };
@@ -99,7 +100,7 @@ type SubmitCardOrderType = {
 type CardGamePageProps = {
   internalError?: boolean;
   statusCode?: number;
-  productCardGames?: Product[];
+  productCardGames?: ProductEntity[];
   userInfo?: SessionUser | null;
 };
 

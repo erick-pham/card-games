@@ -1,18 +1,14 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { Box, Container, Grid, Pagination } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { unstable_getServerSession } from "next-auth/next";
-import { IncomingMessage, ServerResponse } from "http";
-import { NextApiRequest, NextApiResponse } from "next";
-import { authOptions } from "../api/auth/[...nextauth]";
 import { ProductListToolbar } from "./components/product/product-list-toolbar";
 import { ProductCard } from "./components/product/product-card";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { ProductModal } from "./components/product/product-modal";
-import { setErrorState, setLoadingState } from "../../app/rootSlice";
+import { setErrorState, setLoadingState } from "app/rootSlice";
 import message from "common/messages";
-import { Product } from "database/entity/product";
+import Product from "database/entity/product";
 const Products = () => {
   const dispatch = useDispatch();
   const [reloadPage, setReloadPage] = useState(false);

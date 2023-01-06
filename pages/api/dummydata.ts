@@ -3,14 +3,14 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import UnitOfWork from "database/unit-of-work";
 
 import { faker } from "@faker-js/faker";
-import { ProductItem } from "database/entity/product_item";
-import { Product } from "database/entity/product";
+import ProductItemEntity from "database/entity/product_item";
+import ProductEntity from "database/entity/product";
 import { generateCode } from "@utils/generate-code";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  let PRODUCT_ITEMS: ProductItem[] = [];
+  let PRODUCT_ITEMS: ProductItemEntity[] = [];
   const uow = new UnitOfWork();
   await uow.initialize();
 
@@ -40,7 +40,7 @@ export default async function handler(
   //     updatedAt: new Date(),
   //     productId: "bef960f7-5a09-44d2-a7cd-cf67f8660a1c",
   //   };
-  //   PRODUCT_ITEMS.push(productItem as ProductItem);
+  //   PRODUCT_ITEMS.push(productItem as ProductItemEntity);
   // });
 
   // const rs = await uow.ProuductItemRepository.save(PRODUCT_ITEMS);

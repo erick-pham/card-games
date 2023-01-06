@@ -24,7 +24,7 @@ import {
   Slider,
   styled,
 } from "@mui/material";
-import { ProductItem } from "database/entity/product_item";
+import ProductItemEntity from "@database/entity/product_item";
 import UnitOfWork from "database/unit-of-work";
 import { setErrorState, setLoadingState } from "app/rootSlice";
 import message from "common/messages";
@@ -43,7 +43,7 @@ type ProductCatType = {
 };
 
 type ProductDataType = {
-  data: ProductItem[];
+  data: ProductItemEntity[];
   limit: number;
   count: number;
   currentPage: number;
@@ -408,7 +408,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   // backgroundColor: "rgba(0, 0, 0, 0.40)",
 }));
 
-const RecipeReviewCard = ({ product }: { product: ProductItem }) => {
+const RecipeReviewCard = ({ product }: { product: ProductItemEntity }) => {
   return (
     <StyledCard>
       <CardMedia
