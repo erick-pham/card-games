@@ -32,8 +32,8 @@ import MainLayout from "components/MainLayout";
 import { PRODUCT_STATUS } from "@common/constants";
 
 import { useRouter } from "next/dist/client/router";
-import { format as datefnsFormat } from "date-fns";
-
+import { format as datefnsFormat, formatRelative } from "date-fns";
+import { vi } from "date-fns/locale";
 import { StyledMainBox } from "components/CustomStyledBox";
 
 type ProductCatType = {
@@ -60,7 +60,7 @@ const DEFAULT_ORDER_BY = "sort_0";
 const DEFAULT_ORDERS = [
   {
     key: "sort_0",
-    value: "-createdAt",
+    value: "-updatedAt",
     text: "Mới nhất",
   },
   {
@@ -427,7 +427,11 @@ const RecipeReviewCard = ({ product }: { product: ProductItem }) => {
             fontStyle: "italic",
           }}
         >
-          {product ? datefnsFormat(new Date(product.createdAt), "Pp") : ""}
+          {product
+            ? formatRelative(new Date(product.updatedAt), new Date(), {
+                locale: vi,
+              })
+            : ""}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {product.description}

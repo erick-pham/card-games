@@ -37,8 +37,11 @@ export class ProductItem extends AppBaseEntity {
   })
   status!: string;
 
-  @Column({ length: 256 })
+  @Column({ length: 256, nullable: true })
   description!: string;
+
+  @Column({ length: 1000, nullable: true })
+  longDescription!: string;
 
   @Column({ length: 1000, nullable: true })
   images!: string;

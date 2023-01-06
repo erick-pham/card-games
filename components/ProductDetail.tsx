@@ -63,6 +63,9 @@ const ProductDetail = ({
         {productItem?.description}
       </Typography>
       <CardMedia component="img" image={productItem?.thumbnail} alt="alt" />
+      <div
+        dangerouslySetInnerHTML={{ __html: productItem?.longDescription || "" }}
+      />
     </>
   );
 };
@@ -74,6 +77,7 @@ export type ProductItemType = {
   price: number | null;
   currency: string;
   description: string;
+  longDescription: string;
   thumbnail: string;
   status: string;
 };

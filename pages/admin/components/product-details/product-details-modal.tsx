@@ -11,16 +11,22 @@ import {
   TextField,
   MenuItem,
   Button,
+  FormLabel,
 } from "@mui/material";
 
 import { ProductItem } from "database/entity/product_item";
-import { setErrorState, setLoadingState } from "../../../../app/rootSlice";
+import { setErrorState, setLoadingState } from "app/rootSlice";
 import {
   PRODUCT_ITEM_STATUS_LABEL,
   PRODUCT_ITEM_TYPES_LABEL,
   Currencies,
 } from "common/constants";
 import message from "common/messages";
+
+import dynamic from "next/dynamic";
+const RichTextEditor = dynamic(() => import("components/RichTextEditor"), {
+  ssr: false,
+});
 
 export const ProductDetailsModal = ({
   openModal,
@@ -98,7 +104,12 @@ export const ProductDetailsModal = ({
   };
 
   return (
-    <Dialog open={openModal} onClose={handleClose}>
+    <Dialog
+      open={openModal}
+      onClose={handleClose}
+      fullWidth={true}
+      maxWidth="md"
+    >
       <DialogTitle>
         {productEdit ? "Edit Product Details" : "Add Product Details"}
       </DialogTitle>
@@ -193,6 +204,23 @@ export const ProductDetailsModal = ({
           />
 
           <Controller
+            name="thumbnail"
+            control={control}
+            defaultValue={productEdit?.thumbnail}
+            render={({ field, fieldState: { error } }) => (
+              <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                <TextField
+                  {...field}
+                  id="outlined-multiline-flexible"
+                  label="Thumbnail"
+                  error={error ? true : false}
+                  helperText={error?.message}
+                />
+              </FormControl>
+            )}
+          />
+
+          <Controller
             name="description"
             control={control}
             defaultValue={productEdit?.description}
@@ -203,22 +231,6 @@ export const ProductDetailsModal = ({
                   id="outlined-multiline-flexible"
                   label="Description"
                   multiline
-                  error={error ? true : false}
-                  helperText={error?.message}
-                />
-              </FormControl>
-            )}
-          />
-          <Controller
-            name="thumbnail"
-            control={control}
-            defaultValue={productEdit?.thumbnail}
-            render={({ field, fieldState: { error } }) => (
-              <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                <TextField
-                  {...field}
-                  id="outlined-multiline-flexible"
-                  label="Thumbnail"
                   error={error ? true : false}
                   helperText={error?.message}
                 />
@@ -247,6 +259,28 @@ export const ProductDetailsModal = ({
                     </MenuItem>
                   ))}
                 </TextField>
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            name="longDescription"
+            control={control}
+            defaultValue={productEdit?.description}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                {/* <TextField
+                  {...field}
+                  id="outlined-multiline-flexible"
+                  label="Description"
+                  multiline
+                  error={error ? true : false}
+                  helperText={error?.message}
+                /> */}
+                <FormLabel>Long Description</FormLabel>
+                <RichTextEditor
+                  handleEditorCallback={onChange}
+                ></RichTextEditor>
               </FormControl>
             )}
           />
