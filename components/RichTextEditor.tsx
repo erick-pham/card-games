@@ -17,11 +17,16 @@ const QuillNoSSRWrapper = dynamic(
 
 interface MyRichEditorProps {
   isDebug?: boolean | false;
+  initValue?: any;
   handleEditorCallback?: (currentValue: string) => void;
 }
 
-const MyRichEditor = ({ isDebug, handleEditorCallback }: MyRichEditorProps) => {
-  const [value, setValue] = useState("");
+const MyRichEditor = ({
+  isDebug,
+  handleEditorCallback,
+  initValue,
+}: MyRichEditorProps) => {
+  const [value, setValue] = useState(initValue || "");
   const quillRef = useRef() as any;
 
   const videoHandler = async () => {
