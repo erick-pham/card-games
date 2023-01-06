@@ -163,6 +163,8 @@ const CardGamePage = ({
           query: { ...router.query, game: selectedProduct?.id, itemId: "" },
         });
         setProductItemList(selectedProduct?.productItems);
+      } else {
+        setProductItemList(undefined);
       }
     }
 
@@ -235,6 +237,84 @@ const CardGamePage = ({
     <Container style={{ marginTop: 10 }}>
       <Grid container spacing={2} mt={2}>
         <Grid item xs={12} sm={8} md={8} lg={8} xl={8}>
+          <StyledMainBox>
+            <Typography variant="subtitle1">Chọn game và gói nạp</Typography>
+            <form>
+              <Controller
+                name="productId"
+                control={control}
+                render={({
+                  field: { onChange, value },
+                  fieldState: { error },
+                }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      label="Game"
+                      select={true}
+                      onChange={onChange}
+                      variant="filled"
+                      size="small"
+                      value={value}
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {productCardGames?.map((option) => (
+                        <MenuItem key={option.id} value={option.id}>
+                          {option.name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </FormControl>
+                )}
+              />
+
+              <Controller
+                name="productItemId"
+                control={control}
+                render={({
+                  field: { onChange, value },
+                  fieldState: { error },
+                }) => (
+                  <FormControl
+                    fullWidth
+                    variant="standard"
+                    size="small"
+                    sx={{ mt: 1 }}
+                  >
+                    <TextField
+                      label="Gói nạp"
+                      select={true}
+                      onChange={onChange}
+                      variant="filled"
+                      size="small"
+                      value={value || ""}
+                      error={error ? true : false}
+                      helperText={error?.message}
+                    >
+                      {/* {renderPackage(watchShowGame)} */}
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {productItemList?.length &&
+                        productItemList.map((option) => (
+                          <MenuItem key={option.id} value={option.id}>
+                            {option.name}
+                          </MenuItem>
+                        ))}
+                    </TextField>
+                  </FormControl>
+                )}
+              />
+            </form>
+          </StyledMainBox>
           <StyledMainBox>
             <ProductDetail productItem={productItem}></ProductDetail>
           </StyledMainBox>
@@ -315,80 +395,6 @@ const CardGamePage = ({
               Nhập thông tin NẠP
             </Typography>
             <form autoComplete="off">
-              <Controller
-                name="productId"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FormControl
-                    fullWidth
-                    variant="standard"
-                    size="small"
-                    sx={{ mt: 1 }}
-                  >
-                    <TextField
-                      label="Game"
-                      select={true}
-                      onChange={onChange}
-                      variant="filled"
-                      size="small"
-                      value={value}
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      {productCardGames?.map((option) => (
-                        <MenuItem key={option.id} value={option.id}>
-                          {option.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </FormControl>
-                )}
-              />
-
-              <Controller
-                name="productItemId"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <FormControl
-                    fullWidth
-                    variant="standard"
-                    size="small"
-                    sx={{ mt: 1 }}
-                  >
-                    <TextField
-                      label="Gói nạp"
-                      select={true}
-                      onChange={onChange}
-                      variant="filled"
-                      size="small"
-                      value={value || ""}
-                      error={error ? true : false}
-                      helperText={error?.message}
-                    >
-                      {/* {renderPackage(watchShowGame)} */}
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      {productItemList?.length &&
-                        productItemList.map((option) => (
-                          <MenuItem key={option.id} value={option.id}>
-                            {option.name}
-                          </MenuItem>
-                        ))}
-                    </TextField>
-                  </FormControl>
-                )}
-              />
-
               <Controller
                 name="accountUserId"
                 control={control}
