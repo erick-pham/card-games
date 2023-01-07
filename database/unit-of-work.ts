@@ -44,14 +44,17 @@ export const pgConfigs = {
     OrderEntity,
     OrderDetailEntity,
   ],
-  ssl: true,
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
+  ssl: process.env.POSTGRES_SSL === "true" ? true : false,
+  extra:
+    process.env.POSTGRES_SSL === "true"
+      ? {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        }
+      : {},
   synchronize: false,
-  logging: false,
+  logging: process.env.POSTGRES_LOGGING === "true" ? true : false,
 };
 
 export const dbConfigs = () => {
