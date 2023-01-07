@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "components/RichTextEditor/RichTextEditor.css";
@@ -96,51 +96,103 @@ const MyRichEditor = ({
     // };
   };
 
-  const modules = {
-    toolbar: [
-      [
-        {
-          font: Font.whitelist,
+  // const modules = {
+  //   toolbar: [
+  //     [
+  //       {
+  //         font: [],
+  //       },
+  //       {
+  //         size: [false, "small", "large", "huge"],
+  //       },
+  //     ],
+
+  //     // [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+  //     ["bold", "italic", "underline", "strike"],
+
+  //     [{ color: [] }, { background: [] }],
+
+  //     [
+  //       // { direction: "rtl" }, // text direction
+  //       { script: "super" }, // superscript
+  //       { script: "sub" }, //subscript
+  //     ],
+
+  //     [{ header: 1 }, { header: 2 }, "blockquote", "code-block"],
+
+  //     [
+  //       { direction: "rtl" }, // text direction,
+  //       { align: [] },
+  //     ],
+
+  //     [
+  //       { list: "ordered" },
+  //       { list: "bullet" },
+  //       { indent: "-1" },
+  //       { indent: "+1" },
+  //     ],
+
+  //     ["link", "image", "video"],
+
+  //     // ["clean"],
+  //   ],
+  //   // handlers: {
+  //   //   image: imageHandler,
+  //   // },
+  // };
+
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [
+            {
+              font: Font.whitelist,
+            },
+            {
+              size: [false, "small", "large", "huge"],
+            },
+          ],
+
+          // [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+          ["bold", "italic", "underline", "strike"],
+
+          [{ color: [] }, { background: [] }],
+
+          [
+            // { direction: "rtl" }, // text direction
+            { script: "super" }, // superscript
+            { script: "sub" }, //subscript
+          ],
+
+          [{ header: 1 }, { header: 2 }, "blockquote", "code-block"],
+
+          [
+            { direction: "rtl" }, // text direction,
+            { align: [] },
+          ],
+
+          [
+            { list: "ordered" },
+            { list: "bullet" },
+            { indent: "-1" },
+            { indent: "+1" },
+          ],
+
+          ["link", "image", "video"],
+
+          // ["clean"],
+        ],
+        handlers: {
+          image: imageHandler,
+          // video: videoHandler,
         },
-        {
-          size: [false, "small", "large", "huge"],
-        },
-      ],
-
-      // [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-      ["bold", "italic", "underline", "strike"],
-
-      [{ color: [] }, { background: [] }],
-
-      [
-        // { direction: "rtl" }, // text direction
-        { script: "super" }, // superscript
-        { script: "sub" }, //subscript
-      ],
-
-      [{ header: 1 }, { header: 2 }, "blockquote", "code-block"],
-
-      [
-        { direction: "rtl" }, // text direction,
-        { align: [] },
-      ],
-
-      [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
-      ],
-
-      ["link", "image", "video"],
-
-      // ["clean"],
-    ],
-    // handlers: {
-    //   image: imageHandler,
-    // },
-  };
+      },
+    }),
+    []
+  );
 
   const formats = [
     "font",
@@ -175,6 +227,7 @@ const MyRichEditor = ({
   return (
     <div>
       <ReactQuill
+        ref={quillRef}
         theme="snow"
         value={value}
         onChange={handleChange}
