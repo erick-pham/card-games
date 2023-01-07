@@ -34,10 +34,21 @@ export default async function handler(
         productId: req.query.productId
           ? (req.query.productId as string)
           : undefined,
-      } as FindOptionsWhere<ProductItemEntity>;
+      } as
+        | FindOptionsWhere<ProductItemEntity>
+        | FindOptionsWhere<ProductItemEntity>[];
 
       if (keyword) {
-        where.referenceNumber = ILike(`%${keyword}%`);
+        where = [
+          {
+            ...where,
+            referenceNumber: ILike(`%${keyword}%`),
+          },
+          {
+            ...where,
+            name: ILike(`%${keyword}%`),
+          },
+        ];
       }
 
       const data = await uow.ProuductItemRepository.findAndCount({

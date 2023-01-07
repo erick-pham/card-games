@@ -1,19 +1,18 @@
-import dynamic from "next/dynamic";
-import React, { useMemo, useRef, useState } from "react";
-
+import React, { useRef, useState } from "react";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-// const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "components/RichTextEditor/RichTextEditor.css";
 
-const QuillNoSSRWrapper = dynamic(
-  async () => {
-    const { default: RQ } = await import("react-quill");
-    // eslint-disable-next-line react/display-name
-    return ({ forwardedRef, ...props }: any) => (
-      <RQ ref={forwardedRef} {...props} />
-    );
-  },
-  { ssr: false }
-);
+const Quill = ReactQuill.Quill;
+var Font = Quill.import("formats/font");
+Font.whitelist = Font.whitelist.concat([
+  "Roboto",
+  "SegoeUI",
+  "Montserrat",
+  "Lato",
+  "Rubik",
+]);
+Quill.register(Font, true);
 
 interface MyRichEditorProps {
   isDebug?: boolean | false;
@@ -97,103 +96,51 @@ const MyRichEditor = ({
     // };
   };
 
-  // const modules = {
-  //   toolbar: [
-  //     [
-  //       {
-  //         font: [],
-  //       },
-  //       {
-  //         size: [false, "small", "large", "huge"],
-  //       },
-  //     ],
-
-  //     // [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-  //     ["bold", "italic", "underline", "strike"],
-
-  //     [{ color: [] }, { background: [] }],
-
-  //     [
-  //       // { direction: "rtl" }, // text direction
-  //       { script: "super" }, // superscript
-  //       { script: "sub" }, //subscript
-  //     ],
-
-  //     [{ header: 1 }, { header: 2 }, "blockquote", "code-block"],
-
-  //     [
-  //       { direction: "rtl" }, // text direction,
-  //       { align: [] },
-  //     ],
-
-  //     [
-  //       { list: "ordered" },
-  //       { list: "bullet" },
-  //       { indent: "-1" },
-  //       { indent: "+1" },
-  //     ],
-
-  //     ["link", "image", "video"],
-
-  //     // ["clean"],
-  //   ],
-  //   // handlers: {
-  //   //   image: imageHandler,
-  //   // },
-  // };
-
-  const modules = useMemo(
-    () => ({
-      toolbar: {
-        container: [
-          [
-            {
-              font: [],
-            },
-            {
-              size: [false, "small", "large", "huge"],
-            },
-          ],
-
-          // [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-          ["bold", "italic", "underline", "strike"],
-
-          [{ color: [] }, { background: [] }],
-
-          [
-            // { direction: "rtl" }, // text direction
-            { script: "super" }, // superscript
-            { script: "sub" }, //subscript
-          ],
-
-          [{ header: 1 }, { header: 2 }, "blockquote", "code-block"],
-
-          [
-            { direction: "rtl" }, // text direction,
-            { align: [] },
-          ],
-
-          [
-            { list: "ordered" },
-            { list: "bullet" },
-            { indent: "-1" },
-            { indent: "+1" },
-          ],
-
-          ["link", "image", "video"],
-
-          // ["clean"],
-        ],
-        handlers: {
-          image: imageHandler,
-          // video: videoHandler,
+  const modules = {
+    toolbar: [
+      [
+        {
+          font: Font.whitelist,
         },
-      },
-    }),
-    []
-  );
+        {
+          size: [false, "small", "large", "huge"],
+        },
+      ],
+
+      // [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+      ["bold", "italic", "underline", "strike"],
+
+      [{ color: [] }, { background: [] }],
+
+      [
+        // { direction: "rtl" }, // text direction
+        { script: "super" }, // superscript
+        { script: "sub" }, //subscript
+      ],
+
+      [{ header: 1 }, { header: 2 }, "blockquote", "code-block"],
+
+      [
+        { direction: "rtl" }, // text direction,
+        { align: [] },
+      ],
+
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+
+      ["link", "image", "video"],
+
+      // ["clean"],
+    ],
+    // handlers: {
+    //   image: imageHandler,
+    // },
+  };
 
   const formats = [
     "font",
@@ -227,13 +174,11 @@ const MyRichEditor = ({
 
   return (
     <div>
-      <QuillNoSSRWrapper
-        forwardedRef={quillRef}
+      <ReactQuill
         theme="snow"
         value={value}
         onChange={handleChange}
         modules={modules}
-        // modules={modulesa}
         formats={formats}
       />
       {isDebug && (

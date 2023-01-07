@@ -1,0 +1,54 @@
+.ql-picker.ql-font {
+  .ql-picker-item {
+    font-size: 0;
+    &:before {
+      content: attr(data-value) !important;
+      font-size: 14px;
+    }
+  }
+}
+
+.ql-picker.ql-font{
+  .ql-active {
+    &:before {
+      content: attr(data-value) !important;
+      font-size: 14px;
+    }
+  }
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Roboto"]::before, 
+.ql-picker.ql-font .ql-picker-item[data-value="Roboto"]::before
+{
+    font-family: "Roboto", cursive;;
+    content: "Roboto" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="SegoeUI"]::before, 
+.ql-picker.ql-font .ql-picker-item[data-value="SegoeUI"]::before
+{
+    font-family: "Segoe UI", cursive;;
+    content: "Segoe UI" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Montserrat"]::before, 
+.ql-picker.ql-font .ql-picker-item[data-value="Montserrat"]::before
+{
+    font-family: "Montserrat", cursive;;
+    content: "Montserrat" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Lato"]::before, 
+.ql-picker.ql-font .ql-picker-item[data-value="Lato"]::before
+{
+    font-family: "Lato", cursive;;
+    content: "Lato" !important;
+}
+
+.ql-picker.ql-font .ql-picker-label[data-value="Rubik"]::before, 
+.ql-picker.ql-font .ql-picker-item[data-value="Rubik"]::before
+{
+    font-family: "Rubik", cursive;;
+    content: "Rubik" !important;
+}
+

@@ -2,7 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Lato, Rubik, Montserrat
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   padding: 0 !important;
   overflow: auto !important;
@@ -26,3 +26,20 @@ body {
     background: black;
   }
 } */
+
+/* ReactQuill Set content font-families */
+.ql-font-Roboto {
+  font-family: "Roboto";
+}
+.ql-font-SegoeUI {
+  font-family: "Segoe UI";
+}
+.ql-font-Montserrat {
+  font-family: "Montserrat";
+}
+.ql-font-Lato {
+  font-family: "Lato";
+}
+.ql-font-Rubik {
+  font-family: "Rubik";
+}
