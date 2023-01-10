@@ -37,8 +37,9 @@ const parseErrorSchema = (
         previous,
         error.keyword,
         messages
-          ? ([] as string[]).concat(messages as string[], error.message || "")
-          : error.message
+        // messages
+        //   ? ([] as string[]).concat(messages as string[], error.message || "")
+        //   : error.message
       ) as FieldError;
     }
 
