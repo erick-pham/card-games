@@ -81,6 +81,7 @@ const DarkModeSwitch = () => {
     <StyledDarkModeSwitch
       value={themeMode === "light"}
       onChange={onChangeDarkMode}
+      checked={themeMode === "dark"}
     />
   );
 };

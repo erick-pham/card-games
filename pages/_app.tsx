@@ -15,6 +15,7 @@ import {
   selectLoadingState,
   selectLoadingMessageState,
   selectThemeModeState,
+  setThemeModeState,
 } from "app/rootSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { wrapper } from "app/store";
@@ -68,9 +69,20 @@ function MyApp({
   };
   const getLayout = Component?.getLayout ?? ((page: any) => page);
 
-  // const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const themeMode = useSelector(selectThemeModeState);
 
-  // const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [darkMode, setDarkMode] = useState(prefersDarkMode);
+
+  useEffect(() => {
+    const mode = localStorage.getItem("theme");
+    if (mode === "dark") {
+      setDarkMode(true);
+      dispatch(setThemeModeState("dark"));
+    } else {
+      setDarkMode(false);
+    }
+  }, []);
 
   // useMemo(() => setIsDarkTheme(prefersDarkMode), [prefersDarkMode]);
 
@@ -80,7 +92,7 @@ function MyApp({
   // const changeTheme = () => {
   //   setIsDarkTheme(!isDarkTheme);
   // };
-  const themeMode = useSelector(selectThemeModeState);
+
   return (
     <div>
       <div id="fb-root"></div>
@@ -131,7 +143,7 @@ function MyApp({
         </Alert>
       </Snackbar>
       <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={themeMode === "light" ? themeLight : themeDark}>
+        <ThemeProvider theme={darkMode === true ? themeDark : themeLight}>
           <CssBaseline />
           <SessionProvider session={session}>
             {Component.auth ? (
