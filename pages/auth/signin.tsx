@@ -62,7 +62,7 @@ export default function SignIn({
             </Typography>
           </Box>
           <Grid container spacing={3}>
-            {providers && providers.facebook && (
+            {/* {providers && providers.facebook && (
               <Grid item xs={12} md={6}>
                 <Button
                   color="info"
@@ -75,9 +75,9 @@ export default function SignIn({
                   Login with Facebook
                 </Button>
               </Grid>
-            )}
+            )} */}
             {providers && providers.google && (
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 <Button
                   color="error"
                   fullWidth
@@ -92,7 +92,7 @@ export default function SignIn({
             )}
           </Grid>
 
-          <form method="post" action="/api/auth/signin/email">
+          {/* <form method="post" action="/api/auth/signin/email">
             <Box
               sx={{
                 pb: 1,
@@ -124,7 +124,7 @@ export default function SignIn({
                 Sign In Now
               </Button>
             </Box>
-          </form>
+          </form> */}
         </Container>
       </Box>
     </>

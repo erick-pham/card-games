@@ -1,4 +1,4 @@
-import {
+import typeorm, {
   Entity,
   PrimaryGeneratedColumn,
   Column,
@@ -56,10 +56,10 @@ export class UserEntity {
   phoneNumber!: string | null;
 
   @OneToMany(() => SessionEntity, (session) => session.userId)
-  sessions!: SessionEntity[];
+  sessions!: typeorm.Relation<SessionEntity>[];
 
   @OneToMany(() => AccountEntity, (account) => account.userId)
-  accounts!: AccountEntity[];
+  accounts!: typeorm.Relation<AccountEntity>[];
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt!: Date;
@@ -119,7 +119,7 @@ export class AccountEntity {
   @ManyToOne(() => UserEntity, (user) => user.accounts, {
     createForeignKeyConstraints: true,
   })
-  user!: UserEntity;
+  user!: typeorm.Relation<UserEntity>;
 }
 
 @Entity({ name: "sessions" })
@@ -137,7 +137,7 @@ export class SessionEntity {
   expires!: string;
 
   @ManyToOne(() => UserEntity, (user) => user.sessions)
-  user!: UserEntity;
+  user!: typeorm.Relation<UserEntity>;
 }
 
 @Entity({ name: "verification_tokens" })
