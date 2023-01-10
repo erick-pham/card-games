@@ -48,6 +48,7 @@ const ProductItemsPage = () => {
     limit: 5,
     page: 1,
     keyword: "",
+    productItemType: "",
   });
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -114,6 +115,7 @@ const ProductItemsPage = () => {
           limit: queryString.limit + "",
           page: queryString.page + "",
           keyword: queryString.keyword,
+          type: String(queryString.productItemType),
         }).toString();
 
       fetch("/api/product-items" + qs)
@@ -201,6 +203,12 @@ const ProductItemsPage = () => {
     }
   };
 
+  const handleChangeProductType = (e: any) => {
+    setQueryString({
+      ...queryString,
+      productItemType: e.target.value || "",
+    });
+  };
   return (
     <>
       <Head>
@@ -236,21 +244,53 @@ const ProductItemsPage = () => {
               </Button>
             }
             primaryComponent={
-              <FormControl sx={{ m: 1 }} variant="standard" size="medium">
-                <InputLabel>Select Product</InputLabel>
-                <Select
-                  value={selectedProductId}
-                  onChange={handleChangeActiveProduct}
-                >
-                  {products &&
-                    products.length > 0 &&
-                    products.map((item, index) => (
-                      <MenuItem key={index} value={item.id}>
-                        {item.name}
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={3}>
+                  <FormControl
+                    sx={{ m: 1 }}
+                    fullWidth
+                    variant="standard"
+                    size="medium"
+                  >
+                    <InputLabel>Select Product</InputLabel>
+                    <Select
+                      value={selectedProductId}
+                      onChange={handleChangeActiveProduct}
+                    >
+                      {products &&
+                        products.length > 0 &&
+                        products.map((item, index) => (
+                          <MenuItem key={index} value={item.id}>
+                            {item.name}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <FormControl
+                    sx={{ m: 1 }}
+                    fullWidth
+                    variant="standard"
+                    size="medium"
+                  >
+                    <InputLabel>Select product type</InputLabel>
+                    <Select
+                      value={queryString.productItemType}
+                      onChange={handleChangeProductType}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
                       </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
+                      {PRODUCT_ITEM_TYPES_LABEL.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
             }
           />
           <Box sx={{ mt: 3 }}>

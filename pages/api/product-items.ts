@@ -34,6 +34,7 @@ export default async function handler(
         productId: req.query.productId
           ? (req.query.productId as string)
           : undefined,
+        type: req.query.type ? (req.query.type as string) : undefined,
       } as
         | FindOptionsWhere<ProductItemEntity>
         | FindOptionsWhere<ProductItemEntity>[];
