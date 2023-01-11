@@ -75,6 +75,7 @@ const DarkModeSwitch = () => {
   const dispatch = useDispatch();
   const themeMode = useSelector(selectThemeModeState);
   const onChangeDarkMode = (event: any, value: boolean) => {
+    localStorage.setItem("theme", value === true ? "dark" : "light");
     dispatch(setThemeModeState(value === true ? "dark" : "light"));
   };
   return (

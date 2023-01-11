@@ -601,3 +601,5 @@ export const themeDark = createTheme({
     },
   },
 });
+
+export default themeLight;

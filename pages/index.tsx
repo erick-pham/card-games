@@ -1,4 +1,5 @@
 import Link from "next/link";
+import NextLinkComposed from "components/NextLinkComposed";
 import {
   CardMedia,
   CardActions,
@@ -86,7 +87,10 @@ const HomePage = () => {
                   justifyContent: "center",
                 }}
               >
-                <Link href={"/product-account-game"}>
+                <NextLinkComposed
+                  href={"/product-account-game"}
+                  sx={{ textDecoration: "none" }}
+                >
                   <Button
                     variant="contained"
                     style={{
@@ -98,7 +102,7 @@ const HomePage = () => {
                   >
                     MUA NGAY
                   </Button>
-                </Link>
+                </NextLinkComposed>
               </CardActions>
             </Card>
           </Grid>
@@ -142,7 +146,10 @@ const HomePage = () => {
                   justifyContent: "center",
                 }}
               >
-                <Link href={"/product-card-game"}>
+                <NextLinkComposed
+                  href={"/product-card-game"}
+                  sx={{ textDecoration: "none" }}
+                >
                   <Button
                     variant="contained"
                     style={{
@@ -154,7 +161,7 @@ const HomePage = () => {
                   >
                     NẠP NGAY
                   </Button>
-                </Link>
+                </NextLinkComposed>
               </CardActions>
             </Card>
           </Grid>

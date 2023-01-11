@@ -43,7 +43,6 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts", "theme/index.js"
   ],
   "exclude": [
     "node_modules"

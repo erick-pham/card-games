@@ -5,12 +5,16 @@ import { getProviders, signIn, useSession } from "next-auth/react";
 import {
   Box,
   Button,
-  Container,
   Grid,
   Typography,
   TextField,
+  Paper,
+  Avatar,
 } from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { FacebookIcon, GoogleIcon } from "../admin/icons";
+import NextLinkComposed from "components/NextLinkComposed";
+import Copyright from "components/Copyright";
 export default function SignIn({
   providers,
   csrfToken,
@@ -33,100 +37,115 @@ export default function SignIn({
       <Head>
         <title>Login</title>
       </Head>
-      <Box
-        component="main"
-        sx={{
-          // position: "fixed",
-          // top: "50%",
-          // left: "50%",
-          // alignItems: "center",
-          // display: "flex",
-          // flexGrow: 1,
-          // minHeight: "100%",
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <Grid
+          item
+          xs={false}
+          sm={5}
+          md={7}
+          sx={{
+            backgroundImage: "url('/static/images/login-page-bg.jpg')",
+            // backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></Grid>
 
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-          minHeight: "100vh",
-        }}
-      >
-        <Container maxWidth="sm">
-          <Box sx={{ my: 3 }}>
-            <Typography color="textPrimary" variant="h4">
+        <Grid item xs={12} sm={7} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Typography color="textSecondary" gutterBottom variant="body2">
-              Sign in on the internal platform
-            </Typography>
-          </Box>
-          <Grid container spacing={3}>
-            {/* {providers && providers.facebook && (
-              <Grid item xs={12} md={6}>
-                <Button
-                  color="info"
-                  fullWidth
-                  startIcon={<FacebookIcon />}
-                  onClick={() => signIn(providers.facebook.id)}
-                  size="large"
-                  variant="contained"
-                >
-                  Login with Facebook
-                </Button>
-              </Grid>
-            )} */}
-            {providers && providers.google && (
-              <Grid item xs={12} md={12}>
-                <Button
-                  color="error"
-                  fullWidth
-                  startIcon={<GoogleIcon />}
-                  onClick={() => signIn(providers.google.id)}
-                  size="large"
-                  variant="contained"
-                >
-                  Login with Google
-                </Button>
-              </Grid>
-            )}
-          </Grid>
-
-          {/* <form method="post" action="/api/auth/signin/email">
             <Box
-              sx={{
-                pb: 1,
-                pt: 3,
-              }}
+              component="form"
+              noValidate
+              // onSubmit={handleSubmit}
+              sx={{ mt: 1 }}
             >
-              <Typography align="center" color="textSecondary" variant="body1">
-                or login with email address
-              </Typography>
-            </Box>
-            <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-            <TextField
-              fullWidth
-              label="Email Address"
-              margin="normal"
-              name="email"
-              type="email"
-              variant="outlined"
-              required={true}
-            />
-            <Box sx={{ py: 2 }}>
-              <Button
-                color="primary"
+              <TextField
+                disabled
+                margin="normal"
+                required
                 fullWidth
-                size="large"
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                disabled
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                disabled
                 type="submit"
+                fullWidth
                 variant="contained"
+                sx={{ mt: 3, mb: 2 }}
               >
-                Sign In Now
+                Sign In
               </Button>
+              <Button
+                color="error"
+                fullWidth
+                startIcon={<GoogleIcon />}
+                onClick={() => signIn(providers.google.id)}
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Login with Google
+              </Button>
+
+              <Button
+                disabled
+                color="info"
+                fullWidth
+                startIcon={<FacebookIcon />}
+                onClick={() => signIn(providers.facebook.id)}
+                variant="contained"
+                sx={{ mb: 2 }}
+              >
+                Login with Facebook
+              </Button>
+              <Grid container>
+                <Grid item>
+                  <NextLinkComposed
+                    href="/"
+                    variant="body2"
+                    color={"text.primary"}
+                  >
+                    {"Go back to Home"}
+                  </NextLinkComposed>
+                </Grid>
+              </Grid>
+              <Copyright />
             </Box>
-          </form> */}
-        </Container>
-      </Box>
+          </Box>
+        </Grid>
+      </Grid>
     </>
   );
 }
