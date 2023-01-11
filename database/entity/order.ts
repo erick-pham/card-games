@@ -77,6 +77,6 @@ export default class OrderEntity extends AppBaseEntity {
 
   @BeforeInsert()
   beforeInsertActions() {
-    this.referenceNumber = generateCode(10);
+    this.referenceNumber = generateCode(6);
   }
 }
