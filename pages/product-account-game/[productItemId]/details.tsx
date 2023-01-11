@@ -246,6 +246,7 @@ const AccountGameDetailPage = ({
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const { params, req, res, query } = context;
+    context.res.setHeader("Cache-Control", "no-cache");
     let productItemData = null;
 
     if (query.productItemId) {
