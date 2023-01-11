@@ -1,14 +1,29 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography, Box } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
 import Copyright from "components/Copyright";
-import styles from "styles/Home.module.css";
 
 export const MyFooter = () => {
   return (
-    <footer className={styles.footer}>
+    <Box
+      component="footer"
+      sx={{
+        py: 3,
+        px: 2,
+        mt: "auto",
+        // backgroundColor: (theme) =>
+        //   theme.palette.mode === "light"
+        //     ? theme.palette.grey[200]
+        //     : theme.palette.grey[800],
+
+        flexShrink: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.40)",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <Container>
         <Grid container spacing={5}>
           <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
@@ -98,7 +113,7 @@ export const MyFooter = () => {
           <Copyright></Copyright>
         </Grid>
       </Container>
-    </footer>
+    </Box>
   );
 };
 export default MyFooter;

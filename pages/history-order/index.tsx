@@ -1,17 +1,15 @@
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 import OrderEntity from "database/entity/order";
 import UnitOfWork from "database/unit-of-work";
-import {
-  Box,
-  Grid,
-  Typography,
-  CardContent,
-  Card,
-  CardHeader,
-  Link,
-} from "@mui/material";
+import { Box, Grid, Typography, Link, Container, Divider } from "@mui/material";
 import numeral from "numeral";
 import { format } from "date-fns";
+import MainLayout from "components/MainLayout";
+import NextLinkComposed from "components/NextLinkComposed";
+import { StyledMainBox } from "components/CustomStyledBox";
+
+import { PRODUCT_ITEM_TYPES_LABEL, GetLabelText } from "common/constants";
 
 type HistoryOrderPageProps = {
   internalError?: boolean;
@@ -19,44 +17,21 @@ type HistoryOrderPageProps = {
   orderData?: OrderEntity;
 };
 
-import MainLayout from "components/MainLayout";
 const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
   return (
-    <Box
-      component="main"
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        // justifyContent: "center",
-        alignItems: "center",
-        // textAlign: "center",
-        minHeight: "100vh",
-      }}
-    >
-      <Card
-        variant="outlined"
-        style={{
-          padding: 0,
-          border: "none",
-          boxShadow: "none",
-          backgroundColor: "#1B3447",
-        }}
-      >
-        <CardHeader
-          title={orderData ? "Đặt hàng thành công" : "Không tìm thấy đơn hàng"}
-          titleTypographyProps={{
-            color: "red",
-            fontSize: 28,
-            textAlign: "center",
-          }}
-          subheaderTypographyProps={{ color: "#B6B6B6" }}
-        />
-
-        <CardContent
-          style={{
-            backgroundColor: "#fff",
-          }}
-        >
+    <Container style={{ marginTop: 10 }}>
+      <Box>
+        <StyledMainBox>
+          <Typography
+            sx={{
+              color: "green",
+              fontSize: 28,
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
+          >
+            {orderData ? "Đặt hàng thành công" : "Không tìm thấy đơn hàng"}
+          </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
               <Typography gutterBottom variant="h5" component="div">
@@ -72,7 +47,11 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
               <Typography variant="body1" color="text.secondary">
                 Email: {orderData?.contactEmail}
               </Typography>
-              <Typography variant="body1" color="text.secondary">
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                style={{ fontWeight: "bold" }}
+              >
                 Mã đơn: {orderData?.referenceNumber}
               </Typography>
               <Typography variant="body1" color="text.secondary">
@@ -89,7 +68,11 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
                 Đơn hàng:
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Loại: {orderData?.productItem.type}
+                Loại:{" "}
+                {GetLabelText(
+                  PRODUCT_ITEM_TYPES_LABEL,
+                  String(orderData?.productItem.type)
+                )}
               </Typography>
               <Typography variant="body1" color="text.secondary">
                 Tên sản phẩm: {orderData?.productItem.name}
@@ -128,25 +111,89 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
               </Typography>
             </Grid>
           </Grid>
-
+          <Typography
+            variant="h6"
+            color="info.main"
+            sx={{ fontStyle: "italic", mt: 4 }}
+          >
+            Sau khi đặt hàng thành công, các bạn nên chuyển khoản cho chủ shop
+            càng sớm để giữ đơn. Nội chung chuyển khoản bao gồm SĐT và mã hơn
+            hàng ở trên.
+          </Typography>
           <Typography
             variant="h6"
             color="error.main"
             sx={{ fontStyle: "italic", mt: 4 }}
           >
-            *NOTE: Sau khi bạn đặt hàng, vui lòng liên hệ fanpage hoặc hotline
-            để được shop liên hệ chuyển khoản và giao tài khoản. Xin Cảm ơn!
+            Vui lòng liên hệ{" "}
+            <NextLinkComposed href="https://www.facebook.com/shopaccgi">
+              fanpage{" "}
+            </NextLinkComposed>
+            hoặc gọi{" "}
+            <NextLinkComposed href="tel:0339839409">
+              033 983 9409
+            </NextLinkComposed>{" "}
+            ngay sau khi chuyển khoản để giao nhận tài khoản. Xin Cảm ơn!
           </Typography>
-        </CardContent>
-        {/* <CardMedia
-              component="img"
-              height="auto"
-              width="auto"
-              image="/static/images/banner.jpg"
-              alt=""
-            /> */}
-      </Card>
-    </Box>
+          <Typography
+            variant="h6"
+            color="info.main"
+            sx={{ fontStyle: "italic" }}
+          >
+            Chủ tài khoản: Nguyễn Ngọc Lâm
+          </Typography>
+          <Typography
+            variant="h6"
+            color="info.main"
+            sx={{ fontStyle: "italic" }}
+          >
+            Vietcombank: 0441000684540
+          </Typography>
+          <Typography
+            variant="h6"
+            color="info.main"
+            sx={{ fontStyle: "italic" }}
+          >
+            Momo: 0339839409
+          </Typography>
+          <Typography
+            gutterBottom
+            variant="h6"
+            color="info.main"
+            sx={{ fontStyle: "italic" }}
+          >
+            Quét mã QR để thanh toán
+          </Typography>
+          <Grid container>
+            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <Image
+                alt=""
+                src="/static/images/payment/qr-code-vietcombank.jpg"
+                width={400}
+                height={500}
+                // fill
+              ></Image>
+            </Grid>
+            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <Image
+                alt=""
+                src="/static/images/payment/qr-code-momo.jpg"
+                width={400}
+                height={500}
+                // fill
+              ></Image>
+            </Grid>
+          </Grid>
+
+          <Divider
+            sx={{
+              borderColor: "#2D3748",
+              my: 3,
+            }}
+          />
+        </StyledMainBox>
+      </Box>
+    </Container>
   );
 };
 
@@ -154,7 +201,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const { params, req, res, query } = context;
     let orderData = null;
-
+    // Add whatever `Cache-Control` value you want here
+    context.res.setHeader("Cache-Control", "no-cache");
     if (query.referenceNumber) {
       const uow = new UnitOfWork();
       await uow.initialize();
