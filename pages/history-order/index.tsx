@@ -1,8 +1,15 @@
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import OrderEntity from "database/entity/order";
 import UnitOfWork from "database/unit-of-work";
-import { Box, Grid, Typography, Link, Container, Divider } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  Link,
+  Container,
+  Divider,
+  CardMedia,
+} from "@mui/material";
 import numeral from "numeral";
 import { format } from "date-fns";
 import MainLayout from "components/MainLayout";
@@ -164,24 +171,18 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
           >
             Quét mã QR để thanh toán
           </Typography>
-          <Grid container>
-            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-              <Image
-                alt=""
-                src="/static/images/payment/qr-code-vietcombank.jpg"
-                width={400}
-                height={500}
-                // fill
-              ></Image>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
+              <CardMedia
+                component={"img"}
+                src={"/static/images/payment/qr-code-vietcombank.jpg"}
+              />
             </Grid>
-            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-              <Image
-                alt=""
-                src="/static/images/payment/qr-code-momo.jpg"
-                width={400}
-                height={500}
-                // fill
-              ></Image>
+            <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
+              <CardMedia
+                component={"img"}
+                src={"/static/images/payment/qr-code-momo.jpg"}
+              />
             </Grid>
           </Grid>
 
