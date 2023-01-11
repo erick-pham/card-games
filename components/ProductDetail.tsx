@@ -14,6 +14,7 @@ import {
   PRODUCT_ITEM_STATUS,
   PRODUCT_ITEM_STATUS_TEXT_VI,
 } from "@common/constants";
+import NextLinkComposed from "components/NextLinkComposed";
 
 const ProductDetail = ({
   productItem,
@@ -62,7 +63,17 @@ const ProductDetail = ({
       <Typography variant="body1" color="text.primary">
         {productItem?.description}
       </Typography>
-      <CardMedia component="img" image={productItem?.thumbnail} alt="alt" />
+      <NextLinkComposed
+        href={productItem?.thumbnail || "#"}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <CardMedia
+          component="img"
+          image={productItem?.thumbnail}
+          alt="alt"
+        ></CardMedia>
+      </NextLinkComposed>
       <div
         dangerouslySetInnerHTML={{ __html: productItem?.longDescription || "" }}
       />
