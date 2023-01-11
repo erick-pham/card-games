@@ -72,26 +72,22 @@ function MyApp({
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const themeMode = useSelector(selectThemeModeState);
 
-  const [darkMode, setDarkMode] = useState(prefersDarkMode);
+  useEffect(() => {
+    if (prefersDarkMode) {
+      dispatch(setThemeModeState("dark"));
+    }
+  }, []);
 
   useEffect(() => {
     const mode = localStorage.getItem("theme");
     if (mode === "dark") {
-      setDarkMode(true);
       dispatch(setThemeModeState("dark"));
-    } else {
-      setDarkMode(false);
+    }
+
+    if (mode === "light") {
+      dispatch(setThemeModeState("light"));
     }
   }, []);
-
-  // useMemo(() => setIsDarkTheme(prefersDarkMode), [prefersDarkMode]);
-
-  // The light theme is used by default
-
-  // This function is triggered when the Switch component is toggled
-  // const changeTheme = () => {
-  //   setIsDarkTheme(!isDarkTheme);
-  // };
 
   return (
     <div>
@@ -143,7 +139,7 @@ function MyApp({
         </Alert>
       </Snackbar>
       <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={darkMode === true ? themeDark : themeLight}>
+        <ThemeProvider theme={themeMode === "dark" ? themeDark : themeLight}>
           <CssBaseline />
           <SessionProvider session={session}>
             {Component.auth ? (
