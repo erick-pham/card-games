@@ -120,7 +120,6 @@ export default function SignIn({
               </Button>
 
               <Button
-                disabled
                 color="info"
                 fullWidth
                 startIcon={<FacebookIcon />}
