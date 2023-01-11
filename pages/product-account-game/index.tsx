@@ -411,12 +411,15 @@ const StyledCard = styled(Card)(({ theme }) => ({
 const RecipeReviewCard = ({ product }: { product: ProductItemEntity }) => {
   return (
     <StyledCard>
-      <CardMedia
-        component="img"
-        height="194"
-        image={product.thumbnail}
-        alt="alt"
-      />
+      <Link href={`/product-account-game/${product.id}/details`}>
+        <CardMedia
+          component="img"
+          height="194"
+          image={product.thumbnail}
+          alt="alt"
+        />
+      </Link>
+
       <CardContent sx={{ height: 150, p: 2 }}>
         <Typography variant="h5" component="div">
           {product.name}
