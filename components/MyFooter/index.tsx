@@ -3,7 +3,8 @@ import LockIcon from "@mui/icons-material/Lock";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
-import styles from "../../styles/Home.module.css";
+import Copyright from "components/Copyright";
+import styles from "styles/Home.module.css";
 
 export const MyFooter = () => {
   return (
@@ -92,6 +93,9 @@ export const MyFooter = () => {
             <PhoneIcon sx={{ fontSize: 18, marginRight: 1 }} />
             HOTLINE: 033 9839 409
           </Typography>
+        </Grid>
+        <Grid m={0}>
+          <Copyright></Copyright>
         </Grid>
       </Container>
     </footer>

@@ -32,6 +32,11 @@ export default function SignIn({
     router.push("/");
   }
 
+  const error = router.query["error"];
+  const errorMsg =
+    error && error.includes("OAuthAccountNotLinked")
+      ? "Email của bạn đã được đăng ký với mạng xã hội khác. Vui lòng thử đăng nhập với Google hoặc Facebook. Cảm ơn!"
+      : "";
   return (
     <>
       <Head>
@@ -77,7 +82,7 @@ export default function SignIn({
               // onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
-              <TextField
+              {/* <TextField
                 disabled
                 margin="normal"
                 required
@@ -107,7 +112,12 @@ export default function SignIn({
                 sx={{ mt: 3, mb: 2 }}
               >
                 Sign In
-              </Button>
+              </Button> */}
+              {errorMsg && (
+                <Typography component="h1" variant="body1" color={"error"}>
+                  {errorMsg}
+                </Typography>
+              )}
               <Button
                 color="error"
                 fullWidth
