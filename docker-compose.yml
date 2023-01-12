@@ -1,0 +1,25 @@
+# docker-componse.yml
+version: '3.8'
+services:
+  pg:
+    image: "postgres:alpine"
+    container_name: "next-db"
+    env_file:
+      - ".env"
+    ports:
+      - "5555:5432"
+    volumes:
+      - "pg:/var/lib/postgresql/data"
+    restart: "always"
+  web:
+    build: ./
+    container_name: "next-web"
+    env_file:
+      - ".env.local"
+    ports:
+      - "3000:3000"
+    # volumes:
+    #   - "pg:/var/lib/postgresql/data"
+    # restart: "always"
+volumes:
+  pg:
