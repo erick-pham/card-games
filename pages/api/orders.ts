@@ -37,6 +37,7 @@ export default async function handler(
       const { take, page, skip, keyword } = paginateRequest(req);
       let where = {
         userId: !isAdmmin ? (session.userId as string) : undefined,
+        status: req.query.status ? req.query.status : undefined,
       } as FindOptionsWhere<OrderEntity>;
 
       if (keyword) {

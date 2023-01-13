@@ -22,7 +22,6 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import numeral from "numeral";
-import { ProductListToolbar } from "./components/product/product-list-toolbar";
 import ListToolbarSearch from "components/Admin/ListToolbarSearch";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { ProductDetailsModal } from "./components/product-details/product-details-modal";

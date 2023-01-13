@@ -15,12 +15,16 @@ import {
   TableRow,
   TableSortLabel,
   Tooltip,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 // import PerfectScrollbar from "react-perfect-scrollbar";
 import { DashboardLayout } from "pages/admin/components/dashboard-layout";
 import { setErrorState, setLoadingState } from "app/rootSlice";
 
-import { StatusColor } from "@common/constants";
 import message from "@common/messages";
 
 import numeral from "numeral";
@@ -34,6 +38,7 @@ import {
 import OrderDetailsModal from "components/Admin/OrderPage/OrderDetailsModal";
 import OrderDetailsModalChangeStatus from "components/Admin/OrderPage/OrderDetailsModalChangeStatus";
 import { StyledTableCell } from "components/Admin/CustomTable";
+import { ORDER_STATUS_LABEL, StatusColor } from "common/constants";
 
 const OrderPage = () => {
   const dispatch = useDispatch();
@@ -44,6 +49,7 @@ const OrderPage = () => {
     limit: 5,
     page: 1,
     keyword: "",
+    orderStatus: "",
   });
 
   const [orders, setOrders] = useState<OrderListAPIReponse>();
@@ -55,6 +61,7 @@ const OrderPage = () => {
         limit: queryString.limit + "",
         page: queryString.page + "",
         keyword: queryString.keyword,
+        status: queryString.orderStatus + "",
       }).toString();
     dispatch(
       setLoadingState({
@@ -194,6 +201,12 @@ const OrderPage = () => {
       });
   };
 
+  const handleChangeOrderStatus = (e: any) => {
+    setQueryString({
+      ...queryString,
+      orderStatus: e.target.value || "",
+    });
+  };
   return (
     <>
       <Head>
@@ -226,6 +239,55 @@ const OrderPage = () => {
             handleSearch={handleSearch}
             headTitle={"Orders"}
             placeholderSearch={"Search Order Ref. Number"}
+            primaryComponent={
+              <Grid container spacing={2}>
+                {/* <Grid item xs={12} md={3}>
+                  <FormControl
+                    sx={{ m: 1 }}
+                    fullWidth
+                    variant="standard"
+                    size="medium"
+                  >
+                    <InputLabel>Select Product</InputLabel>
+                    <Select
+                      value={selectedProductId}
+                      onChange={handleChangeActiveProduct}
+                    >
+                      {products &&
+                        products.length > 0 &&
+                        products.map((item, index) => (
+                          <MenuItem key={index} value={item.id}>
+                            {item.name}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </FormControl>
+                </Grid> */}
+                <Grid item xs={12} md={3}>
+                  <FormControl
+                    sx={{ m: 1 }}
+                    fullWidth
+                    variant="standard"
+                    size="medium"
+                  >
+                    <InputLabel>Filter by status</InputLabel>
+                    <Select
+                      value={queryString.orderStatus}
+                      onChange={handleChangeOrderStatus}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {ORDER_STATUS_LABEL.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            }
           />
           <Box sx={{ mt: 3 }}>
             <OrderListResults
