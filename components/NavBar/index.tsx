@@ -156,7 +156,7 @@ const ResponsiveAppBar = () => {
           >
             <NextImage
               src="/static/images/logo.png"
-              height={40}
+              height={60}
               width={80}
               alt="alt"
             ></NextImage>
@@ -236,7 +236,7 @@ const ResponsiveAppBar = () => {
           >
             <NextImage
               src="/static/images/logo.png"
-              height={40}
+              height={60}
               width={80}
               alt="alt"
             ></NextImage>

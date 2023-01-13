@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
-import EmailProvider from "next-auth/providers/email";
+// import EmailProvider from "next-auth/providers/email";
 import {
   TypeORMLegacyAdapter,
   Entities,
@@ -10,9 +10,9 @@ import * as entities from "database/entity/entities";
 
 import { dbConfigs } from "database/unit-of-work";
 
-import { createTransport } from "nodemailer";
+// import { createTransport } from "nodemailer";
 
-import { themeLight as theme } from "theme";
+// import { themeLight as theme } from "theme";
 
 declare module "next-auth" {
   interface Session {
@@ -109,31 +109,31 @@ export const authOptions: NextAuthOptions = {
     entities: entities as Entities,
   }),
   providers: [
-    EmailProvider({
-      server: process.env.EMAIL_SERVER as string,
-      from: process.env.EMAIL_FROM as string,
-      async sendVerificationRequest({
-        identifier: email,
-        url,
-        provider: { server, from },
-      }) {
-        // const { identifier, url, provider, theme } = params;
-        const { host } = new URL(url);
-        // NOTE: You are not required to use `nodemailer`, use whatever you want.
-        const transport = createTransport(server);
-        const result = await transport.sendMail({
-          to: email,
-          from: from,
-          subject: `Sign in to ${host}`,
-          text: text({ url, host }),
-          html: html({ url, host, theme }),
-        });
-        const failed = result.rejected.concat(result.pending).filter(Boolean);
-        if (failed.length) {
-          throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
-        }
-      },
-    }),
+    // EmailProvider({
+    //   server: process.env.EMAIL_SERVER as string,
+    //   from: process.env.EMAIL_FROM as string,
+    //   async sendVerificationRequest({
+    //     identifier: email,
+    //     url,
+    //     provider: { server, from },
+    //   }) {
+    //     // const { identifier, url, provider, theme } = params;
+    //     const { host } = new URL(url);
+    //     // NOTE: You are not required to use `nodemailer`, use whatever you want.
+    //     const transport = createTransport(server);
+    //     const result = await transport.sendMail({
+    //       to: email,
+    //       from: from,
+    //       subject: `Sign in to ${host}`,
+    //       text: text({ url, host }),
+    //       html: html({ url, host, theme }),
+    //     });
+    //     const failed = result.rejected.concat(result.pending).filter(Boolean);
+    //     if (failed.length) {
+    //       throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
+    //     }
+    //   },
+    // }),
     /* 
     // Temporarily removing the Apple provider from the demo site as the
     // callback URL for it needs updating due to Vercel changing domains
