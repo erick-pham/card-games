@@ -21,7 +21,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-// import PerfectScrollbar from "react-perfect-scrollbar";
+import InfoIcon from "@mui/icons-material/Info";
 import { DashboardLayout } from "pages/admin/components/dashboard-layout";
 import { setErrorState, setLoadingState } from "app/rootSlice";
 
@@ -319,6 +319,7 @@ const OrderListResults = ({
           <Table>
             <TableHead>
               <TableRow>
+                <StyledTableCell>#</StyledTableCell>
                 <StyledTableCell>Order Ref</StyledTableCell>
                 <StyledTableCell>Status</StyledTableCell>
                 <StyledTableCell>Amount</StyledTableCell>
@@ -344,9 +345,14 @@ const OrderListResults = ({
             <TableBody>
               {orders?.data?.map((order) => (
                 <TableRow hover key={order.id}>
-                  <StyledTableCell onClick={() => handleClickAction(order.id)}>
-                    {order?.referenceNumber}
+                  <StyledTableCell>
+                    <Tooltip title="View more details">
+                      <InfoIcon
+                        onClick={() => handleClickAction(order.id)}
+                      ></InfoIcon>
+                    </Tooltip>
                   </StyledTableCell>
+                  <StyledTableCell>{order?.referenceNumber}</StyledTableCell>
                   <StyledTableCell
                     onClick={() =>
                       handleClickCellStatus(order.id, order.status)

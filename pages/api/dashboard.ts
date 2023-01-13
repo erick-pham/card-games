@@ -7,8 +7,8 @@ import UnitOfWork from "database/unit-of-work";
 import { checkIsAdmin } from "@utils/check-role";
 import { PRODUCT_ITEM_TYPES, ORDER_STATUS } from "common/constants";
 import { startOfMonth } from "date-fns";
-import { Between, MoreThanOrEqual } from "typeorm";
-
+import { MoreThanOrEqual } from "typeorm";
+import { groupBy } from "lodash";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -34,6 +34,7 @@ export default async function handler(
         totalOrderOnCardGame: 0,
         totalRevenue: 0,
         totalOrdersInProgress: 0,
+        latestSales: <any>[],
       };
 
       result.totalCustomer = await uow.UserRepository.count();
@@ -62,6 +63,29 @@ export default async function handler(
         .getRawOne();
       result.totalRevenue = totalRevenue ? totalRevenue * 1 : 0;
 
+      const start = new Date();
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(start);
+      end.setDate(start.getDate() - 7);
+      let latestSalesEntity = await uow.OrderRepository.find({
+        where: {
+          createdAt: MoreThanOrEqual(end),
+        },
+        select: ["id", "createdAt"],
+      });
+      let latestSales = latestSalesEntity.map((i) => {
+        return {
+          date: i.createdAt.toISOString().slice(0, 10),
+        };
+      });
+
+      const salesGroupByDay = groupBy(latestSales, "date");
+      result.latestSales = Object.keys(salesGroupByDay).map((i) => {
+        return {
+          date: i,
+          totalSales: salesGroupByDay[i].length,
+        };
+      });
       res.status(200).json(result);
     } else {
       return res.status(405).json({

@@ -21,6 +21,7 @@ type DashboardDataType = {
   totalOrderOnCardGame: number | 0;
   totalRevenue: number | 0;
   totalOrdersInProgress: number | 0;
+  latestSales: Array<any>;
 };
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -97,7 +98,7 @@ const Dashboard = () => {
             </Grid>
 
             <Grid item lg={8} md={12} xl={9} xs={12}>
-              <Sales />
+              <Sales latestSales={dashboardData?.latestSales || []} />
             </Grid>
             <Grid item lg={4} md={6} xl={3} xs={12}>
               <SalesOnProductCat

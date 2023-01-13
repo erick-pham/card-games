@@ -35,7 +35,6 @@ export const Sales = (props: any) => {
   const theme = useTheme();
 
   const options = {
-    animation: false,
     cornerRadius: 20,
     layout: { padding: 0 },
     legend: { display: false },
@@ -90,22 +89,12 @@ export const Sales = (props: any) => {
         barThickness: 12,
         borderRadius: 4,
         categoryPercentage: 0.5,
-        data: [18, 5, 19, 27, 29, 19, 20],
-        label: "This year",
-        maxBarThickness: 10,
-      },
-      {
-        backgroundColor: "#EEEEEE",
-        barPercentage: 0.5,
-        barThickness: 12,
-        borderRadius: 4,
-        categoryPercentage: 0.5,
-        data: [11, 20, 12, 29, 30, 25, 13],
-        label: "Last year",
+        data: props.latestSales.map((i: any) => i.totalSales),
+        label: "Number of sale",
         maxBarThickness: 10,
       },
     ],
-    labels: ["1 Aug", "2 Aug", "3 Aug", "4 Aug", "5 Aug", "6 Aug", "7 aug"],
+    labels: props.latestSales.map((i: any) => i.date),
   };
 
   return (
@@ -126,24 +115,7 @@ export const Sales = (props: any) => {
             position: "relative",
           }}
         >
-          <Bar
-            data={data}
-            options={{
-              plugins: {
-                legend: {
-                  position: "top" as const,
-                },
-                title: {
-                  display: true,
-                  text: "Latest Sales",
-                },
-              },
-              animation: false,
-              layout: { padding: 0 },
-              maintainAspectRatio: false,
-              responsive: true,
-            }}
-          />
+          <Bar data={data} options={options} />
         </Box>
       </CardContent>
       <Divider />
