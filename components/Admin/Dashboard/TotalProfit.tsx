@@ -7,10 +7,10 @@ export const TotalProfit = (props: any) => (
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textSecondary" gutterBottom variant="overline">
-            TOTAL PROFIT
+            TOTAL REVENUE
           </Typography>
           <Typography color="textPrimary" variant="h4">
-            ${numeral(props.totalProfit).format("0,0")}
+            VND {numeral(props.totalRevenue).format("0,0")}
           </Typography>
         </Grid>
         <Grid item>

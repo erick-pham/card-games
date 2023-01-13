@@ -15,10 +15,10 @@ export const TasksProgress = (props: any) => (
       <Grid container spacing={3} sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textSecondary" gutterBottom variant="overline">
-            TASKS PROGRESS
+            ORDERS IN PROGRESS
           </Typography>
           <Typography color="textPrimary" variant="h4">
-            0%
+            {props.totalOrdersInProgress}
           </Typography>
         </Grid>
         <Grid item>
@@ -34,7 +34,7 @@ export const TasksProgress = (props: any) => (
         </Grid>
       </Grid>
       <Box sx={{ pt: 3 }}>
-        <LinearProgress value={0} variant="determinate" />
+        <LinearProgress value={100} variant="determinate" />
       </Box>
     </CardContent>
   </Card>

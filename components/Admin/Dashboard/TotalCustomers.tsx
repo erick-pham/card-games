@@ -42,7 +42,20 @@ export const TotalCustomers = (props: any) => (
           pt: 2,
         }}
       >
-        {props.totalCustomerGrowthRate && props.totalCustomerGrowthRate > 0 ? (
+        <ArrowUpwardIcon color="success" />
+        <Typography
+          variant="body2"
+          sx={{
+            mr: 1,
+          }}
+        >
+          {props.totalCustomerCurrentMonth}
+        </Typography>
+        <Typography color="textSecondary" variant="caption">
+          Since last month
+        </Typography>
+
+        {/* {props.totalCustomerGrowthRate && props.totalCustomerGrowthRate > 0 ? (
           <>
             <ArrowUpwardIcon color="success" />
             <Typography
@@ -73,7 +86,7 @@ export const TotalCustomers = (props: any) => (
               Since last month
             </Typography>
           </>
-        )}
+        )} */}
       </Box>
     </CardContent>
   </Card>

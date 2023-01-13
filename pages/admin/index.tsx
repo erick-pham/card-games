@@ -9,14 +9,55 @@ import { TotalCustomers } from "components/Admin/Dashboard/TotalCustomers";
 import { TotalProfit } from "components/Admin/Dashboard/TotalProfit";
 import { SalesOnProductCat } from "components/Admin/Dashboard/SalesOnProductCat";
 import { DashboardLayout } from "./components/dashboard-layout";
+import { setLoadingState, setErrorState } from "app/rootSlice";
+import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import message from "common/messages";
 
+type DashboardDataType = {
+  totalCustomer: number | 0;
+  totalCustomerCurrentMonth: number | 0;
+  totalOrderOnAccountGame: number | 0;
+  totalOrderOnCardGame: number | 0;
+  totalRevenue: number | 0;
+  totalOrdersInProgress: number | 0;
+};
 const Dashboard = () => {
-  const data = {
-    totalCustomer: 10,
-    totalCustomerGrowthRate: 0.91,
-    totalOrderOnAccountGame: 10,
-    totalOrderOnCardGame: 9,
-  };
+  const dispatch = useDispatch();
+
+  const [dashboardData, setDashboardData] = useState<DashboardDataType>();
+  useEffect(() => {
+    dispatch(
+      setLoadingState({
+        loading: true,
+        loadingMessage: message.appAPILoading,
+      })
+    );
+    fetch(`/api/dashboard?`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error === true) {
+          dispatch(
+            setErrorState({
+              message: data.message,
+              values: "",
+              severity: "error",
+            })
+          );
+        } else {
+          console.log("data", data);
+          setDashboardData(data);
+        }
+      })
+      .finally(() => {
+        dispatch(
+          setLoadingState({
+            loading: false,
+            loadingMessage: null,
+          })
+        );
+      });
+  }, []);
 
   return (
     <>
@@ -32,20 +73,27 @@ const Dashboard = () => {
       >
         <Container maxWidth={false}>
           <Grid container spacing={3}>
-            <Grid item lg={3} sm={6} xl={3} xs={12}>
-              <Budget />
+            <Grid item xl={3} lg={3} sm={6} xs={12}>
+              <TasksProgress
+                totalOrdersInProgress={dashboardData?.totalOrdersInProgress}
+              />
             </Grid>
+            {/* <Grid item lg={3} sm={6} xl={3} xs={12}>
+              <Budget />
+            </Grid> */}
             <Grid item xl={3} lg={3} sm={6} xs={12}>
               <TotalCustomers
-                totalCustomer={data.totalCustomer}
-                totalCustomerGrowthRate={data.totalCustomerGrowthRate}
+                totalCustomer={dashboardData?.totalCustomer}
+                totalCustomerCurrentMonth={
+                  dashboardData?.totalCustomerCurrentMonth
+                }
               />
             </Grid>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <TasksProgress />
-            </Grid>
-            <Grid item xl={3} lg={3} sm={6} xs={12}>
-              <TotalProfit sx={{ height: "100%" }} />
+              <TotalProfit
+                sx={{ height: "100%" }}
+                totalRevenue={dashboardData?.totalRevenue}
+              />
             </Grid>
 
             <Grid item lg={8} md={12} xl={9} xs={12}>
@@ -54,8 +102,8 @@ const Dashboard = () => {
             <Grid item lg={4} md={6} xl={3} xs={12}>
               <SalesOnProductCat
                 sx={{ height: "100%" }}
-                totalOrderOnAccountGame={data.totalOrderOnAccountGame}
-                totalOrderOnCardGame={data.totalOrderOnCardGame}
+                totalOrderOnAccountGame={dashboardData?.totalOrderOnAccountGame}
+                totalOrderOnCardGame={dashboardData?.totalOrderOnCardGame}
               />
             </Grid>
             {/*
