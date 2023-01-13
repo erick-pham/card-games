@@ -20,7 +20,14 @@ export const MainLayout = (props: { children: any; pageTitle: string }) => {
         }}
       >
         <NavBar></NavBar>
-        <Container>{children}</Container>
+        <Container
+          sx={{
+            paddingLeft: 0,
+            paddingRight: 0,
+          }}
+        >
+          {children}
+        </Container>
         <MyFooter></MyFooter>
       </Box>
     </div>

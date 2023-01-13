@@ -27,18 +27,23 @@ const HomePage = () => {
           >
             <CardMedia
               component="img"
-              height="450"
               width="auto"
               image="/static/images/banner1.1.jpg"
               alt=""
+              sx={{
+                maxHeight: "450px",
+              }}
             />
 
             <CardHeader
               title="Mua bán tài khoản game uy tín"
               titleTypographyProps={{
                 color: "red",
-                fontSize: 28,
                 textAlign: "center",
+                // sx: {
+                //   textShadow:
+                //     "0 0 10px #D50A1F, 0 0 20px #D50A1F, 0 0 40px #D50A1F",
+                // },
               }}
               subheaderTypographyProps={{ color: "#B6B6B6" }}
             />
@@ -61,23 +66,23 @@ const HomePage = () => {
                 title="Mua Acc game"
                 titleTypographyProps={{
                   color: "red",
-                  fontSize: 36,
                   textAlign: "center",
                 }}
                 subheader="với kho acc game cực kì hấp dẫn"
                 subheaderTypographyProps={{
                   color: "red",
-                  fontSize: 24,
                   textAlign: "center",
                   textTransform: "uppercase",
                 }}
               />
               <CardMedia
                 component="img"
-                height="250"
                 width="auto"
                 image="/static/images/card-img1.1.jpg"
                 alt=""
+                sx={{
+                  maxHeight: "250px",
+                }}
               />
 
               <CardActions
@@ -120,23 +125,23 @@ const HomePage = () => {
                 title="Nạp game"
                 titleTypographyProps={{
                   color: "red",
-                  fontSize: 36,
                   textAlign: "center",
                 }}
                 subheader="Chiết khấu cao - bảo hành trọn đời"
                 subheaderTypographyProps={{
                   color: "red",
-                  fontSize: 24,
                   textAlign: "center",
                   textTransform: "uppercase",
                 }}
               />
               <CardMedia
                 component="img"
-                height="250"
                 width="auto"
                 image="/static/images/card-img1.2.jpg"
                 alt=""
+                sx={{
+                  maxHeight: "250px",
+                }}
               />
 
               <CardActions
@@ -165,21 +170,6 @@ const HomePage = () => {
             </Card>
           </Grid>
         </Grid>
-      </Container>
-      <Container style={{ marginTop: 4, marginBottom: 4 }}>
-        {/* <Box
-          style={{
-            marginTop: 20,
-            backgroundColor: "red",
-          }}
-        > */}
-        <Container
-          style={{
-            backgroundColor: "#5CE1E6",
-          }}
-        ></Container>
-
-        {/* </Box> */}
       </Container>
     </div>
   );
