@@ -14,7 +14,7 @@ import {
   Input,
 } from "@mui/material";
 
-import { setErrorState, setLoadingState } from "app/rootSlice";
+import { setErrorState, setLoadingState } from "reduxjs/rootSlice";
 import message from "common/messages";
 import { ProductItemType } from "pages/product-account-game";
 import { getSessionUserInfo } from "@utils/get-session-user";

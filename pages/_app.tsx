@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "../styles/globals.css";
+import "components/RichTextEditor/RichTextEditor.css";
 import Head from "next/head";
 import { Router, useRouter } from "next/router";
 import { SessionProvider, useSession } from "next-auth/react";
@@ -17,9 +18,9 @@ import {
   selectLoadingMessageState,
   selectThemeModeState,
   setThemeModeState,
-} from "app/rootSlice";
+} from "reduxjs/rootSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { wrapper } from "app/store";
+import { wrapper } from "reduxjs/store";
 import LoadingDialog from "components/LoadingDialog";
 import { themeLight, themeDark } from "theme";
 import createEmotionCache from "theme/createEmotionCache";

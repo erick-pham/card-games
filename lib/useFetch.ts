@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setErrorState, setLoadingState } from "app/rootSlice";
+import { setErrorState, setLoadingState } from "reduxjs/rootSlice";
 import message from "common/messages";
 
 export type TApiResponse = {

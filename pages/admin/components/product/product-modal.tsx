@@ -17,7 +17,7 @@ import {
   Button,
 } from "@mui/material";
 import Product from "database/entity/product";
-import { setErrorState, setLoadingState } from "app/rootSlice";
+import { setErrorState, setLoadingState } from "reduxjs/rootSlice";
 import { PRODUCT_STATUS_LABEL } from "common/constants";
 import message from "common/messages";
 

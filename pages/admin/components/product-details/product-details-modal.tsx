@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 
 import { ProductItem } from "components/Admin/OrderPage/types";
-import { setErrorState, setLoadingState } from "app/rootSlice";
+import { setErrorState, setLoadingState } from "reduxjs/rootSlice";
 import {
   PRODUCT_ITEM_STATUS_LABEL,
   PRODUCT_ITEM_TYPES_LABEL,

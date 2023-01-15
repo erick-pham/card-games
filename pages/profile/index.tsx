@@ -23,7 +23,7 @@ import {
 import { ajvResolver } from "validator/ajvResolver";
 import { SubmitCardOrderValidation } from "validator/validationSchema/client-orders";
 
-import { setErrorState, setLoadingState } from "app/rootSlice";
+import { setErrorState, setLoadingState } from "reduxjs/rootSlice";
 import message from "common/messages";
 import { Controller, useForm } from "react-hook-form";
 import UnitOfWork from "database/unit-of-work";

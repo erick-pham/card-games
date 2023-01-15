@@ -2,7 +2,7 @@ import * as React from "react";
 import NextLink from "next/link";
 import NextImage from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { setThemeModeState, selectThemeModeState } from "app/rootSlice";
+import { setThemeModeState, selectThemeModeState } from "reduxjs/rootSlice";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";

@@ -9,7 +9,7 @@ import { TotalCustomers } from "components/Admin/Dashboard/TotalCustomers";
 import { TotalProfit } from "components/Admin/Dashboard/TotalProfit";
 import { SalesOnProductCat } from "components/Admin/Dashboard/SalesOnProductCat";
 import { DashboardLayout } from "./components/dashboard-layout";
-import { setLoadingState, setErrorState } from "app/rootSlice";
+import { setLoadingState, setErrorState } from "reduxjs/rootSlice";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import message from "common/messages";

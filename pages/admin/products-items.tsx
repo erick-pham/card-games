@@ -25,7 +25,7 @@ import numeral from "numeral";
 import ListToolbarSearch from "components/Admin/ListToolbarSearch";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { ProductDetailsModal } from "./components/product-details/product-details-modal";
-import { setErrorState, setLoadingState } from "../../app/rootSlice";
+import { setErrorState, setLoadingState } from "../../reduxjs/rootSlice";
 import message from "common/messages";
 
 import {

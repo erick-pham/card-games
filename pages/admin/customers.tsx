@@ -17,7 +17,7 @@ import {
 import { CustomerListToolbar } from "./components/customer/customer-list-toolbar";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { UserEntity } from "database/entity/entities";
-import { setLoadingState, setErrorState } from "app/rootSlice";
+import { setLoadingState, setErrorState } from "reduxjs/rootSlice";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import message from "common/messages";

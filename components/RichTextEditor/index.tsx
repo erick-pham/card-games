@@ -1,7 +1,6 @@
 import React, { useMemo, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import "components/RichTextEditor/RichTextEditor.css";
 
 const Quill = ReactQuill.Quill;
 var Font = Quill.import("formats/font");

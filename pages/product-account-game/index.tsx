@@ -26,7 +26,7 @@ import {
   styled,
 } from "@mui/material";
 import UnitOfWork from "database/unit-of-work";
-import { setErrorState, setLoadingState } from "app/rootSlice";
+import { setErrorState, setLoadingState } from "reduxjs/rootSlice";
 import message from "common/messages";
 import MainLayout from "components/MainLayout";
 import { PRODUCT_STATUS } from "@common/constants";
