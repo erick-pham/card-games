@@ -97,11 +97,13 @@ const ProductDetail = ({
         rel="noopener noreferrer"
         target="_blank"
       >
-        <CardMedia
-          component="img"
-          image={productItem?.thumbnail}
-          alt="alt"
-        ></CardMedia>
+        {productItem?.thumbnail && (
+          <CardMedia
+            component="img"
+            image={productItem?.thumbnail}
+            alt="alt"
+          ></CardMedia>
+        )}
       </NextLinkComposed>
       <div
         dangerouslySetInnerHTML={{ __html: productItem?.longDescription || "" }}
