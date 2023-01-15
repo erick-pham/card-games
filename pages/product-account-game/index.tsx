@@ -1,12 +1,13 @@
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, KeyboardEvent } from "react";
 import { useDispatch } from "react-redux";
 import numeral from "numeral";
 import {
   Button,
   Container,
   Typography,
+  TextField,
   Box,
   Stack,
   Grid,
@@ -161,7 +162,7 @@ const AccountGamePage = ({
   const [queryString, setQueryString] = useState({
     limit: Number(router.query.limit || DEFAULT_PANIGATION.limit),
     page: Number(router.query.page || DEFAULT_PANIGATION.page),
-    keyword: "",
+    keyword: String(router.query.keyword || ""),
     game: String(router.query.game || "all"),
     orderBy: String(router.query.orderBy || DEFAULT_ORDER_BY),
     priceLow: String(
@@ -171,6 +172,8 @@ const AccountGamePage = ({
       router.query.priceHigh || DEFAULT_PRICE_RANGE.split(",")[1]
     ),
   });
+
+  const [keyword, setKeyword] = useState(String(router.query.keyword || ""));
 
   const [productData, setProductData] = useState<ProductDataType>();
 
@@ -327,39 +330,67 @@ const AccountGamePage = ({
       query: { ...router.query, priceLow: lowAmount, priceHigh: highAmount },
     });
   };
+
+  const handleEnterSearch = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      setQueryString({
+        ...queryString,
+        keyword: keyword,
+      });
+      router.replace({
+        query: { ...router.query, keyword: keyword },
+      });
+    }
+  };
+
   return (
     <Container style={{ marginTop: 10 }}>
       <StyledMainBox>
         <Typography variant="subtitle1">Bộ Lọc</Typography>
-        <Stack direction="row" mt={2} spacing={2}>
-          {currentCategories.map((cat) => (
-            <Button
-              variant="contained"
-              key={cat.id}
-              onClick={() => changeCategory(cat.id)}
-              size={"small"}
-              color={cat.active == true ? "secondary" : "info"}
-              sx={{ padding: 1 }}
-            >
-              {cat.name}
-            </Button>
-          ))}
-        </Stack>
-
-        <Stack sx={{ width: 300 }} mt={2}>
-          <FormControl variant="standard" size="small">
-            <FormLabel>Khoảng giá</FormLabel>
-            <Slider
-              step={20}
-              getAriaLabel={() => "Price Range"}
-              value={sliderValue}
-              onChange={handleChangeSlider}
-              valueLabelDisplay="off"
-              disableSwap
-              marks={DEFAULT_PRICE_RANGES}
-            />
-          </FormControl>
-        </Stack>
+        <Grid container spacing={5}>
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+            <Stack direction="row" mt={2} spacing={2}>
+              {currentCategories.map((cat) => (
+                <Button
+                  variant="contained"
+                  key={cat.id}
+                  onClick={() => changeCategory(cat.id)}
+                  size={"small"}
+                  color={cat.active == true ? "secondary" : "info"}
+                  sx={{ padding: 1 }}
+                >
+                  {cat.name}
+                </Button>
+              ))}
+            </Stack>
+          </Grid>
+          <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+            <FormControl variant="standard" fullWidth>
+              <FormLabel>Khoảng giá</FormLabel>
+              <Slider
+                step={20}
+                getAriaLabel={() => "Price Range"}
+                value={sliderValue}
+                onChange={handleChangeSlider}
+                valueLabelDisplay="off"
+                disableSwap
+                marks={DEFAULT_PRICE_RANGES}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
+            <FormControl variant="standard" fullWidth>
+              <FormLabel>Tìm kiếm</FormLabel>
+              <TextField
+                variant="standard"
+                onChange={(e) => setKeyword(e.target.value)}
+                onKeyDown={handleEnterSearch}
+                value={keyword}
+                placeholder={"Tên nhân vật"}
+              />
+            </FormControl>
+          </Grid>
+        </Grid>
       </StyledMainBox>
 
       <StyledMainBox>

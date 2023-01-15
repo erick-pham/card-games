@@ -10,6 +10,7 @@ import {
   Between,
   In,
   LessThanOrEqual,
+  ILike,
 } from "typeorm";
 import ProductItemEntity from "@database/entity/product_item";
 import _ from "lodash";
@@ -28,6 +29,11 @@ export default async function handler(
         status: PRODUCT_ITEM_STATUS.SELLING,
       } as any;
       let order = {} as any;
+
+      // Handle query params search by keyword
+      if (req.query.keyword) {
+        where.name = ILike(`%${req.query.keyword}%`);
+      }
 
       // Handle query params - Where
       if (req.query.price_gte && req.query.price_lte) {

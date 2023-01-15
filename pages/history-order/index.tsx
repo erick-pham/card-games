@@ -129,7 +129,7 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
           </Typography>
           <Typography
             gutterBottom
-            variant="h6"
+            variant="h5"
             color="error.main"
             sx={{ fontStyle: "italic", mt: 4 }}
           >
@@ -145,12 +145,12 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
           </Typography>
           <Typography
             gutterBottom
-            variant="h6"
+            variant="h5"
             color="info.main"
             sx={{ fontStyle: "italic" }}
           >
             Thanh toán bằng card điện thoại thì liên hệ fanpage để gạch thẻ. Phí
-            gạch thẻ 100k card = 80k ATm
+            gạch thẻ 100k card = 80k ATM
           </Typography>
           <Typography
             variant="h6"
