@@ -27,6 +27,9 @@ export default class OrderEntity extends AppBaseEntity {
   @Column()
   amount!: number;
 
+  @Column()
+  originalPrice!: number;
+
   @Column({ length: 1000, nullable: true })
   description!: string;
 

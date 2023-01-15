@@ -88,7 +88,7 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
                 Đặc điểm: {orderData?.productItem.description}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Chi tiết sản phẩm:{" "}
+                Chi tiết:{" "}
                 {orderData?.productItem.type === "CARD_GAME" && (
                   <Link
                     href={`product-card-game?game=${orderData?.productItem.productId}&itemId=${orderData?.productItem.id}`}
@@ -111,7 +111,7 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
               >
                 Giá:{" "}
                 {orderData
-                  ? `${numeral(orderData?.productItem?.price).format("0,0")} ${
+                  ? `${numeral(orderData?.amount).format("0,0")} ${
                       orderData?.productItem?.currency
                     }`
                   : ""}
@@ -128,6 +128,7 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
             hàng ở trên.
           </Typography>
           <Typography
+            gutterBottom
             variant="h6"
             color="error.main"
             sx={{ fontStyle: "italic", mt: 4 }}
@@ -141,6 +142,15 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
               033 983 9409
             </NextLinkComposed>{" "}
             ngay sau khi chuyển khoản để giao nhận tài khoản. Xin Cảm ơn!
+          </Typography>
+          <Typography
+            gutterBottom
+            variant="h6"
+            color="info.main"
+            sx={{ fontStyle: "italic" }}
+          >
+            Thanh toán bằng card điện thoại thì liên hệ fanpage để gạch thẻ. Phí
+            gạch thẻ 100k card = 80k ATm
           </Typography>
           <Typography
             variant="h6"

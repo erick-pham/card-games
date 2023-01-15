@@ -6,6 +6,7 @@ import UnitOfWork from "database/unit-of-work";
 import OrderEntity from "database/entity/order";
 import { plainToInstance } from "class-transformer";
 import { PRODUCT_ITEM_STATUS } from "common/constants";
+import checkValidSalePrice from "@utils/check-valid-sale-price";
 interface OrderRequestBody {
   productItemId: string;
   email: string;
@@ -53,6 +54,11 @@ export default async function handler(
         userId: session?.userId || null,
         amount: item.price,
       });
+
+      if (checkValidSalePrice(item.salePrice, item.salePriceEndDate)) {
+        orderEntity.amount = item.salePrice;
+        orderEntity.originalPrice = item.price;
+      }
 
       const data = await uow.OrderRepository.save(orderEntity);
 
