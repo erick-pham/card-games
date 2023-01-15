@@ -16,11 +16,7 @@ import {
 } from "@common/constants";
 import NextLinkComposed from "components/NextLinkComposed";
 
-const ProductDetail = ({
-  productItem,
-}: {
-  productItem: ProductItemType | undefined;
-}) => {
+const ProductDetail = ({ productItem }: { productItem: ProductItemType }) => {
   const isItemSold = productItem?.status === PRODUCT_ITEM_STATUS.SOLD;
   return (
     <>
