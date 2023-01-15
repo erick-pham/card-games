@@ -16,7 +16,11 @@ import {
 } from "@common/constants";
 import NextLinkComposed from "components/NextLinkComposed";
 
-const ProductDetail = ({ productItem }: { productItem: ProductItemType }) => {
+const ProductDetail = ({
+  productItem,
+}: {
+  productItem: ProductItemType | undefined;
+}) => {
   const isItemSold = productItem?.status === PRODUCT_ITEM_STATUS.SOLD;
   return (
     <>
@@ -44,7 +48,7 @@ const ProductDetail = ({ productItem }: { productItem: ProductItemType }) => {
       </Stack>
       <Stack direction="row" alignItems="center" gap={1}>
         <PriceCheckIcon />
-        {productItem?.isSale ? (
+        {productItem?.isSale && productItem?.salePrice ? (
           <>
             <Typography
               variant="h6"
@@ -111,9 +115,9 @@ export type ProductItemType = {
   name: string;
   referenceNumber: string;
   price: number | 0;
-  isSale: boolean;
-  salePrice: number | 0;
-  salePriceEndDate: Date;
+  isSale?: boolean;
+  salePrice?: number;
+  salePriceEndDate?: Date;
   currency: string;
   description: string;
   longDescription: string;
