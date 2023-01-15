@@ -11,6 +11,7 @@ export default class MyDocument extends Document {
         <Head>
           {/* PWA primary color */}
           <link rel="manifest" href="/manifest.json" />
+          <link rel="apple-touch-icon" href="/icons/icon-128x128.png"></link>
           <meta name="theme-color" content={theme.palette.primary.main} />
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="emotion-insertion-point" content="" />
