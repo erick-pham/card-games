@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'developmenta'
+})
+
+module.exports = withPWA({
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
@@ -9,6 +14,4 @@ const nextConfig = {
     // formats: ['image/avif', 'image/webp'],
     domains: ['res.cloudinary.com', 'loremflickr.com', 'i.imgur.com'],
   },
-}
-
-module.exports = nextConfig
+})

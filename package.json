@@ -24,6 +24,7 @@
     "class-transformer": "^0.5.1",
     "next": "^13.0.6",
     "next-auth": "^4.10.3",
+    "next-pwa": "^5.6.0",
     "next-redux-wrapper": "^7.0.5",
     "numeral": "^2.0.6",
     "pg": "^8.8.0",

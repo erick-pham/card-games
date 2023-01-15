@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "../styles/globals.css";
+import Head from "next/head";
 import { Router, useRouter } from "next/router";
 import { SessionProvider, useSession } from "next-auth/react";
 import { Alert, Snackbar } from "@mui/material";
@@ -138,6 +139,12 @@ function MyApp({
           {error.message}
         </Alert>
       </Snackbar>
+      <Head>
+        <meta
+          name="viewport"
+          content="initial-scale=1, width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no"
+        />
+      </Head>
       <CacheProvider value={emotionCache}>
         <ThemeProvider theme={themeMode === "dark" ? themeDark : themeLight}>
           <CssBaseline />
