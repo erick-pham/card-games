@@ -16,7 +16,7 @@ import {
 
 import { setErrorState, setLoadingState } from "app/rootSlice";
 import message from "common/messages";
-import ProductItemEntity from "@database/entity/product_item";
+import { ProductItemType } from "pages/product-account-game";
 import { getSessionUserInfo } from "@utils/get-session-user";
 import { ajvResolver } from "validator/ajvResolver";
 import { SubmitAccountOrderValidation } from "validator/validationSchema/client-orders";
@@ -29,6 +29,7 @@ import MainLayout from "components/MainLayout";
 import StyledMainBox from "components/CustomStyledBox";
 
 import ProductDetail from "components/ProductDetail";
+import checkValidSalePrice from "@utils/check-valid-sale-price";
 
 type SubmitAccountOrderType = {
   productItemId: string;
@@ -41,7 +42,7 @@ type SubmitAccountOrderType = {
 const AccountGameDetailPage = ({
   productItem,
 }: {
-  productItem: ProductItemEntity;
+  productItem: ProductItemType;
 }) => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
@@ -258,7 +259,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         },
       });
 
-      const productItemData = JSON.parse(JSON.stringify(data));
+      let productItemData = JSON.parse(JSON.stringify(data));
+
+      if (
+        checkValidSalePrice(
+          productItemData.salePrice,
+          productItemData.salePriceEndDate
+        )
+      ) {
+        productItemData.isSale = true;
+      } else {
+        productItemData.isSale = false;
+      }
       return {
         props: { productItem: productItemData },
       };

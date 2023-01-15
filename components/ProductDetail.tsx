@@ -48,11 +48,40 @@ const ProductDetail = ({
       </Stack>
       <Stack direction="row" alignItems="center" gap={1}>
         <PriceCheckIcon />
-        <Typography variant="h6" color="text.primaryRed" fontWeight={800}>
-          {`${numeral(productItem?.price).format("0,0")} ${
-            productItem?.currency || ""
-          }`}
-        </Typography>
+        {productItem?.isSale ? (
+          <>
+            <Typography
+              variant="h6"
+              color={"text.primaryRed"}
+              style={{ fontWeight: 800 }}
+            >
+              {numeral(productItem?.salePrice).format("0,0[.]00đ") +
+                " " +
+                productItem?.currency}
+            </Typography>
+            <Typography variant="h6" color={"text.primaryRed"}>
+              {numeral(
+                (productItem?.salePrice - productItem?.price) /
+                  productItem?.price
+              ).format("%")}
+            </Typography>
+            <Typography
+              variant="h6"
+              color={"text.primary"}
+              style={{ textDecoration: "line-through", fontStyle: "normal" }}
+            >
+              {numeral(productItem?.price).format("0,0[.]00đ") +
+                " " +
+                productItem?.currency}
+            </Typography>
+          </>
+        ) : (
+          <Typography variant="h6" color="text.primaryRed" fontWeight={800}>
+            {`${numeral(productItem?.price).format("0,0")} ${
+              productItem?.currency || ""
+            }`}
+          </Typography>
+        )}
       </Stack>
       <Stack direction="row" alignItems="center" gap={1}>
         <AssignmentIcon />
@@ -85,7 +114,10 @@ export type ProductItemType = {
   id: string;
   name: string;
   referenceNumber: string;
-  price: number | null;
+  price: number | 0;
+  isSale: boolean;
+  salePrice: number | 0;
+  salePriceEndDate: Date;
   currency: string;
   description: string;
   longDescription: string;

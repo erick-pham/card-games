@@ -13,6 +13,7 @@ import {
 } from "typeorm";
 import ProductItemEntity from "@database/entity/product_item";
 import _ from "lodash";
+import checkValidSalePrice from "@utils/check-valid-sale-price";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -73,7 +74,14 @@ export default async function handler(
         skip: skip,
       });
 
-      const result = paginateResponse(data, page, take);
+      let result = paginateResponse(data, page, take);
+      result.data.forEach((item) => {
+        if (checkValidSalePrice(item.salePrice, item.salePriceEndDate)) {
+          item.isSale = true;
+        } else {
+          item.isSale = false;
+        }
+      });
       res.status(200).json(result);
     } else {
       return res.status(405).json({

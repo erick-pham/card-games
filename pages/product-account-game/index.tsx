@@ -24,7 +24,6 @@ import {
   Slider,
   styled,
 } from "@mui/material";
-import ProductItemEntity from "@database/entity/product_item";
 import UnitOfWork from "database/unit-of-work";
 import { setErrorState, setLoadingState } from "app/rootSlice";
 import message from "common/messages";
@@ -35,7 +34,6 @@ import { useRouter } from "next/dist/client/router";
 import { format as datefnsFormat, formatRelative } from "date-fns";
 import { vi } from "date-fns/locale";
 import { StyledMainBox } from "components/CustomStyledBox";
-import checkValidSalePrice from "@utils/check-valid-sale-price";
 
 type ProductCatType = {
   id: string;
@@ -43,8 +41,24 @@ type ProductCatType = {
   name: string;
 };
 
+export type ProductItemType = {
+  id: string;
+  name: string;
+  price: number;
+  salePrice: number;
+  salePriceEndDate: Date;
+  isSale: boolean;
+  status: string;
+  currency: string;
+  thumbnail: string;
+  updatedAt: Date;
+  description: string;
+  longDescription: string;
+  referenceNumber: string;
+};
+
 type ProductDataType = {
-  data: ProductItemEntity[];
+  data: ProductItemType[];
   limit: number;
   count: number;
   currentPage: number;
@@ -409,7 +423,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   // backgroundColor: "rgba(0, 0, 0, 0.40)",
 }));
 
-const RecipeReviewCard = ({ product }: { product: ProductItemEntity }) => {
+const RecipeReviewCard = ({ product }: { product: ProductItemType }) => {
   return (
     <StyledCard>
       <Link href={`/product-account-game/${product.id}/details`}>
@@ -443,7 +457,7 @@ const RecipeReviewCard = ({ product }: { product: ProductItemEntity }) => {
       </CardContent>
 
       <CardContent sx={{ p: 1 }}>
-        {checkValidSalePrice(product.salePrice, product.salePriceEndDate) ? (
+        {product.isSale ? (
           <Box>
             <Stack direction="row" alignItems="center" gap={1}>
               <Typography
