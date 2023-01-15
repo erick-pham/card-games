@@ -29,6 +29,12 @@ export default class ProductItemEntity extends AppBaseEntity {
   @Column()
   price!: number;
 
+  @Column({ nullable: true })
+  salePrice!: number;
+
+  @Column({ nullable: true, type: "timestamptz" })
+  salePriceEndDate!: Date;
+
   @Column({ length: 3 })
   currency!: string;
 

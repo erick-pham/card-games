@@ -53,6 +53,8 @@ export const ProductDetailsModal = ({
       name: productEdit?.name || "",
       type: productEdit?.type || "",
       price: productEdit?.price || "",
+      salePrice: productEdit?.salePrice || "",
+      salePriceEndDate: productEdit?.salePriceEndDate?.slice(0, 10) || "",
       currency: productEdit?.currency || "",
       description: productEdit?.description || "",
       thumbnail: productEdit?.thumbnail || "",
@@ -125,7 +127,6 @@ export const ProductDetailsModal = ({
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                 <TextField
-                  id="outlined-multiline-flexible"
                   label="Type"
                   select
                   onChange={onChange}
@@ -150,7 +151,6 @@ export const ProductDetailsModal = ({
               <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                 <TextField
                   {...field}
-                  id="outlined-multiline-flexible"
                   label="Name"
                   error={error ? true : false}
                   helperText={error?.message}
@@ -167,12 +167,47 @@ export const ProductDetailsModal = ({
               <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                 <TextField
                   {...field}
-                  id="outlined-multiline-flexible"
                   label="Price"
                   type="number"
                   error={error ? true : false}
                   helperText={error?.message}
                   inputProps={{ min: 1000 }}
+                />
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            name="salePrice"
+            control={control}
+            defaultValue={productEdit?.salePrice}
+            render={({ field, fieldState: { error } }) => (
+              <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                <TextField
+                  {...field}
+                  label="Sale Price"
+                  type="number"
+                  error={error ? true : false}
+                  helperText={error?.message}
+                  inputProps={{ min: 1000 }}
+                />
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            name="salePriceEndDate"
+            control={control}
+            defaultValue={productEdit?.salePriceEndDate}
+            render={({ field, fieldState: { error } }) => (
+              <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                <TextField
+                  {...field}
+                  label="Sale Price end date"
+                  type="date"
+                  error={error ? true : false}
+                  helperText={error?.message}
+                  // inputProps={{ min: 1000 }}
                 />
               </FormControl>
             )}
@@ -185,7 +220,6 @@ export const ProductDetailsModal = ({
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                 <TextField
-                  id="outlined-multiline-flexible"
                   label="Currency"
                   select
                   onChange={onChange}
@@ -211,7 +245,6 @@ export const ProductDetailsModal = ({
               <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                 <TextField
                   {...field}
-                  id="outlined-multiline-flexible"
                   label="Thumbnail"
                   error={error ? true : false}
                   helperText={error?.message}
@@ -228,7 +261,6 @@ export const ProductDetailsModal = ({
               <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                 <TextField
                   {...field}
-                  id="outlined-multiline-flexible"
                   label="Description"
                   multiline
                   error={error ? true : false}
@@ -245,7 +277,6 @@ export const ProductDetailsModal = ({
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                 <TextField
-                  id="outlined-multiline-flexible"
                   label="Status"
                   select
                   onChange={onChange}
@@ -271,7 +302,6 @@ export const ProductDetailsModal = ({
               <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                 {/* <TextField
                   {...field}
-                  id="outlined-multiline-flexible"
                   label="Description"
                   multiline
                   error={error ? true : false}

@@ -35,6 +35,7 @@ import { useRouter } from "next/dist/client/router";
 import { format as datefnsFormat, formatRelative } from "date-fns";
 import { vi } from "date-fns/locale";
 import { StyledMainBox } from "components/CustomStyledBox";
+import checkValidSalePrice from "@utils/check-valid-sale-price";
 
 type ProductCatType = {
   id: string;
@@ -377,7 +378,7 @@ const AccountGamePage = ({
           {productData &&
             productData?.data.map((item, index) => {
               return (
-                <Grid item xs={12} sm={6} md={4} lg={3} xl={3} key={index}>
+                <Grid item xs={12} sm={6} md={6} lg={4} xl={4} key={index}>
                   <RecipeReviewCard product={item}></RecipeReviewCard>
                 </Grid>
               );
@@ -442,9 +443,57 @@ const RecipeReviewCard = ({ product }: { product: ProductItemEntity }) => {
       </CardContent>
 
       <CardContent sx={{ p: 1 }}>
-        <Typography variant="h6">
-          {numeral(product.price).format("0,0[.]00đ") + " " + product.currency}
-        </Typography>
+        {checkValidSalePrice(product.salePrice, product.salePriceEndDate) ? (
+          <Box>
+            <Stack direction="row" alignItems="center" gap={1}>
+              <Typography
+                variant="h6"
+                color={"text.primaryRed"}
+                style={{ fontWeight: 800 }}
+              >
+                {numeral(product.salePrice).format("0,0[.]00đ") +
+                  " " +
+                  product.currency}
+              </Typography>
+              <Typography variant="h6" color={"text.primaryRed"}>
+                {numeral(
+                  (product.salePrice - product.price) / product.price
+                ).format("%")}
+              </Typography>
+              <Typography
+                variant="h6"
+                color={"text.primary"}
+                style={{ textDecoration: "line-through", fontStyle: "normal" }}
+              >
+                {numeral(product.price).format("0,0[.]00đ") +
+                  " " +
+                  product.currency}
+              </Typography>
+            </Stack>
+            <Typography
+              variant="caption"
+              style={{
+                fontStyle: "italic",
+              }}
+            >
+              KM đến{" "}
+              {product
+                ? datefnsFormat(
+                    new Date(product.salePriceEndDate),
+                    "dd-MM-yyyy"
+                  )
+                : ""}
+            </Typography>
+          </Box>
+        ) : (
+          <Box>
+            <Typography variant="h6" color={"text.primary"}>
+              {numeral(product.price).format("0,0[.]00đ") +
+                " " +
+                product.currency}
+            </Typography>
+          </Box>
+        )}
       </CardContent>
 
       <CardActions>

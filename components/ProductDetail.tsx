@@ -57,7 +57,7 @@ const ProductDetail = ({
       <Stack direction="row" alignItems="center" gap={1}>
         <AssignmentIcon />
         <Typography variant="subtitle1" color="text.primary">
-          Mô tả sản phẩm
+          Đặc điểm
         </Typography>
       </Stack>
       <Typography variant="body1" color="text.primary">

@@ -16,6 +16,8 @@ export type ProductItem = {
   name: string;
   status: string;
   price: number;
+  salePrice: number;
+  salePriceEndDate: string;
   description: string;
   longDescription: string;
   thumbnail: string;
