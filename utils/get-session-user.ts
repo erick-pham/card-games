@@ -6,6 +6,7 @@ export type SessionUser = {
   image?: string | null | undefined;
   phoneNumber?: string | null | undefined;
   isAdmin?: boolean;
+  isVendor?: boolean;
 };
 
 export const getSessionUserInfo = (session: any) => {
@@ -18,6 +19,7 @@ export const getSessionUserInfo = (session: any) => {
     lastName: session?.user?.name as string,
     phoneNumber: session?.userPhoneNumber as string,
     isAdmin: session?.userRole === "Admin" ? true : false,
+    isVendor: session?.userRole === "Vendor" ? true : false,
   };
 
   return userInfo;

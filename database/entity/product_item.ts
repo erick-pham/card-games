@@ -61,6 +61,12 @@ export default class ProductItemEntity extends AppBaseEntity {
   @Column({ nullable: false })
   productId!: string;
 
+  @Column({ nullable: false })
+  createdBy!: string;
+
+  @Column({ nullable: false })
+  updatedBy!: string;
+
   @CreateDateColumn({ type: "timestamptz" })
   createdAt!: Date;
 

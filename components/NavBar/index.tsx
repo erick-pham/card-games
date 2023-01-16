@@ -92,9 +92,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
   color: "#fff",
 }));
 
-const settings = ["Profile", "Logout"];
-const settingsHrefs = ["profile", "/"];
-
 const ResponsiveAppBar = () => {
   const { data: session } = useSession();
   const userInfo = getSessionUserInfo(session);
@@ -102,9 +99,17 @@ const ResponsiveAppBar = () => {
   let pages = ["Mua tài khoản game", "Nạp game"];
   let pageHrefs = ["/product-account-game", "/product-card-game"];
 
+  let settings = ["Profile", "Logout"];
+  let settingsHrefs = ["profile", "/"];
+
   if (userInfo?.isAdmin) {
-    pages.push("Admin");
-    pageHrefs.push("/admin");
+    settings = ["Admin"].concat(settings);
+    settingsHrefs = ["/admin"].concat(settingsHrefs);
+  }
+
+  if (userInfo?.isVendor) {
+    settings = ["Vendor Dashboard"].concat(settings);
+    settingsHrefs = ["vendor"].concat(settingsHrefs);
   }
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(

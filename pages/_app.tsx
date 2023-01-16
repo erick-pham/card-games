@@ -174,17 +174,22 @@ function Auth({ children, auth }: { children: any; auth: any }) {
     // },
   });
 
+  if (auth.required !== true) {
+    return children;
+  }
+
   if (status === "loading") {
     return <LinearProgress></LinearProgress>;
-  }
-
-  if (status === "authenticated") {
-    if (auth.role && auth.role !== session.userRole) {
-      router.push("/access-denied");
+  } else if (status === "authenticated") {
+    if (auth.role && auth.role === session.userRole) {
+      return children;
     }
+    router.push("/access-denied");
+  } else if (status === "unauthenticated") {
+    router.push("/access-denied");
+  } else {
+    return null;
   }
-
-  return children;
 }
 
 export default wrapper.withRedux(MyApp);

@@ -24,7 +24,7 @@ declare module "next-auth" {
     expires: string;
     user: {
       email: string | null | undefined;
-      id: number;
+      id: string;
       name: string | null | undefined;
       role: string | null | undefined;
       image: string | null | undefined;
