@@ -522,7 +522,7 @@ const RecipeReviewCard = ({ product }: { product: ProductItemType }) => {
               }}
             >
               KM đến{" "}
-              {product
+              {product?.salePriceEndDate
                 ? datefnsFormat(
                     new Date(product.salePriceEndDate),
                     "dd-MM-yyyy"

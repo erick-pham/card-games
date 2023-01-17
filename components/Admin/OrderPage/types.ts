@@ -21,6 +21,7 @@ export type ProductItem = {
   description: string;
   longDescription: string;
   thumbnail: string;
+  user: User;
 };
 
 export type OrderDetails = {

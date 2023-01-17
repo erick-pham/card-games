@@ -70,6 +70,7 @@ export const CustomerListResults = ({
               <TableCell>Address</TableCell>
               <TableCell>Phone</TableCell>
               <TableCell>Registration date</TableCell>
+              <TableCell>Role</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -95,7 +96,7 @@ export const CustomerListResults = ({
                       }}
                     >
                       <Avatar src={customer?.image || ""} sx={{ mr: 2 }}>
-                        AP
+                        {customer.name}
                       </Avatar>
                       <Typography color="textPrimary" variant="body1">
                         {customer.name}
@@ -111,6 +112,7 @@ export const CustomerListResults = ({
                       ? format(new Date(customer.createdAt), "Pp")
                       : ""}
                   </TableCell>
+                  <TableCell>{customer.role}</TableCell>
                 </TableRow>
               ))}
           </TableBody>

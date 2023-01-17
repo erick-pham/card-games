@@ -6,12 +6,13 @@ import {
   UpdateDateColumn,
   ManyToOne,
   BeforeInsert,
+  JoinColumn,
 } from "typeorm";
 import AppBaseEntity from "./base";
 import { generateCode } from "utils/generate-code";
 import ProductEntity from "./product";
 import { PRODUCT_ITEM_STATUS } from "common/constants";
-
+import { UserEntity } from "./entities";
 @Entity({ name: "product_items" })
 export default class ProductItemEntity extends AppBaseEntity {
   @PrimaryGeneratedColumn("uuid")
@@ -61,7 +62,7 @@ export default class ProductItemEntity extends AppBaseEntity {
   @Column({ nullable: false })
   productId!: string;
 
-  @Column({ nullable: false })
+  @Column({ type: "uuid", nullable: true })
   createdBy!: string;
 
   @Column({ nullable: false })
@@ -72,6 +73,12 @@ export default class ProductItemEntity extends AppBaseEntity {
 
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date;
+
+  @ManyToOne(() => UserEntity, {
+    createForeignKeyConstraints: false,
+  })
+  @JoinColumn({ name: "createdBy" })
+  user!: UserEntity;
 
   @BeforeInsert()
   beforeInsertActions() {

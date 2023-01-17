@@ -48,6 +48,7 @@ const AccountGameDetailPage = ({
   const { data: session } = useSession();
   let userInfo = getSessionUserInfo(session);
   const isItemSold = productItem?.status === PRODUCT_ITEM_STATUS.SOLD;
+  const isItemUnAvailable = productItem?.status !== PRODUCT_ITEM_STATUS.SELLING;
   let defaultValues = {
     productItemId: productItem?.id || "",
     contactName: userInfo?.name || "",
@@ -144,7 +145,7 @@ const AccountGameDetailPage = ({
                         label="Họ Tên"
                         error={error ? true : false}
                         helperText={error?.message}
-                        disabled={isItemSold}
+                        disabled={isItemUnAvailable}
                       />
                     </FormControl>
                   )}
@@ -160,7 +161,7 @@ const AccountGameDetailPage = ({
                         label="Email"
                         error={error ? true : false}
                         helperText={error?.message}
-                        disabled={isItemSold}
+                        disabled={isItemUnAvailable}
                       />
                     </FormControl>
                   )}
@@ -180,7 +181,7 @@ const AccountGameDetailPage = ({
                         value={value}
                         error={error ? true : false}
                         helperText={error?.message}
-                        disabled={isItemSold}
+                        disabled={isItemUnAvailable}
                       ></TextField>
                     </FormControl>
                   )}
@@ -197,7 +198,7 @@ const AccountGameDetailPage = ({
                         label="Ghi chú"
                         error={error ? true : false}
                         helperText={error?.message}
-                        disabled={isItemSold}
+                        disabled={isItemUnAvailable}
                       />
                     </FormControl>
                   )}
@@ -218,9 +219,13 @@ const AccountGameDetailPage = ({
                       textAlign: "center",
                     }}
                     onClick={handleSubmit(onSubmit)}
-                    disabled={isItemSold}
+                    disabled={isItemUnAvailable}
                   >
-                    {isItemSold ? "Đã bán" : "Mua ngay"}
+                    {isItemSold
+                      ? "Đã bán"
+                      : isItemUnAvailable
+                      ? "Chưa sẵng sàng"
+                      : "Mua ngay"}
                   </Button>
                   <FormHelperText>
                     {!isEmpty(errors) ? "Thông tin không lợp lệ!" : ""}

@@ -25,9 +25,9 @@ import numeral from "numeral";
 import ListToolbarSearch from "components/Admin/ListToolbarSearch";
 import { DashboardLayout } from "./components/dashboard-layout";
 import { ProductDetailsModal } from "./components/product-details/product-details-modal";
-import { setErrorState, setLoadingState } from "../../reduxjs/rootSlice";
+import { setErrorState, setLoadingState } from "reduxjs/rootSlice";
 import message from "common/messages";
-
+import { format as datefnsFormat } from "date-fns";
 import {
   PRODUCT_ITEM_STATUS_LABEL,
   GetLabelText,
@@ -56,9 +56,6 @@ const ProductItemsPage = () => {
   const [productItemData, setProductItemData] =
     useState<ProductItemListAPIReponse>();
 
-  const [selectedProduct, setSelectedProduct] = useState<
-    Product | undefined | null
-  >();
   const [reloadPage, setReloadPage] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
@@ -150,7 +147,6 @@ const ProductItemsPage = () => {
   const handleChangeActiveProduct = (event: { target: { value: string } }) => {
     const p = products.find((p) => p.id === event.target.value);
     setSelectedProductId(p?.id || "");
-    setSelectedProduct(p);
   };
 
   // Modal Add/Edit Product
@@ -325,43 +321,51 @@ const ProductItemTable = ({
           <Table>
             <TableHead>
               <TableRow>
+                <StyledTableCell width={"10%"}>Vendor</StyledTableCell>
+                <StyledTableCell width={"10%"}>Type</StyledTableCell>
                 <StyledTableCell width={"10%"}>Name</StyledTableCell>
-                <StyledTableCell width={"10%"} align="right">
-                  Type
-                </StyledTableCell>
-                <StyledTableCell width={"10%"} align="right">
-                  Price
-                </StyledTableCell>
-                <StyledTableCell width={"5%"} align="right">
-                  Status
-                </StyledTableCell>
-                <StyledTableCell width={"30%"} align="right">
-                  Description
-                </StyledTableCell>
-                <StyledTableCell width={"30%"} align="right">
+                <StyledTableCell width={"10%"}>Price</StyledTableCell>
+                <StyledTableCell width={"10%"}>Sale Price</StyledTableCell>
+                <StyledTableCell width={"10%"}>Sale End Date</StyledTableCell>
+                <StyledTableCell width={"10%"}>Status</StyledTableCell>
+                <StyledTableCell width={"20%"}>Description</StyledTableCell>
+                {/* <StyledTableCell width={"25%"} align="right">
                   Thumbnail
-                </StyledTableCell>
-                <StyledTableCell width={"5%"} align="right">
-                  Action
-                </StyledTableCell>
+                </StyledTableCell> */}
+
+                <StyledTableCell width={"10%"}>Action</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {productItemData &&
-                productItemData?.data.map((productItem) => (
+                productItemData?.data?.map((productItem) => (
                   <StyledTableRow key={productItem.id}>
-                    <StyledTableCell component="th" scope="row">
-                      {productItem.name}
+                    <StyledTableCell>
+                      {productItem?.user?.email}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell>
                       {GetLabelText(PRODUCT_ITEM_TYPES_LABEL, productItem.type)}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell>{productItem.name}</StyledTableCell>
+                    <StyledTableCell>
                       {numeral(productItem.price).format("0,0") +
                         " " +
                         productItem.currency}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell>
+                      {numeral(productItem.salePrice).format("0,0") +
+                        " " +
+                        productItem.currency}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {productItem?.salePriceEndDate
+                        ? datefnsFormat(
+                            new Date(productItem.salePriceEndDate),
+                            "dd-MM-yyyy"
+                          )
+                        : ""}
+                    </StyledTableCell>
+                    <StyledTableCell>
                       <Chip
                         label={GetLabelText(
                           PRODUCT_ITEM_STATUS_LABEL,
@@ -370,18 +374,30 @@ const ProductItemTable = ({
                         color={StatusColor(productItem.status)}
                       />
                     </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {productItem.description}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell>{productItem.description}</StyledTableCell>
+                    {/* <StyledTableCell align="right">
                       <CardMedia
                         component="img"
                         height="150"
                         image={productItem.thumbnail}
                         alt="alt"
                       />
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
+                    </StyledTableCell> */}
+                    <StyledTableCell>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ margin: 4 }}
+                        onClick={() =>
+                          window.open(
+                            `/product-account-game/${productItem.id}/details`,
+                            "_blank",
+                            "noopener,noreferrer"
+                          )
+                        }
+                      >
+                        Preview
+                      </Button>
                       <Button
                         variant="contained"
                         color="secondary"

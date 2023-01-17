@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { FindOptionsWhere, Like } from "typeorm";
+import { FindOptionsWhere, ILike } from "typeorm";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth/next";
 
@@ -25,9 +25,14 @@ export default async function handler(
   try {
     if (req.method === "GET") {
       const { take, page, skip, keyword } = paginateRequest(req);
-      let where = {
-        name: Like(`%${keyword}%`),
-      };
+      let where = {};
+
+      if (keyword) {
+        where = {
+          name: ILike(`%${keyword}%`),
+          email: ILike(`%${keyword}%`),
+        };
+      }
 
       const data = await uow.UserRepository.findAndCount({
         where: where as FindOptionsWhere<UserEntity>,
@@ -44,6 +49,7 @@ export default async function handler(
           "phoneNumber",
           "address",
           "createdAt",
+          "role",
         ],
       });
 

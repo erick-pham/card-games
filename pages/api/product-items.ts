@@ -59,6 +59,28 @@ export default async function handler(
         order: {
           updatedAt: "DESC",
         },
+        relations: {
+          user: true,
+        },
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          salePrice: true,
+          salePriceEndDate: true,
+          currency: true,
+          type: true,
+          status: true,
+          thumbnail: true,
+          description: true,
+          longDescription: true,
+          createdAt: true,
+          updatedAt: true,
+          user: {
+            email: true,
+            id: true,
+          },
+        },
       });
 
       const result = paginateResponse(data, page, take);
