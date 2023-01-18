@@ -19,10 +19,10 @@ const AccessDenied = () => (
           }}
         >
           <Typography align="center" color="error" variant="h1">
-            403 ACCESS DENIED
+            403: ACCESS DENIED
           </Typography>
           <Typography align="center" color="info.main" variant="h2">
-            Oops, You DO NOT have permission to access this page.
+            Oops! You DO NOT have permission to access this page.
           </Typography>
 
           <NextLink href="/" passHref>

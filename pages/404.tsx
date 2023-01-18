@@ -19,10 +19,10 @@ const NotFoundPage = () => (
           }}
         >
           <Typography align="center" color="error" variant="h1">
-            404 PAGE NOT FOUND
+            404: PAGE NOT FOUND
           </Typography>
           <Typography align="center" color="info.main" variant="h2">
-            Oops, The page you're visiting was NOT FOUND.
+            Oops! The page you are looking for isn’t here.
           </Typography>
 
           <NextLink href="/" passHref>
