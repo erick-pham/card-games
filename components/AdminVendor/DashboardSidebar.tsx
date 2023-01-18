@@ -2,16 +2,12 @@ import { useEffect } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
-import GroupIcon from "@mui/icons-material/Group";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import StackedBarChartIcon from "@mui/icons-material/StackedBarChart";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import { Box, Divider, Drawer, useMediaQuery } from "@mui/material";
-
-import { Logo } from "./Logo";
+// import { Logo } from "./Logo";
+import NextImage from "next/image";
 import { NavItem } from "./NavItem";
 
 const items = [
@@ -66,12 +62,18 @@ export const DashboardSidebar = (props: any) => {
         <div>
           <Box sx={{ p: 3 }}>
             <NextLink href="/" passHref>
-              <Logo
+              {/* <Logo
                 sx={{
                   height: 42,
                   width: 42,
                 }}
-              />
+              /> */}
+              <NextImage
+                alt="logo"
+                src="/static/images/logo.png"
+                height={60}
+                width={80}
+              ></NextImage>
             </NextLink>
           </Box>
           {/* <Box sx={{ px: 2 }}>
