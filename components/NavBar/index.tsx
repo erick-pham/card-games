@@ -108,7 +108,7 @@ const ResponsiveAppBar = () => {
   }
 
   if (userInfo?.isVendor) {
-    settings = ["Vendor Dashboard"].concat(settings);
+    settings = ["Vendor Admin"].concat(settings);
     settingsHrefs = ["vendor"].concat(settingsHrefs);
   }
 

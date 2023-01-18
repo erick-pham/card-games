@@ -78,6 +78,9 @@ export default class OrderEntity extends AppBaseEntity {
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt!: Date;
 
+  @Column({ type: "uuid", nullable: true })
+  sellerId!: string;
+
   @BeforeInsert()
   beforeInsertActions() {
     this.referenceNumber = generateCode(6);

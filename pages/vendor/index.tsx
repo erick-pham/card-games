@@ -1,9 +1,8 @@
 import Head from "next/head";
 import { Box, Container, Grid } from "@mui/material";
 import { Sales } from "components/Admin/Dashboard/Sales";
-import { TotalCustomers } from "components/Admin/Dashboard/TotalCustomers";
+import { TasksProgress } from "components/Admin/Dashboard/TasksProgress";
 import { TotalProfit } from "components/Admin/Dashboard/TotalProfit";
-import { SalesOnProductCat } from "components/Admin/Dashboard/SalesOnProductCat";
 import { DashboardLayout } from "components/AdminVendor/DashboardLayout";
 import { setLoadingState, setErrorState } from "reduxjs/rootSlice";
 import { useDispatch } from "react-redux";
@@ -71,13 +70,18 @@ const Dashboard = () => {
         <Container maxWidth={false}>
           <Grid container spacing={3}>
             <Grid item xl={3} lg={3} sm={6} xs={12}>
+              <TasksProgress
+                totalOrdersInProgress={dashboardData?.totalOrdersInProgress}
+              />
+            </Grid>
+            {/* <Grid item xl={3} lg={3} sm={6} xs={12}>
               <TotalCustomers
                 totalCustomer={dashboardData?.totalCustomer}
                 totalCustomerCurrentMonth={
                   dashboardData?.totalCustomerCurrentMonth
                 }
               />
-            </Grid>
+            </Grid> */}
             <Grid item xl={3} lg={3} sm={6} xs={12}>
               <TotalProfit
                 sx={{ height: "100%" }}
@@ -85,16 +89,16 @@ const Dashboard = () => {
               />
             </Grid>
 
-            <Grid item lg={8} md={12} xl={9} xs={12}>
+            <Grid item lg={12} md={12} xl={12} xs={12}>
               <Sales latestSales={dashboardData?.latestSales || []} />
             </Grid>
-            <Grid item lg={4} md={6} xl={3} xs={12}>
+            {/* <Grid item lg={4} md={6} xl={3} xs={12}>
               <SalesOnProductCat
                 sx={{ height: "100%" }}
                 totalOrderOnAccountGame={dashboardData?.totalOrderOnAccountGame}
                 totalOrderOnCardGame={dashboardData?.totalOrderOnCardGame}
               />
-            </Grid>
+            </Grid> */}
             {/*
             <Grid item lg={4} md={6} xl={3} xs={12}>
               <LatestProducts sx={{ height: "100%" }} />

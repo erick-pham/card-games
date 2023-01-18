@@ -53,6 +53,7 @@ export default async function handler(
         ...input,
         userId: session?.userId || null,
         amount: item.price,
+        sellerId: item.createdBy,
       });
 
       if (checkValidSalePrice(item.salePrice, item.salePriceEndDate)) {

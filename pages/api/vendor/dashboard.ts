@@ -36,30 +36,34 @@ export default async function handler(
         totalOrdersInProgress: 0,
         latestSales: <any>[],
       };
-      return res.status(200).json(result);
-      result.totalCustomer = await uow.UserRepository.count();
-      result.totalCustomerCurrentMonth = await uow.UserRepository.countBy({
-        createdAt: MoreThanOrEqual(startOfMonth(new Date())),
-      });
+      // return res.status(200).json(result);
+      // result.totalCustomer = await uow.UserRepository.count();
+      // result.totalCustomerCurrentMonth = await uow.UserRepository.countBy({
+      //   createdAt: MoreThanOrEqual(startOfMonth(new Date())),
+      // });
 
-      result.totalOrderOnAccountGame = await uow.OrderRepository.countBy({
-        productItem: {
-          type: PRODUCT_ITEM_TYPES.ACCOUNT_GAME,
-        },
-      });
-      result.totalOrderOnCardGame = await uow.OrderRepository.countBy({
-        productItem: {
-          type: PRODUCT_ITEM_TYPES.CARD_GAME,
-        },
-      });
+      // result.totalOrderOnAccountGame = await uow.OrderRepository.countBy({
+      //   productItem: {
+      //     type: PRODUCT_ITEM_TYPES.ACCOUNT_GAME,
+      //   },
+      // });
+      // result.totalOrderOnCardGame = await uow.OrderRepository.countBy({
+      //   productItem: {
+      //     type: PRODUCT_ITEM_TYPES.CARD_GAME,
+      //   },
+      // });
 
       result.totalOrdersInProgress = await uow.OrderRepository.countBy({
         status: ORDER_STATUS.PENDING,
+        sellerId: String(session.userId || ""),
       });
 
       const { totalRevenue } = await uow.OrderRepository.createQueryBuilder()
         .select("SUM(amount)", "totalRevenue")
-        .where("status = :status", { status: ORDER_STATUS.SUCCESS })
+        .where("status = :status", {
+          status: ORDER_STATUS.SUCCESS,
+          sellerId: String(session.userId || ""),
+        })
         .getRawOne();
       result.totalRevenue = totalRevenue ? totalRevenue * 1 : 0;
 
@@ -70,6 +74,7 @@ export default async function handler(
       let latestSalesEntity = await uow.OrderRepository.find({
         where: {
           createdAt: MoreThanOrEqual(end),
+          sellerId: String(session.userId || ""),
         },
         select: ["id", "createdAt"],
       });
