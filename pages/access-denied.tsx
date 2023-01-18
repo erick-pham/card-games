@@ -27,7 +27,6 @@ const AccessDenied = () => (
 
           <NextLink href="/" passHref>
             <Button
-              component="a"
               startIcon={<ArrowBackIcon fontSize="small" />}
               sx={{ mt: 3 }}
               variant="contained"
