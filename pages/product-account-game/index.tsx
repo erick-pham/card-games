@@ -460,13 +460,6 @@ const RecipeReviewCard = ({ product }: { product: ProductItemType }) => {
       <Link
         href={`/product-account-game/${product.id}/details`}
         target={"_blank"}
-        onClick={() =>
-          window.open(
-            `/product-account-game/${product.id}/details`,
-            "_blank",
-            "noopener,noreferrer"
-          )
-        }
       >
         <CardMedia
           component="img"
@@ -555,13 +548,6 @@ const RecipeReviewCard = ({ product }: { product: ProductItemType }) => {
         <Link
           href={`/product-account-game/${product.id}/details`}
           target="_blank"
-          onClick={() =>
-            window.open(
-              `/product-account-game/${product.id}/details`,
-              "_blank",
-              "noopener,noreferrer"
-            )
-          }
         >
           <Button
             variant="contained"
