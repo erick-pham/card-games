@@ -162,6 +162,7 @@ const AccountGameDetailPage = ({
                         error={error ? true : false}
                         helperText={error?.message}
                         disabled={isItemUnAvailable}
+                        type={"email"}
                       />
                     </FormControl>
                   )}
@@ -182,6 +183,7 @@ const AccountGameDetailPage = ({
                         error={error ? true : false}
                         helperText={error?.message}
                         disabled={isItemUnAvailable}
+                        type={"tel"}
                       ></TextField>
                     </FormControl>
                   )}

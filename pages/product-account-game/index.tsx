@@ -457,7 +457,17 @@ const StyledCard = styled(Card)(({ theme }) => ({
 const RecipeReviewCard = ({ product }: { product: ProductItemType }) => {
   return (
     <StyledCard>
-      <Link href={`/product-account-game/${product.id}/details`}>
+      <Link
+        href={`/product-account-game/${product.id}/details`}
+        target={"_blank"}
+        onClick={() =>
+          window.open(
+            `/product-account-game/${product.id}/details`,
+            "_blank",
+            "noopener,noreferrer"
+          )
+        }
+      >
         <CardMedia
           component="img"
           height="194"

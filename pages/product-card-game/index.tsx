@@ -455,7 +455,8 @@ const CardGamePage = ({
                       variant="filled"
                       size="small"
                       error={error ? true : false}
-                      helperText={error?.message}
+                      helperText={error?.message || "MK có thể bỏ trống"}
+                      type={"password"}
                     />
                   </FormControl>
                 )}
@@ -546,6 +547,7 @@ const CardGamePage = ({
                       size="small"
                       error={error ? true : false}
                       helperText={error?.message}
+                      type={"email"}
                     />
                   </FormControl>
                 )}
@@ -567,6 +569,7 @@ const CardGamePage = ({
                       size="small"
                       error={error ? true : false}
                       helperText={error?.message}
+                      type={"tel"}
                     />
                   </FormControl>
                 )}
