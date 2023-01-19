@@ -52,9 +52,9 @@ export const ProductDetailsModal = ({
     reset({
       name: productEdit?.name || "",
       type: productEdit?.type || "",
-      price: productEdit?.price || "",
-      salePrice: productEdit?.salePrice || "",
-      salePriceEndDate: productEdit?.salePriceEndDate?.slice(0, 10) || "",
+      price: productEdit?.price || null,
+      salePrice: productEdit?.salePrice || null,
+      salePriceEndDate: productEdit?.salePriceEndDate?.slice(0, 10) || null,
       currency: productEdit?.currency || "",
       description: productEdit?.description || "",
       thumbnail: productEdit?.thumbnail || "",
