@@ -347,9 +347,9 @@ const CardGamePage = ({
               </Typography>
               <Typography
                 style={{
-                  // backgroundColor: "red",
-                  color: "yellow",
+                  color: "red",
                   fontWeight: "bold",
+                  wordWrap: "break-word",
                 }}
               >
                 https://account.mihoyo.com/#/account/loginDevices

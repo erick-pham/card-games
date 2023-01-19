@@ -552,7 +552,17 @@ const RecipeReviewCard = ({ product }: { product: ProductItemType }) => {
       </CardContent>
 
       <CardActions>
-        <Link href={`/product-account-game/${product.id}/details`}>
+        <Link
+          href={`/product-account-game/${product.id}/details`}
+          target="_blank"
+          onClick={() =>
+            window.open(
+              `/product-account-game/${product.id}/details`,
+              "_blank",
+              "noopener,noreferrer"
+            )
+          }
+        >
           <Button
             variant="contained"
             size="small"
