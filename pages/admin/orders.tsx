@@ -22,9 +22,10 @@ import {
   MenuItem,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+import LaunchIcon from "@mui/icons-material/Launch";
 import { DashboardLayout } from "pages/admin/components/dashboard-layout";
 import { setErrorState, setLoadingState } from "reduxjs/rootSlice";
-
+import NextLinkComposed from "components/NextLinkComposed";
 import message from "@common/messages";
 
 import numeral from "numeral";
@@ -38,7 +39,12 @@ import {
 import OrderDetailsModal from "components/Admin/OrderPage/OrderDetailsModal";
 import OrderDetailsModalChangeStatus from "components/Admin/OrderPage/OrderDetailsModalChangeStatus";
 import { StyledTableCell } from "components/Admin/CustomTable";
-import { ORDER_STATUS_LABEL, StatusColor } from "common/constants";
+import {
+  GetLabelText,
+  ORDER_STATUS_LABEL,
+  PRODUCT_ITEM_TYPES_LABEL,
+  StatusColor,
+} from "common/constants";
 
 const OrderPage = () => {
   const dispatch = useDispatch();
@@ -319,13 +325,14 @@ const OrderListResults = ({
           <Table>
             <TableHead>
               <TableRow>
-                <StyledTableCell>#</StyledTableCell>
+                <StyledTableCell width={"10%"}>#</StyledTableCell>
                 <StyledTableCell>Order Ref</StyledTableCell>
+                <StyledTableCell>Product type</StyledTableCell>
                 <StyledTableCell>Status</StyledTableCell>
                 <StyledTableCell>Amount</StyledTableCell>
                 <StyledTableCell>Contact Name</StyledTableCell>
                 <StyledTableCell>Contact Phone</StyledTableCell>
-                <StyledTableCell>Contact Email</StyledTableCell>
+                {/* <StyledTableCell>Contact Email</StyledTableCell> */}
                 <StyledTableCell sortDirection="desc">
                   <Tooltip enterDelay={300} title="Sort">
                     <TableSortLabel direction="desc">
@@ -351,8 +358,23 @@ const OrderListResults = ({
                         onClick={() => handleClickAction(order.id)}
                       ></InfoIcon>
                     </Tooltip>
+
+                    <Tooltip title="View product">
+                      <NextLinkComposed
+                        target={"_blank"}
+                        href={`/product-account-game/${order.productItemId}/details`}
+                      >
+                        <LaunchIcon></LaunchIcon>
+                      </NextLinkComposed>
+                    </Tooltip>
                   </StyledTableCell>
                   <StyledTableCell>{order?.referenceNumber}</StyledTableCell>
+                  <StyledTableCell>
+                    {GetLabelText(
+                      PRODUCT_ITEM_TYPES_LABEL,
+                      order.productItem?.type
+                    )}
+                  </StyledTableCell>
                   <StyledTableCell
                     onClick={() =>
                       handleClickCellStatus(order.id, order.status)
@@ -368,7 +390,7 @@ const OrderListResults = ({
                   </StyledTableCell>
                   <StyledTableCell>{order?.contactName}</StyledTableCell>
                   <StyledTableCell>{order?.contactPhoneNumber}</StyledTableCell>
-                  <StyledTableCell>{order?.contactEmail}</StyledTableCell>
+                  {/* <StyledTableCell>{order?.contactEmail}</StyledTableCell> */}
 
                   <StyledTableCell>
                     {datefnsFormat(new Date(order.createdAt), "Pp")}

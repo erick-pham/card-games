@@ -45,6 +45,7 @@ export type Order = {
   status: string;
   createdAt: string;
   updatedAt: string;
+  productItemId: string;
   user: User;
   productItem: ProductItem;
   orderDetails: OrderDetails;

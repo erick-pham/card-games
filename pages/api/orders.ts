@@ -48,19 +48,19 @@ export default async function handler(
         where: where,
         take: take,
         skip: skip,
-        // select: {
-        //   user: {
-        //     name: true,
-        //   },
-        //   productItem: {
-        //     name: true,
-        //     type: true,
-        //     price: true,
-        //   },
-        // },
+        select: {
+          //   user: {
+          //     name: true,
+          //   },
+          productItem: {
+            //     name: true,
+            type: true,
+            //     price: true,
+          },
+        },
         relations: {
           // user: true,
-          // productItem: true,
+          productItem: true,
           orderDetails: true,
         },
         order: {
