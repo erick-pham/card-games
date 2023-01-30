@@ -30,15 +30,15 @@ export const ORDER_STATUS = {
 export const ORDER_STATUS_LABEL = [
   {
     value: "PENDING",
-    label: "Pending",
+    label: "Chờ xử lý",
   },
   {
     value: "CANNCEL",
-    label: "Cannceled",
+    label: "Đã hủy",
   },
   {
     value: "SUCCESS",
-    label: "Success",
+    label: "Thành công",
   },
 ];
 

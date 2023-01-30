@@ -7,7 +7,8 @@ import UnitOfWork from "database/unit-of-work";
 import OrderEntity from "database/entity/order";
 import OrderDetailEntity from "database/entity/order-details";
 import { plainToInstance } from "class-transformer";
-
+import { getMailOptionsOrderSubmitted } from "lib/email-template";
+import transporter from "lib/mailer-transporter";
 interface OrderRequestBody {
   accountCharacterName: string;
   accountName: string;
@@ -62,10 +63,11 @@ export default async function handler(
       });
       orderDetailEntity.order = orderEntity;
 
-      const orderDetailData = await uow.OrderDetailsRepository.save(
-        orderDetailEntity
-      );
+      await uow.OrderDetailsRepository.save(orderDetailEntity);
 
+      orderData.productItem = item;
+      const mailOptions = getMailOptionsOrderSubmitted(orderData);
+      await transporter.sendMail(mailOptions);
       res.status(200).json(orderData);
     } else {
       return res.status(405).json({

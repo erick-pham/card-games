@@ -7,6 +7,8 @@ import OrderEntity from "database/entity/order";
 import { plainToInstance } from "class-transformer";
 import { PRODUCT_ITEM_STATUS } from "common/constants";
 import checkValidSalePrice from "@utils/check-valid-sale-price";
+import { getMailOptionsOrderSubmitted } from "lib/email-template";
+import transporter from "lib/mailer-transporter";
 interface OrderRequestBody {
   productItemId: string;
   email: string;
@@ -65,6 +67,10 @@ export default async function handler(
 
       item.status = PRODUCT_ITEM_STATUS.SOLD;
       item.save();
+
+      data.productItem = item;
+      const mailOptions = getMailOptionsOrderSubmitted(data);
+      await transporter.sendMail(mailOptions);
 
       res.status(200).json(data);
     } else {

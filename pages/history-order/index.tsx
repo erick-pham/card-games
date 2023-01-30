@@ -16,7 +16,11 @@ import MainLayout from "components/MainLayout";
 import NextLinkComposed from "components/NextLinkComposed";
 import { StyledMainBox } from "components/CustomStyledBox";
 
-import { PRODUCT_ITEM_TYPES_LABEL, GetLabelText } from "common/constants";
+import {
+  PRODUCT_ITEM_TYPES_LABEL,
+  GetLabelText,
+  ORDER_STATUS_LABEL,
+} from "common/constants";
 
 type HistoryOrderPageProps = {
   internalError?: boolean;
@@ -114,7 +118,8 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
                 {orderData ? format(new Date(orderData?.createdAt), "Pp") : ""}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Trạng thái: {orderData?.status}
+                Trạng thái:{" "}
+                {GetLabelText(ORDER_STATUS_LABEL, String(orderData?.status))}
               </Typography>
             </Grid>
           </Grid>
