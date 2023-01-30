@@ -54,6 +54,12 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
               <Typography variant="body1" color="text.secondary">
                 Email: {orderData?.contactEmail}
               </Typography>
+            </Grid>
+
+            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <Typography gutterBottom variant="h5" component="div">
+                Đơn hàng
+              </Typography>
               <Typography
                 variant="body1"
                 color="text.secondary"
@@ -61,18 +67,17 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
               >
                 Mã đơn: {orderData?.referenceNumber}
               </Typography>
-              <Typography variant="body1" color="text.secondary">
-                Ngày tạo:{" "}
-                {orderData ? format(new Date(orderData?.createdAt), "Pp") : ""}
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                Trạng thái: {orderData?.status}
-              </Typography>
-            </Grid>
-
-            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-              <Typography gutterBottom variant="h5" component="div">
-                Đơn hàng:
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                style={{ fontWeight: "bold" }}
+              >
+                Tổng:{" "}
+                {orderData
+                  ? `${numeral(orderData?.amount).format("0,0")} ${
+                      orderData?.productItem?.currency
+                    }`
+                  : ""}
               </Typography>
               <Typography variant="body1" color="text.secondary">
                 Loại:{" "}
@@ -88,7 +93,7 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
                 Đặc điểm: {orderData?.productItem.description}
               </Typography>
               <Typography variant="body1" color="text.secondary">
-                Chi tiết:{" "}
+                Chi tiết sản phẩm:{" "}
                 {orderData?.productItem.type === "CARD_GAME" && (
                   <Link
                     href={`product-card-game?game=${orderData?.productItem.productId}&itemId=${orderData?.productItem.id}`}
@@ -104,17 +109,12 @@ const HistoryOrderPage = ({ orderData }: HistoryOrderPageProps) => {
                   </Link>
                 )}
               </Typography>
-              <Typography
-                variant="body1"
-                color="text.secondary"
-                style={{ fontWeight: "bold" }}
-              >
-                Giá:{" "}
-                {orderData
-                  ? `${numeral(orderData?.amount).format("0,0")} ${
-                      orderData?.productItem?.currency
-                    }`
-                  : ""}
+              <Typography variant="body1" color="text.secondary">
+                Ngày tạo:{" "}
+                {orderData ? format(new Date(orderData?.createdAt), "Pp") : ""}
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Trạng thái: {orderData?.status}
               </Typography>
             </Grid>
           </Grid>
