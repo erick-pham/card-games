@@ -619,7 +619,7 @@ export const GetOrderSubmittedEmail = (params: OrderEntity) => {
 export const getMailOptionsOrderSubmitted = (params: OrderEntity) => {
   const htmlText = GetOrderSubmittedEmail(params);
   const mailOptions = {
-    from: `'Gameshop247' <${process.env.EMAIL_SENDER_ADDRESS}>`,
+    from: `Gameshop247 <${process.env.EMAIL_SENDER_ADDRESS}>`,
     to: params.contactEmail,
     cc: process.env.EMAIL_ADMIN_ADDRESS,
     subject: "Gameshop247 - Đặt hàng thành công",
