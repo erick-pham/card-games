@@ -3,6 +3,7 @@ import Document, { Html, Head, Main, NextScript } from "next/document";
 import createEmotionServer from "@emotion/server/create-instance";
 import theme from "theme";
 import createEmotionCache from "theme/createEmotionCache";
+import Script from "next/script";
 
 export default class MyDocument extends Document {
   render() {
@@ -16,6 +17,24 @@ export default class MyDocument extends Document {
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="emotion-insertion-point" content="" />
           {(this.props as any).emotionStyleTags}
+          <Script
+            strategy="beforeInteractive"
+            type="text/javascript"
+            src="js/widget-analytics-latest.min.js"
+          ></Script>
+          <Script
+            id="ep-sdk-analytics"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+              EPAnalytics.init("${process.env.EP_ANALYTICS_ID}", {
+                url: 'https://ep-analytics-orcin-alpha.vercel.app/api/collect'
+              }, {
+                // allowedGeo: true
+              });
+          `,
+            }}
+          />
         </Head>
         <body>
           <Main />
