@@ -20,7 +20,7 @@ export default class MyDocument extends Document {
           <Script
             strategy="beforeInteractive"
             type="text/javascript"
-            src="js/widget-analytics-latest.min.js"
+            src="https://ep-analytics-orcin-alpha.vercel.app/js/widget-analytics-latest.min.js"
           ></Script>
           <Script
             id="ep-sdk-analytics"
