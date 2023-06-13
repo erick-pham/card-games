@@ -17,7 +17,7 @@ export default class MyDocument extends Document {
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="emotion-insertion-point" content="" />
           {(this.props as any).emotionStyleTags}
-          <Script
+          {/* <Script
             strategy="beforeInteractive"
             type="text/javascript"
             src="https://ep-analytics-orcin-alpha.vercel.app/js/widget-analytics-latest.min.js"
@@ -34,7 +34,7 @@ export default class MyDocument extends Document {
               });
           `,
             }}
-          />
+          /> */}
         </Head>
         <body>
           <Main />
